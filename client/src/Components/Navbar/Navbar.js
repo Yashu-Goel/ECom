@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 const Navbar = () => {
+  const [login, setLogin] = useState(false);
+  const [shop, setShop] = useState(false);
+  const [heart, setHeart] = useState(false);
+
   return (
     <div className="navbar-header">
       <div className="logo nav-elements">Logo</div>
@@ -18,9 +23,9 @@ const Navbar = () => {
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <li>
-                <a class="dropdown-item" href="#">
-                  Men
-                </a>
+              <a class="dropdown-item" href="#">
+                Men
+              </a>
             </li>
             <li>
               <a class="dropdown-item" href="#">
@@ -229,16 +234,29 @@ const Navbar = () => {
       </div>
 
       <div className="nav-icons">
-        {/* <button className="nav-icon-btn"> */}
-
-        <i class="fa-solid fa-user"></i>
-        {/* </button> */}
-        {/* <button className="nav-icon-btn"> */}
-        <i class="fa-solid fa-cart-shopping"></i>
-        {/* </button> */}
-        {/* <button className="nav-icon-btn"> */}
-        <i class="fa-solid fa-heart"></i>
-        {/* </button> */}
+        {login == true ? (
+          <div className="nav-symbols">
+            <button className="nav-heart">
+              <i class="fa-solid fa-user"></i>
+            </button>
+            <button className="nav-shop">
+              <i
+                class="fa-solid fa-cart-shopping"
+                style={{
+                  color: shop && "green",
+                }}
+              ></i>
+            </button>
+            <button className="nav-heart" onClick={() => setHeart(!heart)}>
+              <i
+                class="fa-solid fa-heart"
+                style={{ color: heart && "red" }}
+              ></i>
+            </button>
+          </div>
+        ) : (
+          <button className="nav-login">LOGIN | SIGNUP</button>
+        )}
       </div>
     </div>
   );

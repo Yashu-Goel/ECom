@@ -70,6 +70,7 @@
   color: cadetblue;
 }
 .nav-icons {
+  display: table;
   color: white;
 }
 .nav-icons {
@@ -104,4 +105,28 @@
 .list-items {
   display: flex;
   justify-content: space-evenly;
+}
+.nav-icons {
+  position: absolute;
+  top: 14%;
+  right: 3%;
+  width: 15%;
+  display: flex;
+}
+.nav-icons button {
+  background-color: #000;
+  color: whitesmoke;
+  padding: 8px 8px;
+  border: none;
+  font-weight: 500;
+}
+.nav-login:hover {
+  background-color: white;
+  color: #000;
+  border-radius: 5px;
+}
+.nav-symbols {
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
 }
