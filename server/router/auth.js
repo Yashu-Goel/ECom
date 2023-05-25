@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/userSchema.js");
 const Seller = require("../models/sellerSchema.js")
+const Product = require("../models/productDetailsSchema.js")
 const bcrypt = require("bcryptjs") ;
 const dotenv = require("dotenv");
 require("../db/conn.js");
@@ -150,6 +151,40 @@ router.post("/sellerlogin", async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+  }
+});
+
+
+//Product Details
+router.post("/product", async (req, res) => {
+  console.log(req.body);
+  const { name, type, description, seller} = req.body;
+  if (!name || !type || !description) {
+    return res.status(422).json({ error: "Pls fill all the fields" });
+  }
+  console.log(req.body);
+  try {
+
+      const product = await Product.create({
+        name,
+        type,
+        description,
+        seller
+      });
+
+      if (product) {
+        res.status(200).json({
+          _id: product._id,
+          name: product.name,
+          details: product.details,
+          type: product.type,
+          seller: product.type,
+          message: "Product registered successfully",
+        });
+      } else res.status(400).json("Product unregistered");
+    
+  } catch (error) {
+    res.status(422).json(`${error}`);
   }
 });
 
