@@ -1,0 +1,9 @@
+/* .carousel-wrapper {
+} */
+.coursel {
+  margin: auto;
+}
+.coursel img {
+  width: 100%;
+  height: calc(100vh - 60px);
+}

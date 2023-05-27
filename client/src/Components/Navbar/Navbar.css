@@ -88,10 +88,9 @@
 /* MDB */
 .dropdown:hover > .dropdown-menu {
   display: block;
-  color: aqua;
 }
 .dropdown > button:hover {
-  background-color: #fff8f8;
+  background-color: #f7eeee;
   color: #000;
 }
 
@@ -129,4 +128,7 @@
   width: 60%;
   display: flex;
   justify-content: space-between;
+}
+.dropdown > button {
+  box-shadow: none;
 }
