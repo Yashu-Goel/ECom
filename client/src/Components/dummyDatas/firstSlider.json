@@ -1,0 +1,74 @@
+[
+  {
+    "link": "/product1",
+    "pic": "slider1.jpg",
+    "alt": "slider1",
+    "offerTag": "Up to 18% off",
+    "dealDetails": "Deal Of the Day",
+    "itemName": "Realme Narzo N53|| Buy Now "
+  },
+  {
+    "link": "/product2",
+    "pic": "slider2.jpg",
+    "alt": "slider2",
+    "offerTag": "25% off",
+    "dealDetails": "Ends in 00:00",
+    "itemName": "Kitchen Appliances: Mixer .."
+  },
+  {
+    "link": "/product3",
+    "pic": "slider3.jpg",
+    "alt": "slider3",
+    "offerTag": "Up to 81% off",
+    "dealDetails": "Launch Day Deal",
+    "itemName": "Ptron TWS with Anc"
+  },
+  {
+    "link": "/product4",
+    "pic": "slider4.jpg",
+    "alt": "slider4",
+    "offerTag": "Up to 37% off",
+    "dealDetails": "Deal Of the Day",
+    "itemName": "Bata, Hush puppies and more"
+  },
+  {
+    "link": "/product5",
+    "pic": "slider5.jpg",
+    "alt": "slider5",
+    "offerTag": "Up to 20% off",
+    "dealDetails": "Hurry Up!!",
+    "itemName": "Vivo Y56 5G"
+  },
+  {
+    "link": "/product6",
+    "pic": "slider6.jpg",
+    "alt": "slider6",
+    "offerTag": "Up to 80% off",
+    "dealDetails": "Deal Of the Day",
+    "itemName": "Kidswear by A.T.U.N"
+  },
+  {
+    "link": "/product7",
+    "pic": "slider7.jpg",
+    "alt": "slider7",
+    "offerTag": "Up to 69% off",
+    "dealDetails": "Deal Of the Day",
+    "itemName": "Top Offers on PC Categories"
+  },
+  {
+    "link": "/product8",
+    "pic": "slider8.jpg",
+    "alt": "slider8",
+    "offerTag": "Up to 37% off",
+    "dealDetails": "Deal Of the Day",
+    "itemName": "DSLR Mirrorless cameras From Top ."
+  },
+  {
+    "link": "/product9",
+    "pic": "slider9.jpg",
+    "alt": "slider9",
+    "offerTag": "Up to 18% off",
+    "dealDetails": "Deal Of the Day",
+    "itemName": "Best Deals on Pens and writing instruments"
+  }
+]
