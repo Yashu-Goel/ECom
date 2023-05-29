@@ -1,0 +1,17 @@
+.product-page {
+  min-width: 800px;
+  margin: 20px;
+  display: flex;
+}
+.product-pics {
+  width: 40%;
+  height: 100vh;
+}
+.product-desc {
+  width: 60%;
+  height: 100vh;
+  border: 1px solid black;
+}
+.product-page div {
+  border: 1px solid black;
+}

@@ -42,3 +42,6 @@
 .carousel {
   z-index: -1;
 }
+body{
+  background-color: rgba(232, 232, 232, 0.92);
+}
