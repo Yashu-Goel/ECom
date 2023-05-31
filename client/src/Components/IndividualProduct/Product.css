@@ -5,7 +5,7 @@
   display: flex;
 }
 .product-page .outer-divs {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   margin: 0 5px;
   padding: 5px;
   height: 100%;
