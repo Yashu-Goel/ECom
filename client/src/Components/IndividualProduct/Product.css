@@ -1,11 +1,13 @@
 .product-page {
   min-width: 800px;
-  height: 80vh;
+  height: auto;
   margin: 20px;
   display: flex;
 }
 .product-page .outer-divs {
-  /* border: 1px solid black; */
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: rgb(253, 253, 244);
   margin: 0 5px;
   padding: 5px;
   height: 100%;
@@ -25,7 +27,6 @@
   display: none;
 }
 .image-thums {
-  /* border: 1px solid black; */
   scroll-behavior: auto;
   width: 140px;
   overflow-y: auto;
@@ -54,4 +55,160 @@
   border-radius: 5px;
   width: 500px;
   object-fit: cover;
+}
+.product-name {
+  font-size: 28px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  color: black;
+  text-align: left;
+  font-weight: bold;
+  padding: 5px;
+  margin: 0px 5px;
+  /* border: 1px solid black; */
+}
+.product-brand {
+  display: flex;
+  font-size: 14px;
+  padding: 5px;
+  margin: 0px 5px;
+  color: rgb(28, 28, 68);
+}
+.product-brand:hover {
+  text-decoration: underline;
+}
+.product-cost {
+  width: 30%;
+  padding: 5px;
+  margin: 0px 5px;
+  margin-bottom: 10px;
+}
+.ratings {
+  padding: 5px;
+  margin: 0px 5px;
+  /* height: 100px; */
+  /* width: 100%; */
+  /* border: 1px solid black; */
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+}
+.product-sellingPrice {
+  font-size: 2.5rem;
+  font-weight: 400;
+  font-style: oblique;
+  color: black;
+}
+.product-costPrice {
+  font-size: 0.8rem;
+  font-weight: bolder;
+  display: flex;
+  justify-content: space-between;
+}
+.product-mrp {
+  display: flex;
+  text-decoration: line-through;
+  margin: auto 5px;
+  margin-left: 0px;
+}
+.product-discount-percent {
+  color: red;
+  font-size: 1.5rem;
+  text-decoration: none;
+  display: flex;
+  margin: auto;
+}
+.product-tax-details {
+  font-style: italic;
+  font-size: 14px;
+}
+.about-this {
+  padding: 5px;
+  margin: 0px 5px;
+  font-weight: bold;
+  margin-top: 0;
+  color: #000;
+  text-decoration: underline;
+}
+.product-details {
+  padding: 5px;
+  margin: 0px 5px;
+  color: #000;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.product-details > li {
+  margin-bottom: 5px;
+}
+.total-reviews {
+  font-size: 14px;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  color: rgb(37, 86, 7);
+  font-weight: 600;
+}
+.pincode {
+  font-size: 14px;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 5px;
+  /* background-color: rgb(219, 219, 219); */
+  /* color: white; */
+  font-weight: bold;
+}
+.checking {
+  color: rgb(20, 15, 2);
+  font-weight: bold;
+  padding: 5px;
+  font-size: 17px;
+}
+.product-buy-div {
+  margin: 10px auto;
+}
+.cart-button {
+  display: flex;
+  flex-direction: column;
+}
+.pin-search {
+  background-color: orange;
+  color: #ffd;
+  padding: 3px;
+  width: 25%;
+  border-radius: 5px;
+  font-weight: bold;
+}
+.cart-button button {
+  background-color: orange;
+  color: #000;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 10px auto;
+  width: 90%;
+  padding: 10px;
+  border-radius: 10px;
+}
+.cart-button > button:first-child {
+  background-color: #ffff00;
+}
+.cart-button > button:hover:first-child {
+  background-color: #cece3d;
+}
+.cart-button button:hover {
+  background-color: rgb(228, 148, 0);
+}
+.oos {
+  color: red;
+  text-align: center;
+  font-size: 2rem;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-weight: bolder;
+}
+.capacity {
+  margin: 10px;
+}
+.shipping {
+  margin: 10px;
+  font-style: italic;
+  font-weight: bold;
+}
+.toast-message {
+  font-weight: bold;
 }

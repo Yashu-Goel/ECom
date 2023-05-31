@@ -43,5 +43,6 @@
   z-index: -1;
 }
 body{
-  background-color: rgba(232, 232, 232, 0.92);
+  /* background-color: rgb(255, 241, 214); */
+  background-color: white;
 }
