@@ -3,9 +3,14 @@ import { useParams, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../Navbar/Navbar";
+import ImageSlider from "../TopSecHome/ImageSlider";
+import firstSlider from "../dummyDatas/firstSlider.json";
 import "./Product.css";
+import { UserState } from "../Context/UserProvider";
 
 const Product = () => {
+  const { user, setUser } = UserState();
+
   const [imageSrc, setImageSrc] = useState(
     require(`../TopSecHome/img_1/slider10Images/image1.webp`)
   );
@@ -33,7 +38,14 @@ const Product = () => {
     ],
     category: "Home and Kitchen Appliances",
     ratings: 4,
-    reviews: [{}, {}],
+    reviews: [
+      { name: "Neeraj Mishra", rating: 4, message: "This is a noce product" },
+      {
+        name: "Ankit Aggarwal",
+        rating: 5,
+        message: "One of the good smeeling product",
+      },
+    ],
     sellerName: "Allen Benny",
     quantityOptions: 10,
   };
@@ -74,123 +86,178 @@ const Product = () => {
       className: "toast-message",
     });
   }
+
   return (
     <>
-      <Navbar />
-      <div className="product-page">
-        <div className="product-pics outer-divs">
-          <div className="image-thums">
-            {productDetails.pics.map((pic, index) => {
-              return (
-                <div className="inner-thumb-pics" key={index}>
-                  <img
-                    src={require(`../TopSecHome/img_1/slider10Images/${pic}`)}
-                    alt=""
-                    onMouseOver={() => setClassName(index, pic)}
-                    className="current"
+      <div className="product-container">
+        <Navbar />
+        {user.name}
+        <div className="product-page">
+          <div className="product-pics outer-divs">
+            <div className="image-thums">
+              {productDetails.pics.map((pic, index) => {
+                return (
+                  <div className="inner-thumb-pics" key={index}>
+                    <img
+                      src={require(`../TopSecHome/img_1/slider10Images/${pic}`)}
+                      alt=""
+                      onMouseOver={() => setClassName(index, pic)}
+                      className="current"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            <div className="main-image">
+              <img src={imageSrc} alt="first" />
+            </div>
+          </div>
+          <div className="product-desc outer-divs">
+            <div>
+              <div className="product-name">
+                <h2>{productDetails.name}</h2>
+              </div>
+
+              <Link to={"#"} className="product-brand">
+                Visit the {productDetails.brand} Store
+              </Link>
+
+              <div className="ratings">
+                <strong>{productDetails.ratings}.0</strong> &nbsp;
+                {[...Array(5)].map((_, index) => (
+                  <span
+                    key={index}
+                    style={index < productDetails.ratings ? starStyle : null}
+                  >
+                    &#9733;
+                  </span>
+                ))}
+                &nbsp;|&nbsp;
+                <Link to={"#reviews"} className="total-reviews">
+                  {productDetails.reviews.length} ratings
+                </Link>
+              </div>
+
+              <div className="product-cost">
+                <div className="product-sellingPrice">
+                  &#8377;{productDetails.price}
+                </div>
+                <div className="product-costPrice">
+                  <p className="product-mrp">
+                    M.R.P.:&nbsp;{productDetails.MRP}
+                  </p>
+                  <div className="product-discount-percent">
+                    -
+                    {calculateDiscount(
+                      productDetails.MRP,
+                      productDetails.price
+                    )}
+                    %
+                  </div>
+                </div>
+                <div className="product-tax-details">
+                  Inclusive of all taxes
+                </div>
+              </div>
+              <div className="product-decription">
+                <h3 className="about-this">About this item</h3>
+                <ul className="product-details">
+                  <li>
+                    <strong>Name:-</strong> {productDetails.name}
+                  </li>
+                  <li>
+                    <strong>Model:-</strong> {productDetails.model}
+                  </li>
+                  <li>
+                    <strong>Brand:-</strong> {productDetails.brand}
+                  </li>
+                  <li>
+                    <strong>Category:-</strong> {productDetails.category}
+                  </li>
+                  <li>
+                    <strong>Seller Name:-</strong> {productDetails.sellerName}
+                  </li>
+                  <li>
+                    <strong>Description:-</strong> {productDetails.description}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="product-buy outer-divs">
+            <div className="product-buy-div">
+              {productDetails.quantityOptions !== 0 && (
+                <>
+                  <h2 className="checking">Check for product Availabilty:-</h2>
+                  <input
+                    type="text"
+                    placeholder="Pincode"
+                    className="pincode"
                   />
+                  <button className="pin-search">Search</button>
+                </>
+              )}
+            </div>
+            {productDetails.quantityOptions === 0 ? (
+              <h1 className="oos">Out of stock</h1>
+            ) : (
+              <>
+                <p className="shipping">Shipped in 2-3 working Days</p>
+                <span className="capacity">Quantity:</span>
+                <select>{quantityOptions}</select>
+              </>
+            )}
+            <div className="cart-button">
+              {productDetails.quantityOptions !== 0 && (
+                <>
+                  <button className="add-to-cart" onClick={addedToCart}>
+                    Add to Cart
+                  </button>
+                  <button>Buy now</button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="product-reviews">
+          {!productDetails.reviews.length ? (
+            <h1>No reviews yet</h1>
+          ) : (
+            <h1>Top reviews</h1>
+          )}
+          <div>
+            {productDetails.reviews.map((reviews, index) => {
+              return (
+                <div key={index} className="review-box">
+                  <div className="review-icon">
+                    <div>
+                      {" "}
+                      <i class="fa fa-user" aria-hidden="true"></i>&nbsp;
+                      <strong>{reviews.name}</strong>
+                    </div>
+
+                    {[...Array(5)].map((_, index) => (
+                      <strong
+                        key={index}
+                        style={index < reviews.rating ? { color: "red" } : null}
+                      >
+                        &#9733;
+                      </strong>
+                    ))}
+
+                    <p>{reviews.message}</p>
+                  </div>
                 </div>
               );
             })}
           </div>
-          <div className="main-image">
-            <img src={imageSrc} alt="first" />
-          </div>
         </div>
-        <div className="product-desc outer-divs">
-          <div>
-            <div className="product-name">
-              <h2>{productDetails.name}</h2>
-            </div>
-
-            <Link to={"#"} className="product-brand">
-              Visit the {productDetails.brand} Store
-            </Link>
-
-            <div className="ratings">
-              <strong>{productDetails.ratings}.0</strong> &nbsp;
-              {[...Array(5)].map((_, index) => (
-                <span
-                  key={index}
-                  style={index < productDetails.ratings ? starStyle : null}
-                >
-                  &#9733;
-                </span>
-              ))}
-              &nbsp;|&nbsp;
-              <Link to={"#reviews"} className="total-reviews">
-                {productDetails.reviews.length} ratings
-              </Link>
-            </div>
-
-            <div className="product-cost">
-              <div className="product-sellingPrice">
-                &#8377;{productDetails.price}
-              </div>
-              <div className="product-costPrice">
-                <p className="product-mrp">M.R.P.:&nbsp;{productDetails.MRP}</p>
-                <div className="product-discount-percent">
-                  -{calculateDiscount(productDetails.MRP, productDetails.price)}
-                  %
-                </div>
-              </div>
-              <div className="product-tax-details">Inclusive of all taxes</div>
-            </div>
-            <div className="product-decription">
-              <h3 className="about-this">About this item</h3>
-              <ul className="product-details">
-                <li>
-                  <strong>Name:-</strong> {productDetails.name}
-                </li>
-                <li>
-                  <strong>Model:-</strong> {productDetails.model}
-                </li>
-                <li>
-                  <strong>Brand:-</strong> {productDetails.brand}
-                </li>
-                <li>
-                  <strong>Category:-</strong> {productDetails.category}
-                </li>
-                <li>
-                  <strong>Seller Name:-</strong> {productDetails.sellerName}
-                </li>
-                <li>
-                  <strong>Description:-</strong> {productDetails.description}
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div className="product-buy outer-divs">
-          <div className="product-buy-div">
-            {productDetails.quantityOptions !== 0 && (
-              <>
-                <h2 className="checking">Check for product Availabilty:-</h2>
-                <input type="text" placeholder="Pincode" className="pincode" />
-                <button className="pin-search">Search</button>
-              </>
-            )}
-          </div>
-          {productDetails.quantityOptions === 0 ? (
-            <h1 className="oos">Out of stock</h1>
-          ) : (
-            <>
-              <p className="shipping">Shipped in 2-3 working Days</p>
-              <span className="capacity">Quantity:</span>
-              <select>{quantityOptions}</select>
-            </>
-          )}
-          <div className="cart-button">
-            {productDetails.quantityOptions !== 0 && (
-              <>
-                <button className="add-to-cart" onClick={addedToCart}>
-                  Add to Cart
-                </button>
-                <button>Buy now</button>
-              </>
-            )}
-          </div>
-        </div>
+        <ImageSlider
+          slider={firstSlider}
+          loop={false}
+          text={true}
+          className="image-slider"
+        />
         <ToastContainer />
       </div>
     </>

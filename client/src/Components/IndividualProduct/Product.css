@@ -1,11 +1,11 @@
 .product-page {
   min-width: 800px;
-  height: auto;
+  height: calc(100vh - 60px);
   margin: 20px;
   display: flex;
 }
 .product-page .outer-divs {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-radius: 5px;
   background-color: rgb(253, 253, 244);
   margin: 0 5px;
@@ -41,17 +41,17 @@
   margin: 20px auto;
 }
 .active {
-  box-shadow: 0 0 3px 3px #3221ec;
+  box-shadow: 0 0 3px 3px #fbb608;
 }
 .inner-thumb-pics > img:hover {
-  box-shadow: 0 0 3px 3px #1589ff;
+  box-shadow: 0 0 3px 3px #fab410;
 }
 .main-image {
   display: flex;
 }
 .main-image > img {
   height: 500px;
-  margin: auto;
+  margin: 15px auto;
   border-radius: 5px;
   width: 500px;
   object-fit: cover;
@@ -86,9 +86,6 @@
 .ratings {
   padding: 5px;
   margin: 0px 5px;
-  /* height: 100px; */
-  /* width: 100%; */
-  /* border: 1px solid black; */
   border-bottom: 1px solid black;
   border-top: 1px solid black;
 }
@@ -170,7 +167,7 @@
   background-color: orange;
   color: #ffd;
   padding: 3px;
-  width: 25%;
+  /* width: 25%; */
   border-radius: 5px;
   font-weight: bold;
 }
@@ -211,4 +208,41 @@
 }
 .toast-message {
   font-weight: bold;
+}
+.product-reviews {
+  width: auto;
+  min-width: 350px;
+  height: auto;
+  margin: auto 10px;
+  border: 1px solid black;
+  background-color: rgb(253, 253, 244);
+  padding: 10px;
+  border-radius: 5px;
+}
+.product-reviews h1 {
+  font-weight: bold;
+  color: black;
+  text-decoration: underline;
+  font-size: 25px;
+}
+.image-slider {
+  border: 10px solid black;
+}
+.review-icon i {
+  border-radius: 50%;
+  padding: 5px;
+  border: 2px solid black;
+  background-color: gray;
+  color: #fff;
+}
+.review-box p {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+.review-box {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 10px auto;
+  background-color: white;
 }
