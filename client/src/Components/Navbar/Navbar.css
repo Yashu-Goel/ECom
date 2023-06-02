@@ -112,7 +112,8 @@
   width: 15%;
   display: flex;
 }
-.nav-icons button {
+.nav-icons button,
+.nav-icons a {
   background-color: #000;
   color: whitesmoke;
   padding: 8px 8px;

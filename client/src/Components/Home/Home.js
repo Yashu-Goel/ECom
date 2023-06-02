@@ -12,10 +12,11 @@ const Home = () => {
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("profile"));
-    if (userInfo) {
-      navigate("/login");
-    }
+    // if (!userInfo) {
+    //   navigate("/auth");
+    // }
   }, [navigate]);
+
   return (
     <div>
       <Navbar />

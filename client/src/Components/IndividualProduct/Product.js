@@ -91,7 +91,6 @@ const Product = () => {
     <>
       <div className="product-container">
         <Navbar />
-        {user.name}
         <div className="product-page">
           <div className="product-pics outer-divs">
             <div className="image-thums">

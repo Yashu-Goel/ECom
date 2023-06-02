@@ -13,9 +13,9 @@ const UserProvider = ({ children }) => {
     const userInfo = JSON.parse(localStorage.getItem("profile"));
     setUser(userInfo);
 
-    if (!userInfo) {
-      navigate("/");
-    }
+    // if (!userInfo) {
+    //   navigate("/auth");
+    // }
   }, [navigate]);
 
   return (

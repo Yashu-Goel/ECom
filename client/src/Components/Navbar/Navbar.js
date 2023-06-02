@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
+import { UserState } from "../Context/UserProvider";
 const Navbar = () => {
+  const { user, setUser, cart, setCart } = UserState();
+
   const [login, setLogin] = useState(false);
   const [shop, setShop] = useState(false);
   const [heart, setHeart] = useState(false);
-
+  console.log(user)
   return (
     <div className="navbar-header">
       <div className="logo nav-elements">Logo</div>
@@ -225,7 +228,6 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
-
       <div className="nav-search">
         <input type="text" placeholder="I'm looking for..." />
         <div className="search-icon">
@@ -234,7 +236,7 @@ const Navbar = () => {
       </div>
 
       <div className="nav-icons">
-        {login == true ? (
+        {user !== null ? (
           <div className="nav-symbols">
             <button className="nav-heart">
               <i class="fa-solid fa-user"></i>
@@ -255,7 +257,9 @@ const Navbar = () => {
             </button>
           </div>
         ) : (
-          <button className="nav-login">LOGIN | SIGNUP</button>
+          <Link className="nav-login" to={"/auth"}>
+            LOGIN | SIGNUP
+          </Link>
         )}
       </div>
     </div>
