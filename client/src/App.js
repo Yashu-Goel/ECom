@@ -2,7 +2,8 @@ import "./App.css";
 import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
 import Home from "./Components/Home/Home";
 import Product from "./Components/IndividualProduct/Product";
-import Auth from "./Components/Authentication/Auth";
+import { Auth } from "./Components/Authentication/Auth.js";
+// import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (

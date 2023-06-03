@@ -1,64 +1,123 @@
-import {
-  Tabs,
-  TabsHeader,
-  TabsBody,
-  Tab,
-  TabPanel,
-} from "@material-tailwind/react";
+import React, { useState } from "react";
+import "./Auth.css";
 
-export default function Auth() {
-  const data = [
-    {
-      label: "HTML",
-      value: "html",
-      desc: `It really matters and then like it really doesn't matter.
-      What matters is the people who are sparked by it. And the people 
-      who are like offended by it, it doesn't matter.`,
-    },
-    {
-      label: "React",
-      value: "react",
-      desc: `Because it's about motivating the doers. Because I'm here
-      to follow my dreams and inspire other people to follow their dreams, too.`,
-    },
-    {
-      label: "Vue",
-      value: "vue",
-      desc: `We're not always in the position that we want to be at.
-      We're constantly growing. We're constantly making mistakes. We're
-      constantly trying to express ourselves and actualize our dreams.`,
-    },
-    {
-      label: "Angular",
-      value: "angular",
-      desc: `Because it's about motivating the doers. Because I'm here
-      to follow my dreams and inspire other people to follow their dreams, too.`,
-    },
-    {
-      label: "Svelte",
-      value: "svelte",
-      desc: `We're not always in the position that we want to be at.
-      We're constantly growing. We're constantly making mistakes. We're
-      constantly trying to express ourselves and actualize our dreams.`,
-    },
-  ];
+export const Auth = () => {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isLogin, setIsLogin] = useState(true);
+  const [error, setError] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Perform validation
+    if (!email || !password) {
+      setError("Please fill in all the fields.");
+      return;
+    }
+
+    if (!isLogin && password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    // Perform login or signup logic here
+    if (isLogin) {
+      // Perform login
+      console.log("Login:", email, password);
+    } else {
+      // Perform signup
+      console.log("Signup:", email, password);
+    }
+
+    // Reset form fields and error state
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setError("");
+  };
 
   return (
-    <Tabs value="html">
-      <TabsHeader>
-        {data.map(({ label, value }) => (
-          <Tab key={value} value={value}>
-            {label}
-          </Tab>
-        ))}
-      </TabsHeader>
-      <TabsBody>
-        {data.map(({ value, desc }) => (
-          <TabPanel key={value} value={value}>
-            {desc}
-          </TabPanel>
-        ))}
-      </TabsBody>
-    </Tabs>
+    <div className="container">
+      <h2 className="title">{isLogin ? "Login" : "Signup"}</h2>
+      <form onSubmit={handleSubmit} className="form">
+        {!isLogin && (
+          <div className="form-group">
+            <label>Name:</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="input-field"
+              placeholder="yashu goel"
+            />
+          </div>
+        )}
+        <div className="form-group">
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="input-field"
+            placeholder="xyz@gmail.com"
+          />
+        </div>
+        <div className="form-group">
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="input-field"
+            placeholder="********"
+          />
+        </div>
+        <p className="switch">
+          {isLogin && (
+            <button
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setError("");
+              }}
+              className="forgot-pass"
+            >forgot password?</button>
+          )}
+        </p>
+        {!isLogin && (
+          <div className="form-group">
+            <label>Confirm Password:</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="input-field"
+              placeholder="Confirm Password"
+            />
+          </div>
+        )}
+        {error && <p className="error">{error}</p>}
+        <button type="submit" className="btn">
+          {isLogin ? "Login" : "Signup"}
+        </button>
+      </form>
+      <p className="switch">
+        {isLogin ? "Don't have an account?" : "Already have an account?"}
+        <button
+          onClick={() => {
+            setIsLogin(!isLogin);
+            setError("");
+          }}
+          className="switch-btn"
+        >
+          {isLogin ? "Signup" : "Login"}
+        </button>
+      </p>
+    </div>
   );
-}
+};
+
+export default Auth;
