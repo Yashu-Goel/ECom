@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/userSchema.js");
 const Seller = require("../models/sellerSchema.js")
+const Address = require("../models/addressSchema.js")
 const Product = require("../models/productDetailsSchema.js")
 const bcrypt = require("bcryptjs") ;
 const dotenv = require("dotenv");
@@ -18,7 +19,6 @@ router.post("/usersignup", async (req, res) => {
   if (!name || !email || !password || !cpassword) {
     return res.status(422).json({ error: "Pls fill all the fields" });
   }
-  console.log(req.body);
   try {
     const UserExists = await User.findOne({ email: email });
 
@@ -188,4 +188,80 @@ router.post("/product", async (req, res) => {
   }
 });
 
+//post address
+
+router.post("/address", async(req,res)=>{
+  console.log(req.body);
+  const { address_line, city, state, postal_code } = req.body;
+  if(!address_line || !city || !state || !postal_code)
+  {
+        return res.status(422).json({ error: "Pls fill all the fields" });
+  }
+  try {
+    const address = await Address.create({
+        address_line,
+        city,
+        state,
+        postal_code
+      });
+
+     if (address) {
+       res.status(200).json({
+         message: "Product registered successfully",
+       });
+     } else res.status(400).json("Product unregistered");
+  } catch (error) {
+        res.status(422).json(`${error}`);
+  }
+})
+//get address
+router.get("/address", async(req,res)=>{
+  try {
+    const address= await Address.find();
+    res.send(address)
+  } catch (error) {
+        res.status(422).json(`${error}`);
+  }
+})
+
+//get single address
+router.get("/address/:id", async (req, res) => {
+  try {
+    const _id = req.params.id;
+    console.log(_id);
+    const address = await Address.findById(_id);
+    res.send(address);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+//delete address
+router.delete("/address/:id", async (req, res) => {
+  try {
+    const _id = req.params.id;
+    if (!_id) {
+      res.send("Invalid ID");
+    }
+    const deleteAddress = await Address.findByIdAndDelete(_id);
+
+    res.send(deleteAddress);
+    console.log(_id);
+  } catch (error) {
+      res.status(422).json(`${error}`);
+  }
+});
+
+//update address
+router.patch("/address/:id", async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const updateAddress = await Address.findByIdAndUpdate(_id, req.body, {
+      new: true,
+    });
+    res.send(updateAddress);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
 module.exports = router;
