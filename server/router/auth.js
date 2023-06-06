@@ -5,17 +5,21 @@ const Address = require("../models/addressSchema.js")
 const Product = require("../models/productDetailsSchema.js")
 const bcrypt = require("bcryptjs") ;
 const dotenv = require("dotenv");
+const cors= require("cors")
 require("../db/conn.js");
 const jwt = require("jsonwebtoken");
 
 dotenv.config();
 const router = express.Router();
 router.use(express.json());
+router.use(cors());
+
 const JWT_Secret = process.env.JWT_Secret;
 
 //Signup for user
 router.post("/usersignup", async (req, res) => {
   const { name, email, password, cpassword } = req.body;
+  console.log(req.body);
   if (!name || !email || !password || !cpassword) {
     return res.status(422).json({ error: "Pls fill all the fields" });
   }
