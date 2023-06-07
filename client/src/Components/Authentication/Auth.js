@@ -1,16 +1,22 @@
 import React, { useState } from "react";
 import "./Auth.css";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 export const Auth = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
 
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [cpassword, setConfirmPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
+  const API_BASE = "http://localhost:5000";
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Perform validation
@@ -19,7 +25,7 @@ export const Auth = () => {
       return;
     }
 
-    if (!isLogin && password !== confirmPassword) {
+    if (!isLogin && password !== cpassword) {
       setError("Passwords do not match.");
       return;
     }
@@ -27,10 +33,56 @@ export const Auth = () => {
     // Perform login or signup logic here
     if (isLogin) {
       // Perform login
+      try {
+        const config = {
+          headers: {
+            "Content-type": "application/json",
+          },
+        };
+
+        const { data } = await axios.post(
+          API_BASE + "/userlogin",
+          { email, password },
+          config
+        );
+        console.log(data);
+        toast.success("Login Successfull..");
+        setTimeout(() => {
+          navigate("/");
+        }, 5000);
+      } catch (error) {
+        toast.error(error.message);
+      }
       console.log("Login:", email, password);
     } else {
       // Perform signup
-      console.log("Signup:", email, password);
+      if (!name || !email || !password || !cpassword) {
+        window.alert("Fill all details!!");
+        return;
+      }
+
+      try {
+        const config = {
+          headers: {
+            "Content-type": "application/json",
+          },
+        };
+        const { data } = await axios.post(
+          API_BASE + "/usersignup",
+          {
+            name,
+            email,
+            password,
+            cpassword,
+          },
+          config
+        );
+        toast.success("Registration Successfull");
+        console.log(data);
+        setTimeout(window.location.reload(), 5000);
+      } catch (error) {
+        toast.error(error.message);
+      }
     }
 
     // Reset form fields and error state
@@ -84,7 +136,9 @@ export const Auth = () => {
                 setError("");
               }}
               className="forgot-pass"
-            >forgot password?</button>
+            >
+              forgot password?
+            </button>
           )}
         </p>
         {!isLogin && (
@@ -92,7 +146,7 @@ export const Auth = () => {
             <label>Confirm Password:</label>
             <input
               type="password"
-              value={confirmPassword}
+              value={cpassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="input-field"
               placeholder="Confirm Password"
@@ -116,6 +170,7 @@ export const Auth = () => {
           {isLogin ? "Signup" : "Login"}
         </button>
       </p>
+      <ToastContainer position="top-center" autoClose={3000} theme="colored" />
     </div>
   );
 };
