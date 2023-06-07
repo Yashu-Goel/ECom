@@ -100,7 +100,7 @@ export const Auth = () => {
           </div>
         )}
         {error && <p className="error">{error}</p>}
-        <button type="submit" className="btn">
+        <button type="submit" className="btn-auth">
           {isLogin ? "Login" : "Signup"}
         </button>
       </form>

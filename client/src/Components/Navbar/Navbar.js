@@ -5,10 +5,10 @@ import { UserState } from "../Context/UserProvider";
 const Navbar = () => {
   const { user, setUser, cart, setCart } = UserState();
 
-  const [login, setLogin] = useState(false);
-  const [shop, setShop] = useState(false);
+  // const [login, setLogin] = useState(false);
+  // const [shop, setShop] = useState(false);
   const [heart, setHeart] = useState(false);
-  console.log(user)
+
   return (
     <div className="navbar-header">
       <div className="logo nav-elements">Logo</div>
@@ -242,12 +242,13 @@ const Navbar = () => {
               <i class="fa-solid fa-user"></i>
             </button>
             <button className="nav-shop">
-              <i
-                class="fa-solid fa-cart-shopping"
-                style={{
-                  color: shop && "green",
-                }}
-              ></i>
+              {cart.length === 0 ? (
+                <i class="fa-solid fa-cart-shopping"></i>
+              ) : (
+                <i class="fa badge" value={cart.length}>
+                  &#xf07a;
+                </i>
+              )}
             </button>
             <button className="nav-heart" onClick={() => setHeart(!heart)}>
               <i

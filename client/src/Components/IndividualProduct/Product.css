@@ -246,3 +246,31 @@
   margin: 10px auto;
   background-color: white;
 }
+
+.outer-quantity {
+  display: flex;
+  margin: 0px 10px;
+}
+.counter-button {
+  background-color: #4caf50;
+  color: black;
+  border: none;
+  padding: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  outline: none;
+}
+
+.counter-button:hover {
+  background-color: #45a049;
+}
+
+.counter-button:active {
+  background-color: #3e8941;
+}
+
+.count {
+  margin: 0 10px;
+  font-size: 16px;
+  font-weight: bold;
+}

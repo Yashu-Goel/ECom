@@ -9,7 +9,7 @@ import "./Product.css";
 import { UserState } from "../Context/UserProvider";
 
 const Product = () => {
-  const { user, setUser } = UserState();
+  const { user, setUser, cart, setCart } = UserState();
 
   const [imageSrc, setImageSrc] = useState(
     require(`../TopSecHome/img_1/slider10Images/image1.webp`)
@@ -68,23 +68,57 @@ const Product = () => {
   const starStyle = {
     color: "orange",
   };
-  const quantityOptions = [...Array(productDetails.quantityOptions).keys()].map(
-    (index) => (
-      <option key={index} value={index + 1}>
-        {index + 1}
-      </option>
-    )
-  );
+  const [count, setCount] = useState(1);
+  const ind = cart.findIndex((element) => element.id === id);
+  
+  const increment = () => {
+    if (count < productDetails.quantityOptions) {
+      setCount(count + 1);
+    }
+  };
+
+  const decrement = () => {
+    if (count > 1) {
+      setCount(count - 1);
+    }
+  };
   const oos = {
     color: "#fff",
     backgroundColor: "#FF7F7F",
   };
   function addedToCart() {
-    toast.success("Product added succesfully !", {
-      position: toast.POSITION.BOTTOM_CENTER,
-      autoClose: 2500,
-      className: "toast-message",
-    });
+    if (user == null) {
+      toast.error("Please login !", {
+        position: toast.POSITION.BOTTOM_CENTER,
+        autoClose: 2500,
+        className: "toast-message",
+      });
+      return;
+    }
+
+    if (ind === -1) {
+      setCart((oldCart) => [...oldCart, { id, cnt: count }]);
+      toast.success("Product added succesfully !!", {
+        position: toast.POSITION.BOTTOM_CENTER,
+        autoClose: 2500,
+        className: "toast-message",
+      });
+    } else {
+      if (count !== cart[ind].cnt) {
+        cart[ind].cnt = count;
+        toast.info("Cart updated successfully !", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 2500,
+          className: "toast-message",
+        });
+      } else {
+        toast.warning("Product already added in cart!", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 2500,
+          className: "toast-message",
+        });
+      }
+    }
   }
 
   return (
@@ -202,8 +236,18 @@ const Product = () => {
             ) : (
               <>
                 <p className="shipping">Shipped in 2-3 working Days</p>
-                <span className="capacity">Quantity:</span>
-                <select>{quantityOptions}</select>
+                <div className="outer-quantity">
+                  <span className="capacity">Quantity:</span>
+                  <div className="quantity">
+                    <button className="counter-button" onClick={decrement}>
+                      -
+                    </button>
+                    <span className="count">{count}</span>
+                    <button className="counter-button" onClick={increment}>
+                      +
+                    </button>
+                  </div>
+                </div>
               </>
             )}
             <div className="cart-button">
