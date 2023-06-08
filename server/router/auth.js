@@ -18,7 +18,7 @@ const JWT_Secret = process.env.JWT_Secret;
 
 //Signup for user
 router.post("/usersignup", async (req, res) => {
-  const { name, email, password, cpassword } = req.body;
+  const { name, email, password, cpassword, cart } = req.body;
   console.log(req.body);
   if (!name || !email || !password || !cpassword) {
     return res.status(422).json({ error: "Pls fill all the fields" });
@@ -33,13 +33,14 @@ router.post("/usersignup", async (req, res) => {
         error: "Password and Confirm Password must be same!",
       });
     } else {
-      const user = await User.create({ name, email, password, cpassword });
+      const user = await User.create({ name, email, password, cpassword, cart });
 
       if (user) {
         res.status(200).json({
           _id: user._id,
           name: user.name,
           email: user.email,
+
           message: "User registered successfully"
         });
       } else res.status(400).json("Signup failed");
@@ -268,4 +269,6 @@ router.patch("/address/:id", async (req, res) => {
     res.status(404).send(error);
   }
 });
+
+
 module.exports = router;

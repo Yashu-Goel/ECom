@@ -18,7 +18,17 @@ const userSchema = new mongoose.Schema({
   cpassword: {
     type: String,
     required: true,
-  }
+  },
+  cart:[
+    {
+      product_id:{
+        type: String
+      },
+      count:{
+        type: Number
+      }
+    }
+  ]
   
 });
 
