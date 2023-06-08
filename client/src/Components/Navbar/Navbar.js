@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 import { UserState } from "../Context/UserProvider";
+
 const Navbar = () => {
   const { user, setUser, cart, setCart } = UserState();
 

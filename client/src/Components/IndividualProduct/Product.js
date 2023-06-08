@@ -7,10 +7,18 @@ import ImageSlider from "../TopSecHome/ImageSlider";
 import firstSlider from "../dummyDatas/firstSlider.json";
 import "./Product.css";
 import { UserState } from "../Context/UserProvider";
+import CartModal from "../Modal/CartModal";
 
 const Product = () => {
   const { user, setUser, cart, setCart } = UserState();
+  const [showModal, setShowModal] = useState(false);
+  const openModal = () => {
+    setShowModal(true);
+  };
 
+  const closeModal = () => {
+    setShowModal(false);
+  };
   const [imageSrc, setImageSrc] = useState(
     require(`../TopSecHome/img_1/slider10Images/image1.webp`)
   );
@@ -21,7 +29,7 @@ const Product = () => {
 
   const { id } = useParams();
   const productDetails = {
-    id: { id },
+    id: id,
     name: "Perfume Da Lowda Mera Wood Flavour Brasil the silva santos Juinioh gauushy  hguahsj ",
     description:
       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam explicabo nesciunt consequuntur a eligendi ipsa ex rerum doloribus distinctio, ratione corrupti saepe ipsam commodi perferendis aspernatur expedita numquam dolores quisquam!",
@@ -69,8 +77,9 @@ const Product = () => {
     color: "orange",
   };
   const [count, setCount] = useState(1);
+
   const ind = cart.findIndex((element) => element.id === id);
-  
+
   const increment = () => {
     if (count < productDetails.quantityOptions) {
       setCount(count + 1);
@@ -86,6 +95,10 @@ const Product = () => {
     color: "#fff",
     backgroundColor: "#FF7F7F",
   };
+  const removeItem = (itemId) => {
+    const updatedItems = cart.filter((item) => item.id !== itemId);
+    setCart(updatedItems);
+  };
   function addedToCart() {
     if (user == null) {
       toast.error("Please login !", {
@@ -97,7 +110,16 @@ const Product = () => {
     }
 
     if (ind === -1) {
-      setCart((oldCart) => [...oldCart, { id, cnt: count }]);
+      setCart((oldCart) => [
+        ...oldCart,
+        {
+          id,
+          cnt: count,
+          price: productDetails.price,
+          name: productDetails.name,
+          pic: productDetails.pics[0],
+        },
+      ]);
       toast.success("Product added succesfully !!", {
         position: toast.POSITION.BOTTOM_CENTER,
         autoClose: 2500,
@@ -123,6 +145,13 @@ const Product = () => {
 
   return (
     <>
+      {showModal && (
+        <CartModal
+          cartItems={cart}
+          closeModal={closeModal}
+          deleteItem={removeItem}
+        />
+      )}
       <div className="product-container">
         <Navbar />
         <div className="product-page">
@@ -256,7 +285,7 @@ const Product = () => {
                   <button className="add-to-cart" onClick={addedToCart}>
                     Add to Cart
                   </button>
-                  <button>Buy now</button>
+                  <button onClick={openModal}>Buy now</button>
                 </>
               )}
             </div>
