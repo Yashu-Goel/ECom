@@ -79,9 +79,9 @@ const CartModal = ({
         </div>
         <div className="cart-footer">
           {cartItems.length > 0 && (
-            <button className="checkout-button" onClick={proceedToCheckout}>
+            <Link className="checkout-button" to={"/proceed-to-checkout"}>
               Proceed to Checkout
-            </button>
+            </Link>
           )}
           <button className="continue-shopping-button" onClick={closeModal}>
             Continue Shopping

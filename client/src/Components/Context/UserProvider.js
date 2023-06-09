@@ -8,7 +8,8 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = useState("Allen Benny");
   const [cart, setCart] = useState([
   ]);
-  const [address, setAddress] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState({});
+  // selectedAddress will be the default user addresss
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("profile"));
@@ -21,7 +22,7 @@ const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, cart, setCart, address, setAddress }}
+      value={{ user, setUser, cart, setCart, selectedAddress, setSelectedAddress }}
     >
       {children}
     </UserContext.Provider>

@@ -1,0 +1,20 @@
+.shipping-details {
+  min-width: 330px;
+  width: 400px;
+  min-height: 500px;
+  margin: 10px auto;
+  border: 1px solid black;
+}
+.shipping-heading {
+  text-align: center;
+  font-weight: bold;
+  color: rgb(202, 131, 0);
+  font-size: 20px;
+}
+.your-address h3{
+    font-weight: bold;
+    color: black;
+}
+.your-address{
+    padding: 10px;
+}
