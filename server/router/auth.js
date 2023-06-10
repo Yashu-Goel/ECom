@@ -3,6 +3,7 @@ const User = require("../models/userSchema.js");
 const Seller = require("../models/sellerSchema.js")
 const Address = require("../models/addressSchema.js")
 const Product = require("../models/productDetailsSchema.js")
+const OrderHistory = require("../models/order_historySchema.js");
 const bcrypt = require("bcryptjs") ;
 const dotenv = require("dotenv");
 const cors= require("cors")
@@ -19,7 +20,6 @@ const JWT_Secret = process.env.JWT_Secret;
 //Signup for user
 router.post("/usersignup", async (req, res) => {
   const { name, email, password, cpassword, cart } = req.body;
-  console.log(req.body);
   if (!name || !email || !password || !cpassword) {
     return res.status(422).json({ error: "Pls fill all the fields" });
   }
@@ -270,5 +270,49 @@ router.patch("/address/:id", async (req, res) => {
   }
 });
 
+//post order_history
+router.post("/order_history", async (req, res) => {
+  const {
+    date_of_order,
+    date_of_delivery,
+    total_amount,
+    receiver_name,
+    product_name,
+    product_image,
+    order_id
+  } = req.body;
+  console.log(req.body);
+  if (
+    !date_of_order || !date_of_delivery || !total_amount ||  !receiver_name || !product_name || !product_image ) {
+    return res.status(422).json({ error: "Pls fill all the fields" });
+  }
+   try {
+     const order_history = await OrderHistory.create({
+       date_of_order,
+       date_of_delivery,
+       total_amount,
+       receiver_name,
+       product_name,
+       product_image,
+       order_id
+     });
 
+     if (order_history) {
+       res.status(200).json({
+         message: "order_history registered successfully",
+       });
+     } else res.status(400).json("order_history unregistered");
+   } catch (error) {
+     res.status(422).json(`error: ${error}`);
+   }
+});
+// get order_address
+router.get("/order_history", async (req, res) => {
+  try {
+    const order_history = await OrderHistory.find();
+    res.send(order_history);
+  } catch (error) {
+    res.status(422).json(`${error}`);
+  }
+});
 module.exports = router;

@@ -81,7 +81,8 @@ export const Auth = () => {
         console.log(data);
         setTimeout(window.location.reload(), 5000);
       } catch (error) {
-        toast.error(error.message);
+        console.log(error);
+        toast.error(error.response.data);
       }
     }
 
@@ -125,6 +126,9 @@ export const Auth = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="input-field"
+            // minLength="6"
+            // pattern="^(?=.*[A-Z])(?=.*\W).*$"
+            // title="Password requirements: Minimum length of 6 characters, at least one uppercase letter, and one special character."
             placeholder="********"
           />
         </div>
