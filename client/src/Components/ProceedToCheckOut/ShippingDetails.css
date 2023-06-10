@@ -1,20 +1,200 @@
-.shipping-details {
-  min-width: 330px;
-  width: 400px;
-  min-height: 500px;
+.container {
+  display: flex;
+  justify-content: center;
+  min-height: auto;
+  min-width: 400px;
+}
+
+.shipping-page {
+  padding: 10px 5px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.address-list {
+  margin-bottom: 10px;
+}
+.address-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
   margin: 10px auto;
-  border: 1px solid black;
 }
-.shipping-heading {
-  text-align: center;
+
+.address-item.selected {
+  background-color: #f0f0f0;
+}
+
+.add-address-form {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.add-address-form h3 {
+  margin-top: 0;
+}
+
+.add-address-form label {
+  display: block;
+  margin-top: 10px;
+}
+
+.add-address-form input {
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+}
+.address-list {
+  margin-bottom: 20px;
+}
+
+.address-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.address-item.selected {
+  background-color: #f0f0f0;
+}
+
+.address-item input[type="radio"] {
+  margin-right: 10px;
+}
+
+.add-address-form {
+  border: 1px solid #ccc;
+  padding: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.add-address-form h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.add-address-form label {
+  display: block;
+  margin-top: 10px;
   font-weight: bold;
-  color: rgb(202, 131, 0);
+  font-size: 15px;
+}
+
+.add-address-form input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+.add-address-form button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.add-address-form button[type="submit"]:hover {
+  background-color: #0069d9;
+}
+
+.add-address-form button[type="submit"]:focus {
+  outline: none;
+}
+
+.shipping-page h2 {
+  text-align: center;
+  color: #ff6600;
+  font-weight: bold;
   font-size: 20px;
+  margin-bottom: 20px;
 }
-.your-address h3{
-    font-weight: bold;
-    color: black;
+
+.add-address-form button[type="submit"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
 }
-.your-address{
-    padding: 10px;
+
+.add-address-form button[type="submit"]:hover {
+  background-color: #0069d9;
+}
+
+.add-address-form button[type="submit"]:focus {
+  outline: none;
+}
+.inner-div span:nth-child(1) {
+  font-weight: bold;
+}
+.add-address-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.add-address-button span {
+  margin-left: 5px;
+}
+.shop-procceed {
+  display: flex;
+  justify-content: space-between;
+  margin: auto 10px;
+}
+.shop-procceed a:nth-child(2) {
+  background-color: rgb(0, 170, 0);
+  font-weight: 500;
+}
+.shop-procceed a:nth-child(2):hover {
+  background-color: rgb(0, 150, 0);
+  color: white;
+}
+.address-item-actions {
+  display: flex;
+}
+
+.address-item-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* width: 30px;
+  height: 30px; */
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.address-item-actions button:hover {
+  background-color: #f2f2f2;
+}
+
+.address-item-actions button:focus {
+  outline: none;
 }
