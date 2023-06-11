@@ -8,7 +8,7 @@ const SellerHome = () => {
     {
       img: "https://m.media-amazon.com/images/G/01/sp-marketing-toolkit/guides/design/iconography/Brand_Registry._CB424651244_.svg",
       heading: "Transparent pricing, no hidden charges",
-      msg: "Amazon publicly displaying its fee structure publicly on all feerelated pages on its website",
+      msg: "PrimeBuy publicly displaying its fee structure publicly on all feerelated pages on its website",
     },
     {
       img: "https://m.media-amazon.com/images/G/01/sp-marketing-toolkit/guides/design/iconography/Lightning_Deals_INR._CB424651235_.svg",
@@ -18,7 +18,7 @@ const SellerHome = () => {
     {
       img: "https://m.media-amazon.com/images/G/01/sp-marketing-toolkit/guides/design/iconography/Free_Shipping._CB424650773_._SY200_.png",
       heading: "TrUnbeatable Reach",
-      msg: "Deliver to 100% of India's serviceable pincodes, through Easy Ship & Fulfillment by Amazon.",
+      msg: "Deliver to 100% of India's serviceable pincodes, through Easy Ship & Fulfillment by PrimeBuy.",
     },
   ];
   return (
