@@ -4,7 +4,7 @@ import Home from "./Components/Home/Home";
 import Product from "./Components/IndividualProduct/Product";
 import { Auth } from "./Components/Authentication/Auth.js";
 import ProceedToCheckOut from "./Components/ProceedToCheckOut/ProceedToCheckOut";
-import Payment from "./Components/Payment/Payment";
+import OrderConfirmationPage from "./Components/OrderConfirmationPage/OrderConfirmationPage";
 import SellerHome from "./Components/Seller/SellerHome";
 import AddProduct from "./Components/Seller/AddProduct";
 
@@ -19,7 +19,11 @@ function App() {
         path="/proceed-to-checkout"
         element={<ProceedToCheckOut />}
       />
-      <Route exact path="/payment" element={<Payment />} />
+      <Route
+        exact
+        path="/order-confirmation"
+        element={<OrderConfirmationPage />}
+      />
       <Route exact path="/seller" element={<SellerHome />} />
       <Route exact path="/product_details" element={<AddProduct />} />
     </Routes>

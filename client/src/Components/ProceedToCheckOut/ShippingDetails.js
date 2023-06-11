@@ -135,7 +135,7 @@ function ShippingDetails() {
             <FaPlus className="add-icon" />
             <span>Add New Address</span>
           </button>
-          <Link className="add-address-button" to={"/payment"}>
+          <Link className="add-address-button" to={"/order-confirmation"}>
             <span>Proceed</span>&nbsp; <i class="fa-solid fa-arrow-right"></i>
           </Link>
         </div>

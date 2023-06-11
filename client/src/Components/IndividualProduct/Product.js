@@ -65,7 +65,6 @@ const Product = () => {
     });
 
     Img[index].classList.add("active");
-    const mainImgae = document.getElementsByClassName("main-image");
     addImage(pic);
   }
   function calculateDiscount(mrp, sellingPrice) {
