@@ -30,48 +30,53 @@ const AddProduct = () => {
   return (
     <div className="ProductDetailOuterContainer">
       <SellerNav />
-      <form className="ProductDetailMainContainer" onSubmit={handleFormSubmit}>
-        <div className="form-group">
-          <label>Product Name:</label>
-          <input
-            type="text"
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label>Product Type:</label>
-          <input
-            type="text"
-            value={productType}
-            onChange={(e) => setProductType(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label>Price:</label>
-          <input
-            type="text"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label>Model:</label>
-          <input
-            type="text"
-            value={model}
-            onChange={(e) => setModel(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label>Special Feature:</label>
-          <input
-            value={specialFeature}
-            onChange={(e) => setSpecialFeature(e.target.value)}
-          ></input>
-        </div>
-        <button type="submit">Add Product</button>
-      </form>
+
+        <p className="ProductDetailHeading">Product Details: </p>
+        <form
+          className="ProductDetailMainContainer"
+          onSubmit={handleFormSubmit}
+        >
+          <div className="form-group">
+            <label>Product Name:</label>
+            <input
+              type="text"
+              value={productName}
+              onChange={(e) => setProductName(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Product Type:</label>
+            <input
+              type="text"
+              value={productType}
+              onChange={(e) => setProductType(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Price:</label>
+            <input
+              type="text"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Model:</label>
+            <input
+              type="text"
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Special Feature:</label>
+            <input
+              value={specialFeature}
+              onChange={(e) => setSpecialFeature(e.target.value)}
+            ></input>
+          </div>
+          <button type="submit">Add Product</button>
+        </form>
     </div>
   );
 };

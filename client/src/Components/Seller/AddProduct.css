@@ -3,9 +3,15 @@
     background-color: #eff6f7;
     height: 100vh;
 }
+.ProductDetailHeading{
+    text-align: center;
+    color: #263b3e;
+    font-size: 3rem;
+    margin-top: 1rem;
+}
 .ProductDetailMainContainer{
     border: 1px solid black;
-    margin: 4rem auto;
+    margin: 1rem auto;
     width: 60%;
     padding: 3rem;
     display: flex;
@@ -13,6 +19,7 @@
     justify-content: center;
     align-items: center;
     background-color: #ffffff;
+    border-radius: 5px;
 }
 .ProductDetailMainContainer input
 {

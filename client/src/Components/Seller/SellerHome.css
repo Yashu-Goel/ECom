@@ -9,8 +9,92 @@
 }
 .LeftSideBar{
     width: 18%;
-
 }
 .MainContent{
     width: 82%;
+    display: flex;
+    background-color: #eff6f7;
+}
+.LeftMainContainer{
+    padding: 0 0 0 2rem;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+}
+.LeftMainContainer h1{
+    font-size: 3rem;
+    font-weight: bold;
+    color: black;
+    margin-top: 10%;
+}
+.LeftMainContainer h2{
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+.LeftMainContainer h3{
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 8rem;
+}
+.LeftMainContainer span{
+    text-align: center;
+    background-color: orange;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    font-size: large;
+    color: black;
+}
+.RequiredThingsImages{
+    display: flex;
+}
+.RequiredThingsImages img{
+    height: 4rem;
+    padding: 1rem 3rem;
+}
+.RequiredThingsImages div p{
+    font-size: 1rem;
+    text-align: center;
+    font-weight: 600;
+}
+.LeftMainContainer span:hover{
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+   color: black;
+}
+.RightMainContainer img{
+    height: 30rem;
+    width: 40rem;
+}
+#WhyUsHeading
+{
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: black;
+    margin-top: 4rem;
+}
+.WhyUsOuterContainer{
+    display: flex;
+}
+.WhyUsOuterContainer div{
+box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 0.4rem;
+    margin: 1rem 1.5rem;
+    transition: transform 0.3s ease; 
+}
+.WhyUsOuterContainer div:hover{
+    transform: scale(1.04);
+    cursor: pointer;
+}
+.WhyUsOuterContainer div img{
+    height: 5rem;
+}
+.WhyUsOuterContainer div h1{
+    font-size: 1.3rem;
+}
+.WhyUsOuterContainer div p{
+    font-size: 1rem;
+    margin-top: 0.5rem;
 }
