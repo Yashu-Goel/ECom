@@ -1,0 +1,31 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.SellerLeftSideBarMain{
+    height: 94vh;
+    border-right: 1px solid rgba(0, 0, 0, 0.149);
+}
+.DataItems{
+    padding-top: 2rem;
+}
+.DataItem{
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    padding: 0 0.4rem;
+
+}
+.DataItem:hover{
+    scale: 1.01;
+    cursor: pointer;
+}
+.DataItems p{
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+.DataItems span{
+    font-size: 2rem;
+}
+

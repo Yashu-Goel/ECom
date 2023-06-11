@@ -1,0 +1,16 @@
+*{
+    font-family: 'Poppins', sans-serif;
+    padding: 0;
+    margin: 0;
+
+}
+.SellerMainContainer{
+    display: flex;
+}
+.LeftSideBar{
+    width: 18%;
+
+}
+.MainContent{
+    width: 82%;
+}
