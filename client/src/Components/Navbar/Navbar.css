@@ -90,7 +90,7 @@
   display: block;
 }
 .dropdown > button:hover {
-  background-color: #f7eeee;
+  background-color: #f7f2f2;
   color: #000;
 }
 
@@ -150,4 +150,33 @@
   left: -8px;
   top: -10px;
   opacity: 0.9;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 15px 12px;
+  z-index: 1;
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+  display: block;
+  padding: 8px 0;
+  text-decoration: none;
+  background-color: whitesmoke;
+  color: #000;
+  padding: 5px 5px;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+  background-color: rgb(240, 240, 240);
+}
+
+.show {
+  display: block;
 }

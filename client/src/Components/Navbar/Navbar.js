@@ -5,11 +5,13 @@ import { UserState } from "../Context/UserProvider";
 
 const Navbar = () => {
   const { user, setUser, cart, setCart } = UserState();
-
-  // const [login, setLogin] = useState(false);
-  // const [shop, setShop] = useState(false);
+  
   const [heart, setHeart] = useState(false);
 
+  const dropdownMenu = document.getElementById("dropdown-menu");
+  function loadAccount() {
+    dropdownMenu.classList.toggle("show");
+  }
   return (
     <div className="navbar-header">
       <div className="logo nav-elements">Logo</div>
@@ -239,9 +241,14 @@ const Navbar = () => {
       <div className="nav-icons">
         {user !== null ? (
           <div className="nav-symbols">
-            <button className="nav-heart">
+            <button class="nav-heart" id="dropdown-btn" onClick={loadAccount}>
               <i class="fa-solid fa-user"></i>
             </button>
+            <div class="dropdown-menu" id="dropdown-menu">
+              <Link to={"/order-history"}>My Orders</Link>
+              <Link to={"/account"}>Account</Link>
+              <button>Logout</button>
+            </div>
             <button className="nav-shop">
               {cart.length === 0 ? (
                 <i class="fa-solid fa-cart-shopping"></i>
