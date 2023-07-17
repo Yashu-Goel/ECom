@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import "./SellerAuth.css"; 
-
+import "./SellerAuth.css";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+import SellerNav from "./SellerNav";
 const SellerAuth = () => {
   const [signupData, setSignupData] = useState({
     name: "",
@@ -10,6 +14,10 @@ const SellerAuth = () => {
     cpassword: "",
     gst: "",
   });
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const API_BASE = "http://localhost:5000";
+  const navigate = useNavigate();
 
   const [loginData, setLoginData] = useState({
     email: "",
@@ -34,16 +42,85 @@ const SellerAuth = () => {
     }));
   };
 
-  const handleSignupSubmit = (e) => {
+  const handleSignupSubmit = async (e) => {
     e.preventDefault();
-    // Handle signup form submission here
-    console.log("Signup data:", signupData);
+
+    const { name, email, mobile, password, cpassword, gst } = signupData;
+
+    if (!name || !email || !mobile || !password || !cpassword) {
+      toast.error("Fill in all details");
+      return;
+    }
+
+    if (password !== cpassword) {
+      toast.error("Password and Confirm Password must be the same");
+      return;
+    }
+
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post(
+        API_BASE + "/sellersignup",
+        {
+          name,
+          email,
+          mobile,
+          password,
+          cpassword,
+          gst,
+        },
+        config
+      );
+
+      toast.success("Registration successful");
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data);
+    }
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    // Handle login form submission here
-    console.log("Login data:", loginData);
+
+    const { email, password } = loginData;
+
+    if (!email || !password) {
+      toast.error("Fill in all details");
+      return;
+    }
+
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post(
+        API_BASE + "/sellerlogin",
+        { email, password },
+        config
+      );
+
+      console.log(data);
+      toast.success("Login successful");
+      setIsLoggedIn(true);
+      <SellerNav isLoggedIn="true"/>
+      setTimeout(() => {
+        navigate("/seller");
+      }, 5000);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data);
+    }
   };
 
   const handleSwitchForm = () => {
@@ -68,7 +145,7 @@ const SellerAuth = () => {
             <label htmlFor="password">Password:</label>
             <input
               type="password"
-                name="password"
+              name="password"
               className="seller-input-field"
               value={loginData.password}
               onChange={handleLoginChange}
@@ -92,7 +169,6 @@ const SellerAuth = () => {
             <label htmlFor="name">Name:</label>
             <input
               type="text"
-              id="name"
               name="name"
               className="seller-input-field"
               value={signupData.name}
@@ -102,7 +178,6 @@ const SellerAuth = () => {
             <label htmlFor="email">Email:</label>
             <input
               type="email"
-              id="email"
               name="email"
               className="seller-input-field"
               value={signupData.email}
@@ -112,7 +187,6 @@ const SellerAuth = () => {
             <label htmlFor="mobile">Mobile:</label>
             <input
               type="text"
-              id="mobile"
               name="mobile"
               className="seller-input-field"
               value={signupData.mobile}
@@ -122,7 +196,6 @@ const SellerAuth = () => {
             <label htmlFor="password">Password:</label>
             <input
               type="password"
-              id="password"
               name="password"
               className="seller-input-field"
               value={signupData.password}
@@ -132,7 +205,6 @@ const SellerAuth = () => {
             <label htmlFor="cpassword">Confirm Password:</label>
             <input
               type="password"
-              id="cpassword"
               name="cpassword"
               className="seller-input-field"
               value={signupData.cpassword}
@@ -142,9 +214,10 @@ const SellerAuth = () => {
             <label htmlFor="gst">GST:</label>
             <input
               type="text"
-              id="gst"
               name="gst"
               className="seller-input-field"
+              minLength="15"
+              max="15"
               value={signupData.gst}
               onChange={handleSignupChange}
             />
@@ -161,6 +234,7 @@ const SellerAuth = () => {
           </p>
         </>
       )}
+      <ToastContainer position="top-center" autoClose={3000} theme="colored" />
     </div>
   );
 };
