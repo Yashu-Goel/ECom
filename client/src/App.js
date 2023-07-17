@@ -8,6 +8,7 @@ import OrderConfirmationPage from "./Components/OrderConfirmationPage/OrderConfi
 import SellerHome from "./Components/Seller/SellerHome";
 import AddProduct from "./Components/Seller/AddProduct";
 import SellerAuth from "./Components/Seller/SellerAuth";
+import OrderHistory from "./Components/OrderHistory/OrderHistory";
 function App() {
   return (
     <Routes>
@@ -23,6 +24,11 @@ function App() {
         exact
         path="/order-confirmation"
         element={<OrderConfirmationPage />}
+      />
+       <Route
+        exact
+        path="/order-history"
+        element={<OrderHistory />}
       />
       <Route exact path="/seller" element={<SellerHome />} />
       <Route exact path="/product_details" element={<AddProduct />} />

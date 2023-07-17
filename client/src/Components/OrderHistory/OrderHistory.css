@@ -1,0 +1,112 @@
+/* orderHistoryStyles.css */
+
+.order-history-container {
+  padding: 20px;
+  width: 60%;
+  margin: auto;
+  border-radius: 10px;
+}
+
+.page-heading {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.order-item {
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-info-top {
+  padding: 5px 20px;
+  display: flex;
+  font-size: 12px;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #d2d2d2;
+  border-radius: 10px;
+}
+
+.order-info-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 10px;
+  font-size: 15px;
+}
+
+.delivery-date,
+.total-amount,
+.order-id,
+.shipped-to {
+  margin: 5px 0;
+  font-size: 15px;
+}
+
+.order-id a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.order-id a:hover {
+  text-decoration: underline;
+}
+
+.product-name {
+  margin: 10px 0px;
+  font-size: 18px;
+}
+
+.product-photo {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.rate-button {
+  padding: 8px 16px;
+  background-color: #f0c14b;
+  color: #111;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.shipped-to {
+  cursor: pointer;
+  border-bottom: 1px dashed #007bff;
+  color: #007bff;
+}
+
+/* Tooltip code correction here  */
+.tooltip {
+  position: absolute;
+  display: none;
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.shipped-to:hover + .tooltip {
+  display: block;
+}
+.order-history-btns {
+  display: flex;
+  flex-direction: column;
+}
+.order-history-btns button {
+  margin: 5px;
+  font-size: 13px;
+  font-weight: bold;
+  padding: auto 10px;
+}
