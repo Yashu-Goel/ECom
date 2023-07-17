@@ -1,0 +1,40 @@
+.seller-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.seller-container h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.seller-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.seller-container label {
+  margin-bottom: 5px;
+}
+
+.seller-input-field {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.seller-submit-button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.seller-submit-button:hover {
+  background-color: #45a049;
+}
+

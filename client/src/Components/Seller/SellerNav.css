@@ -1,4 +1,41 @@
-.SellerMainNav{
-    height: 6vh;
-    background-color: #0c282c;
+.SellerMainNav {
+  position: relative;
+  height: 7vh;
+  background-color: #0c282c;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 1rem;
+}
+
+.UserProfileLogo {
+  color: white;
+  font-size: 1.8rem;
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
+.UserProfileLogo:hover {
+  color: aliceblue;
+  cursor: pointer;
+}
+
+.SellerDropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  border-radius: 0.3rem;
+}
+.SellerDataItem{
+    padding: 0.2rem 0.5rem;
+    font-weight: bold;
+}
+.SellerDataItem:hover{
+    background-color: aliceblue;
+    cursor: pointer;
 }

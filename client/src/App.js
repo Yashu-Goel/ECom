@@ -7,7 +7,7 @@ import ProceedToCheckOut from "./Components/ProceedToCheckOut/ProceedToCheckOut"
 import OrderConfirmationPage from "./Components/OrderConfirmationPage/OrderConfirmationPage";
 import SellerHome from "./Components/Seller/SellerHome";
 import AddProduct from "./Components/Seller/AddProduct";
-
+import SellerAuth from "./Components/Seller/SellerAuth";
 function App() {
   return (
     <Routes>
@@ -26,6 +26,7 @@ function App() {
       />
       <Route exact path="/seller" element={<SellerHome />} />
       <Route exact path="/product_details" element={<AddProduct />} />
+      <Route exact path="/seller_auth" element={<SellerAuth />} />
     </Routes>
   );
 }
