@@ -10,6 +10,7 @@ import AddProduct from "./Components/Seller/AddProduct";
 import SellerAuth from "./Components/Seller/SellerAuth";
 import OrderHistory from "./Components/OrderHistory/OrderHistory";
 import SellerProvider from "./Components/Seller/SellerProvider";
+import UserProfile from "./Components/UserProfile/UserProfile";
 function App() {
   return (
     <Routes>
@@ -29,6 +30,7 @@ function App() {
       <Route exact path="/order-history" element={<OrderHistory />} />
       <Route exact path="/seller" element={<SellerHome />} />
       <Route exact path="/product_details" element={<AddProduct />} />
+      <Route exact path="/user-profile" element={<UserProfile />} />
       <Route
         exact
         path="/seller_auth"

@@ -5,9 +5,13 @@ const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const navigate = useNavigate();
-  const [user, setUser] = useState("Allen Benny");
-  const [cart, setCart] = useState([
-  ]);
+  const [user, setUser] = useState({
+    name: "Allen Benny",
+    email: "allenbenny@gmail.com",
+    Phone: "9354549047",
+    currentPassword:"allen123@"
+  });
+  const [cart, setCart] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState({});
   // selectedAddress will be the default user addresss
 
@@ -22,7 +26,14 @@ const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, cart, setCart, selectedAddress, setSelectedAddress }}
+      value={{
+        user,
+        setUser,
+        cart,
+        setCart,
+        selectedAddress,
+        setSelectedAddress,
+      }}
     >
       {children}
     </UserContext.Provider>

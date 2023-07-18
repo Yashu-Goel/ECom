@@ -1,17 +1,37 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
+import ConfirmationModal from "./ConfirmationModal";
 import { UserState } from "../Context/UserProvider";
 
 const Navbar = () => {
   const { user, setUser, cart, setCart } = UserState();
-  
+
   const [heart, setHeart] = useState(false);
 
   const dropdownMenu = document.getElementById("dropdown-menu");
   function loadAccount() {
     dropdownMenu.classList.toggle("show");
   }
+
+  /* logout logic */
+
+  const [isConfirmationOpen, setConfirmationOpen] = useState(false);
+
+  const handleLogout = () => {
+    setConfirmationOpen(true);
+  };
+
+  const handleConfirmLogout = () => {
+    // Implement your logout logic here
+    console.log("Logout confirmed");
+    setConfirmationOpen(false);
+  };
+
+  const handleCancelLogout = () => {
+    setConfirmationOpen(false);
+  };
+
   return (
     <div className="navbar-header">
       <div className="logo nav-elements">Logo</div>
@@ -246,8 +266,13 @@ const Navbar = () => {
             </button>
             <div class="dropdown-menu" id="dropdown-menu">
               <Link to={"/order-history"}>My Orders</Link>
-              <Link to={"/account"}>Account</Link>
-              <button>Logout</button>
+              <Link to={"/user-profile"}>Account</Link>
+              <button onClick={handleLogout}>Logout</button>
+              <ConfirmationModal
+                isOpen={isConfirmationOpen}
+                onConfirm={handleConfirmLogout}
+                onCancel={handleCancelLogout}
+              />
             </div>
             <button className="nav-shop">
               {cart.length === 0 ? (
