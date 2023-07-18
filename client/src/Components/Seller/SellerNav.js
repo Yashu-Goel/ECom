@@ -1,28 +1,30 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./SellerNav.css";
 import { BiSolidUser } from "react-icons/bi";
 import { Link } from "react-router-dom";
-
-const SellerNav = (props) => {
-  console.log(props.isLoggedIn);
+import { SellerContext } from "./SellerProvider";
+const SellerNav = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { isLoggedIn, toggleLoginStatus, logout } = useContext(SellerContext);
 
+  
   const handleUserClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
   const handleLogout = () => {
+    logout();
     setIsDropdownOpen(false);
   };
-  
   return (
     <div className="SellerMainNav">
       <BiSolidUser className="UserProfileLogo" onClick={handleUserClick} />
 
+      
+
       {isDropdownOpen && (
         <div className="SellerDropdownMenu">
-          {console.log("Is Log In "+props.isLoggedIn)}
-          {props.isLoggedIn ? (
+          {isLoggedIn ? (
             <>
               <div className="SellerDataItem">Profile</div>
               <div className="SellerDataItem" onClick={handleLogout}>

@@ -1,8 +1,9 @@
 import React from 'react'
 import LeftSideBar from './LeftSideBar'
-import SellerNav from './SellerNav'
 import './SellerHome.css'
 import { Link } from 'react-router-dom'
+import SellerProvider from "./SellerProvider";
+import SellerNav from "./SellerNav";
 const SellerHome = () => {
   const data = [
     {
@@ -22,7 +23,7 @@ const SellerHome = () => {
     },
   ];
   return (
-    <>
+    <SellerProvider>
       <div className="SellerNavbar">
         <SellerNav />
       </div>
@@ -52,14 +53,14 @@ const SellerHome = () => {
                 <p>Active Bank Account</p>
               </div>
             </div>
-            <p id='WhyUsHeading'>Why sellers choose PrimeBuy ?</p>
-            <div className='WhyUsOuterContainer'>
+            <p id="WhyUsHeading">Why sellers choose PrimeBuy ?</p>
+            <div className="WhyUsOuterContainer">
               {data.map((item, index) => (
-                  <div>
-                    <img src={item.img}></img>
-                    <h1>{item.heading}</h1>
-                    <p>{item.msg}</p>
-                  </div>
+                <div>
+                  <img src={item.img}></img>
+                  <h1>{item.heading}</h1>
+                  <p>{item.msg}</p>
+                </div>
               ))}
             </div>
           </div>
@@ -68,7 +69,7 @@ const SellerHome = () => {
           </div> */}
         </div>
       </div>
-    </>
+    </SellerProvider>
   );
 }
 

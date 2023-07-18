@@ -9,6 +9,7 @@ import SellerHome from "./Components/Seller/SellerHome";
 import AddProduct from "./Components/Seller/AddProduct";
 import SellerAuth from "./Components/Seller/SellerAuth";
 import OrderHistory from "./Components/OrderHistory/OrderHistory";
+import SellerProvider from "./Components/Seller/SellerProvider";
 function App() {
   return (
     <Routes>
@@ -25,14 +26,18 @@ function App() {
         path="/order-confirmation"
         element={<OrderConfirmationPage />}
       />
-       <Route
-        exact
-        path="/order-history"
-        element={<OrderHistory />}
-      />
+      <Route exact path="/order-history" element={<OrderHistory />} />
       <Route exact path="/seller" element={<SellerHome />} />
       <Route exact path="/product_details" element={<AddProduct />} />
-      <Route exact path="/seller_auth" element={<SellerAuth />} />
+      <Route
+        exact
+        path="/seller_auth"
+        element={
+          <SellerProvider>
+            <SellerAuth />
+          </SellerProvider>
+        }
+      />
     </Routes>
   );
 }

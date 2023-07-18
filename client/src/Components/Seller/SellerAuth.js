@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./SellerAuth.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import SellerNav from "./SellerNav";
+import { SellerContext } from "./SellerProvider";
 const SellerAuth = () => {
-  const [signupData, setSignupData] = useState({
+  const { isLoggedIn, toggleLoginStatus, logout } = useContext(SellerContext);  const [signupData, setSignupData] = useState({
     name: "",
     email: "",
     mobile: "",
@@ -15,7 +15,6 @@ const SellerAuth = () => {
     gst: "",
   });
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const API_BASE = "http://localhost:5000";
   const navigate = useNavigate();
 
@@ -110,10 +109,8 @@ const SellerAuth = () => {
         config
       );
 
-      console.log(data);
       toast.success("Login successful");
-      setIsLoggedIn(true);
-      <SellerNav isLoggedIn="true"/>
+      toggleLoginStatus();
       setTimeout(() => {
         navigate("/seller");
       }, 5000);
