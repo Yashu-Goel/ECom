@@ -1,7 +1,7 @@
 import React, { createContext, useState } from 'react'
 const SellerContext = createContext();
 const SellerProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+const [isLoggedIn, setIsLoggedIn] = useState(true);
 
 const toggleLoginStatus = () => {
       setIsLoggedIn(!isLoggedIn);

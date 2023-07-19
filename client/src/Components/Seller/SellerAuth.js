@@ -6,7 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { SellerContext } from "./SellerProvider";
 const SellerAuth = () => {
-  const { isLoggedIn, toggleLoginStatus, logout } = useContext(SellerContext);  const [signupData, setSignupData] = useState({
+  const { isLoggedIn, toggleLoginStatus, logout } = useContext(SellerContext); 
+   const [signupData, setSignupData] = useState({
     name: "",
     email: "",
     mobile: "",
@@ -47,7 +48,7 @@ const SellerAuth = () => {
     const { name, email, mobile, password, cpassword, gst } = signupData;
 
     if (!name || !email || !mobile || !password || !cpassword) {
-      toast.error("Fill in all details");
+      toast.error("Fill all details");
       return;
     }
 

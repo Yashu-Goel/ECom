@@ -7,11 +7,9 @@
 .SellerMainContainer{
     display: flex;
 }
-.LeftSideBar{
-    width: 18%;
-}
+
 .MainContent{
-    width: 82%;
+    width: 84%;
     display: flex;
     background-color: #eff6f7;
 }

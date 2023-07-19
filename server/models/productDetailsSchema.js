@@ -8,30 +8,42 @@ const productDetailsSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    unique: true,
   },
-  description: {
-    price: {
-      type: String,
-      required: true,
-    },
-    brand: {
-      type: String,
-      required: true,
-    },
-    model: {
-      type: String,
-      required: true,
-    },
-    special_feature: {
-      type: String,
-      required: true,
-    },
+  price:{
+    type: String,
+    required: true
+  },  
+  model:{
+    type: String,
+    required: true
+  },
+  special_feature:{
+    type: String,
+    required: true
+  },
+
+  // description: {
+  //   price: {
+  //     type: String,
+  //     required: true,
+  //   },
+  //   brand: {
+  //     type: String,
+  //     required: true,
+  //   },
+  //   model: {
+  //     type: String,
+  //     required: true,
+  //   },
+  //   special_feature: {
+  //     type: String,
+  //     required: true,
+  //   },
     // seller: {
     //   type: mongoose.Schema.Types.ObjectId,
     //   ref: "Seller",
     // },
-  },
+  //},
 });
 
 

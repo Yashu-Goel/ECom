@@ -5,9 +5,8 @@ import { Link } from "react-router-dom";
 import { SellerContext } from "./SellerProvider";
 const SellerNav = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { isLoggedIn, toggleLoginStatus, logout } = useContext(SellerContext);
+  const { isLoggedIn, logout } = useContext(SellerContext);
 
-  
   const handleUserClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -20,13 +19,13 @@ const SellerNav = () => {
     <div className="SellerMainNav">
       <BiSolidUser className="UserProfileLogo" onClick={handleUserClick} />
 
-      
-
       {isDropdownOpen && (
         <div className="SellerDropdownMenu">
           {isLoggedIn ? (
             <>
-              <div className="SellerDataItem">Profile</div>
+              <div className="SellerDataItem">
+                <Link to="/profile"> Profile </Link>
+              </div>
               <div className="SellerDataItem" onClick={handleLogout}>
                 Sign Out
               </div>

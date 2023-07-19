@@ -163,8 +163,8 @@ router.post("/sellerlogin", async (req, res) => {
 //Product Details
 router.post("/product", async (req, res) => {
   console.log(req.body);
-  const { name, type, description, seller} = req.body;
-  if (!name || !type || !description) {
+  const { name, type, price, model, special_feature} = req.body;
+  if (!name || !type || !price || !model || !special_feature) {
     return res.status(422).json({ error: "Pls fill all the fields" });
   }
   console.log(req.body);
@@ -173,17 +173,16 @@ router.post("/product", async (req, res) => {
       const product = await Product.create({
         name,
         type,
-        description,
-        seller
+        price,
+        model,
+        special_feature
       });
 
       if (product) {
         res.status(200).json({
           _id: product._id,
           name: product.name,
-          details: product.details,
           type: product.type,
-          seller: product.type,
           message: "Product registered successfully",
         });
       } else res.status(400).json("Product unregistered");

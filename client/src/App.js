@@ -11,6 +11,7 @@ import SellerAuth from "./Components/Seller/SellerAuth";
 import OrderHistory from "./Components/OrderHistory/OrderHistory";
 import SellerProvider from "./Components/Seller/SellerProvider";
 import UserProfile from "./Components/UserProfile/UserProfile";
+import Profile from "./Components/Seller/Profile";
 function App() {
   return (
     <Routes>
@@ -29,7 +30,24 @@ function App() {
       />
       <Route exact path="/order-history" element={<OrderHistory />} />
       <Route exact path="/seller" element={<SellerHome />} />
-      <Route exact path="/product_details" element={<AddProduct />} />
+      <Route
+        exact
+        path="/product_details"
+        element={
+          <SellerProvider>
+            <AddProduct />
+          </SellerProvider>
+        }
+      />
+      <Route
+        exact
+        path="/profile"
+        element={
+          <SellerProvider>
+            <Profile />
+          </SellerProvider>
+        }
+      />
       <Route exact path="/user-profile" element={<UserProfile />} />
       <Route
         exact

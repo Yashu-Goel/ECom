@@ -34,15 +34,26 @@
     color: white;
     border-radius: 0.3rem;
     margin-top: 1rem;
+    border: 1px solid transparent;
 }
 .ProductDetailMainContainer button:hover{
     background-color: #eff6f7;
     color: #007b8b;
     border: 1px solid black;
 }
-.form-group{
+.seller-form-group{
     width: 70%;
     display: flex;
     justify-content: space-between;
     color: #263b3e;
+    font-size: 1.4rem;
+    padding: 0.5rem;
+}
+#cat-select
+{
+    border-radius: 0.3rem;
+    border: 1px solid black;
+    width: 60%;
+    padding: 0.4rem;
+
 }

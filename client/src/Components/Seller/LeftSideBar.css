@@ -5,6 +5,8 @@
 .SellerLeftSideBarMain{
     height: 94vh;
     border-right: 1px solid rgba(0, 0, 0, 0.149);
+    z-index: 5; 
+    width: 16rem;
 }
 .DataItems{
     padding-top: 2rem;
