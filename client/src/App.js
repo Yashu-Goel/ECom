@@ -12,6 +12,7 @@ import OrderHistory from "./Components/OrderHistory/OrderHistory";
 import SellerProvider from "./Components/Seller/SellerProvider";
 import UserProfile from "./Components/UserProfile/UserProfile";
 import Profile from "./Components/Seller/Profile";
+import DealsPage from "./Components/Deals/DealsPage";
 function App() {
   return (
     <Routes>
@@ -30,6 +31,7 @@ function App() {
       />
       <Route exact path="/order-history" element={<OrderHistory />} />
       <Route exact path="/seller" element={<SellerHome />} />
+      <Route exact path="todays_deals" element={<DealsPage />} />
       <Route
         exact
         path="/product_details"

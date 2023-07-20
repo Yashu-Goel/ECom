@@ -8,13 +8,14 @@ body {
   position: relative;
   height: 220px;
   width: 200px;
+  display: flex;
 }
-.card-image .card-img {
-  height: 100%;
+.card-img {
   width: auto;
+  height: auto;
   object-fit: contain;
   border-radius: 5px;
-  margin: 0 auto;
+  margin: auto;
 }
 .card-img:hover {
   transform: scale(1.04);
@@ -64,4 +65,10 @@ body {
 }
 .slide-container {
   width: 100%;
+}
+.swiper-slide {
+  height: auto !important;
+}
+.swiper {
+  z-index: 0 !important;
 }

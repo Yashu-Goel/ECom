@@ -1,13 +1,17 @@
+body {
+  background-color: rgb(208, 208, 208);
+}
 .first-coursel {
   background-color: #fff;
   margin: 20px 20px;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 5px 20px;
+  border-radius: 2px;
 }
 .deal-header h1 {
   font-weight: bold;
   font-size: 1.5rem;
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  margin: 10px;
   margin-left: 20px;
   color: black;
 }
@@ -15,7 +19,7 @@
   font-size: 1rem;
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   color: rgb(97, 97, 225);
-  margin-right: 20px;
+  margin: 10px;
 }
 .deal-header a:hover {
   text-decoration: underline;

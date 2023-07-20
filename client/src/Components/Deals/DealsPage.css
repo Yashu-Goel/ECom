@@ -1,0 +1,66 @@
+/* src/components/ProductsPage.css */
+.products-page {
+  padding: 20px;
+  background-color: #cdcdcd;
+}
+
+.filter-container {
+  width: 25%;
+  height: 100%;
+}
+
+.products-grid {
+  border: 1px solid black;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
+  grid-gap: 20px;
+  padding: 15px;
+}
+
+.product-box {
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 8px;
+  height: 300px;
+  width: auto;
+  border: 1px solid black;
+}
+
+.image-container img {
+  width: 220px;
+  height: 200px;
+  object-fit: contain;
+  margin: auto;
+  background-color: #fff;
+}
+
+.description-box {
+  margin-top: 10px;
+}
+
+.offer-text {
+  color: #fff;
+  background-color: #e74c3c;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  font-weight: bold;
+}
+
+.deal-of-the-day {
+  color: #e74c3c;
+  margin-left: 0.5rem;
+  font-weight: bold;
+}
+
+.product-name {
+  margin-top: 0px;
+  font-size: 16px;
+  font-weight: normal;
+}
+.deals-page-header {
+  font-size: 2rem;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 10px;
+}
