@@ -195,6 +195,7 @@ table td:last-child {
   z-index: 9999;
   background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
   backdrop-filter: blur(5px); /* Blurred background */
+  text-align: center;
 }
 
 .loading-spinner {
@@ -206,7 +207,6 @@ table td:last-child {
   height: 40px;
   animation: spin 2s linear infinite; /* Rotate the spinner */
 }
-
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -221,4 +221,9 @@ table td:last-child {
   font-size: 18px;
   color: #f3f3f3; /* Light gray text color */
   font-weight: bold;
+}
+.loading-spinner,
+.loading-modal p {
+  display: inline-block; /* Display elements on the same line */
+  vertical-align: middle; /* Optional: Aligns elements vertically in the middle */
 }

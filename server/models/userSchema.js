@@ -15,10 +15,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  cpassword: {
-    type: String,
-    required: true,
-  },
   cart:[
     {
       product_id:{

@@ -4,7 +4,7 @@
   height: auto;
   border: 1px solid #ccc;
   margin: 20px auto;
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: #e7e7e7;
   padding: 20px;
 }
@@ -12,8 +12,9 @@
 .title {
   text-align: center;
   margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 2rem;
+  font-weight: bolder;
+  text-decoration: underline;
 }
 
 .form {
@@ -80,4 +81,11 @@
 .forgot-pass {
   display: flex;
   justify-content: flex-end;
+}
+.buttonload {
+  background-color: #04aa6d; /* Green background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 12px 16px; /* Some padding */
+  font-size: 16px; /* Set a font size */
 }

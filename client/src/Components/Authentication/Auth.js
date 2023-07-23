@@ -6,6 +6,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
 export const Auth = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [buttonLoad, setButtonLoad] = useState(false);
+  const [contentInIsloading, setContent] = useState("Login Success..");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
 
@@ -18,18 +21,12 @@ export const Auth = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Perform validation
-    if (!email || !password) {
-      setError("Please fill in all the fields.");
-      return;
-    }
-
+    setButtonLoad(true);
     if (!isLogin && password !== cpassword) {
       setError("Passwords do not match.");
+      setButtonLoad(false);
       return;
     }
-
     // Perform login or signup logic here
     if (isLogin) {
       // Perform login
@@ -39,64 +36,65 @@ export const Auth = () => {
             "Content-type": "application/json",
           },
         };
-
-        const { data } = await axios.post(
-          API_BASE + "/userlogin",
-          { email, password },
-          config
-        );
-        console.log(data);
-        toast.success("Login Successfull..");
+        await axios.post(API_BASE + "/userlogin", { email, password }, config);
+        setIsLoading(true);
+        setTimeout(() => {
+          setContent("Redirecting to home page...");
+        }, 1500);
         setTimeout(() => {
           navigate("/");
-        }, 5000);
+        }, 2500);
       } catch (error) {
-        toast.error(error.message);
-      }
-      console.log("Login:", email, password);
-    } else {
-      // Perform signup
-      if (!name || !email || !password || !cpassword) {
-        window.alert("Fill all details!!");
+        toast.error(error.response.data);
         return;
+      } finally {
+        setButtonLoad(false);
       }
-
+    } else {
+      setContent("Registraion Successful!!");
       try {
         const config = {
           headers: {
             "Content-type": "application/json",
           },
         };
-        const { data } = await axios.post(
+        await axios.post(
           API_BASE + "/usersignup",
           {
             name,
             email,
             password,
-            cpassword,
           },
           config
         );
-        toast.success("Registration Successfull");
-        console.log(data);
-        setTimeout(window.location.reload(), 5000);
+        setIsLoading(true);
+        setTimeout(() => {
+          setContent("Redirecting to home page...");
+        }, 1500);
+        setTimeout(() => {
+          navigate("/");
+        }, 2500);
       } catch (error) {
-        console.log(error);
         toast.error(error.response.data);
+        return;
+      } finally {
+        setButtonLoad(false);
       }
     }
-
-    // Reset form fields and error state
     setEmail("");
     setPassword("");
     setConfirmPassword("");
     setError("");
+    setButtonLoad(false);
   };
-
   return (
     <div className="container">
       <h2 className="title">{isLogin ? "Login" : "Signup"}</h2>
-      <form onSubmit={handleSubmit} className="form">
+      <form
+        onSubmit={handleSubmit}
+        className="form"
+        onClick={(e) => setError(" ")}
+      >
         {!isLogin && (
           <div className="form-group">
             <label>Name:</label>
@@ -105,7 +103,8 @@ export const Auth = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="input-field"
-              placeholder="yashu goel"
+              placeholder="Enter you name"
+              required
             />
           </div>
         )}
@@ -116,7 +115,8 @@ export const Auth = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="input-field"
-            placeholder="xyz@gmail.com"
+            placeholder="Enter your email id"
+            required
           />
         </div>
         <div className="form-group">
@@ -126,10 +126,8 @@ export const Auth = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="input-field"
-            // minLength="6"
-            // pattern="^(?=.*[A-Z])(?=.*\W).*$"
-            // title="Password requirements: Minimum length of 6 characters, at least one uppercase letter, and one special character."
-            placeholder="********"
+            placeholder="Enter password"
+            required
           />
         </div>
         <p className="switch">
@@ -154,26 +152,46 @@ export const Auth = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="input-field"
               placeholder="Confirm Password"
+              required
             />
           </div>
         )}
         {error && <p className="error">{error}</p>}
-        <button type="submit" className="btn-auth">
-          {isLogin ? "Login" : "Signup"}
-        </button>
+
+        {!buttonLoad && (
+          <button type="submit" className="btn-auth">
+            {isLogin ? "Login" : "Signup"}
+          </button>
+        )}
+        {buttonLoad && (
+          <button type="submit" className="btn-auth">
+            <i class="fa fa-spinner fa-spin"></i>
+            {isLogin ? "  Logging In.." : "  Signing Up.."}
+          </button>
+        )}
       </form>
       <p className="switch">
-        {isLogin ? "Don't have an account?" : "Already have an account?"}
+        {isLogin ? "Don't have an account?  " : "Already have an account?  "}
         <button
           onClick={() => {
             setIsLogin(!isLogin);
+            setEmail("");
+            setPassword("");
+            setConfirmPassword("");
             setError("");
           }}
           className="switch-btn"
         >
-          {isLogin ? "Signup" : "Login"}
+          {isLogin ? " Signup" : " Login"}
         </button>
       </p>
+      {isLoading && (
+        <div className="loading-modal">
+          <p className="loading-spinner"></p>
+          <p>{contentInIsloading}</p>
+          <br />
+        </div>
+      )}
       <ToastContainer position="top-center" autoClose={3000} theme="colored" />
     </div>
   );

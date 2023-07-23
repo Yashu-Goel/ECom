@@ -84,7 +84,7 @@ function ShippingDetails() {
     }
   };
   return (
-    <div className="container">
+    <div className="container-shipping">
       <div className="shipping-page">
         <h2>Shipping Address</h2>
         <div className="address-list">
