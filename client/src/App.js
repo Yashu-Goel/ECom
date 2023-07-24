@@ -11,6 +11,7 @@ import SellerAuth from "./Components/Seller/SellerAuth";
 import OrderHistory from "./Components/OrderHistory/OrderHistory";
 import SellerProvider from "./Components/Seller/SellerProvider";
 import UserProfile from "./Components/UserProfile/UserProfile";
+import SellerCatalogue from "./Components/Seller/SellerCatalogue";
 import Profile from "./Components/Seller/Profile";
 import DealsPage from "./Components/Deals/DealsPage";
 function App() {
@@ -30,6 +31,7 @@ function App() {
         element={<OrderConfirmationPage />}
       />
       <Route exact path="/order-history" element={<OrderHistory />} />
+      <Route exact path="/catalogue" element={<SellerCatalogue/>} />
       <Route exact path="/seller" element={<SellerHome />} />
       <Route exact path="todays_deals" element={<DealsPage />} />
       <Route

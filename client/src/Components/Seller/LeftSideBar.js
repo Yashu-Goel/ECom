@@ -9,7 +9,7 @@ const LeftSideBar = () => {
         },
         {
             data_item: "Catalogue",
-            link_to:"/Catalogue"
+            link_to:"/catalogue"
         }
     ]
 

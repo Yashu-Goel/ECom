@@ -171,7 +171,7 @@ router.post("/sellerlogin", async (req, res) => {
   }
 });
 
-// //Product Details
+//Product Details
 
 router.post("/product", upload.array("productImages", 5), async (req, res) => {
   console.log(req.body);
@@ -215,6 +215,20 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
     res.status(422).json(`${error}`);
   }
 });
+//get product details
+
+router.get("/products", async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+
+
 
 //post address
 
