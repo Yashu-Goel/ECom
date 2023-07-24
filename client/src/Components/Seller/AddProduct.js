@@ -6,8 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 const AddProduct = () => {
-  const API_BASE = "http://localhost:5000"; // Replace this with your actual API base URL
-
+  const API_BASE = "http://localhost:5000"; 
+ const [selectedImage, setSelectedImage] = useState(null);
   const [ProductData, setProductData] = useState({
     name: "",
     type: "",
@@ -15,51 +15,61 @@ const AddProduct = () => {
     model: "",
     special_feature: "",
   });
+const handleImageChange = (e) => {
+  const files = e.target.files;
+  setSelectedImage(files);
+};
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
+const handleFormSubmit = async (e) => {
+  e.preventDefault();
 
-    const { name, type, price, model, special_feature } = ProductData;
+  const { name, type, price, model, special_feature } = ProductData;
 
-    if (!name || !type || !price || !model) {
-      toast.error("Fill All Details");
-      return;
+  if (!name || !type || !price || !model) {
+    toast.error("Fill All Details");
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("type", type);
+    formData.append("price", price);
+    formData.append("model", model);
+    formData.append("special_feature", special_feature);
+
+    if(selectedImage.length>5)
+    {
+      toast.error("Maximum Images Limit: 5")
+    }
+    for (let i = 0; i < selectedImage.length; i++) {
+      formData.append("productImages", selectedImage[i]); // 
     }
 
-    try {
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-        },
-      };
+    const config = {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    };
 
-      const { data } = await axios.post(
-        API_BASE + "/product",
-        {
-          name,
-          type,
-          price,
-          model,
-          special_feature,
-        },
-        config
-      );
+    const { data } = await axios.post(API_BASE + "/product", formData, config);
 
-      toast.success("Product added successfully");
-      
-    } catch (error) {
-      toast.error("Error occurred while adding the product");
-    }
+    toast.success("Product added successfully");
+  } catch (error) {
+    toast.error("Error occurred while adding the product");
+    console.log("Error: "+ error);
+  }
 
-    // Clear form fields after submission
-    setProductData({
-      name: "",
-      type: "",
-      price: "",
-      model: "",
-      special_feature: "",
-    });
-  };
+  // Clear form fields after submission
+  // setProductData({
+  //   name: "",
+  //   type: "",
+  //   price: "",
+  //   model: "",
+  //   special_feature: "",
+  // });
+};
+
 
   return (
     <div className="ProductDetailOuterContainer">
@@ -136,6 +146,15 @@ const AddProduct = () => {
                 special_feature: e.target.value,
               })
             }
+          />
+        </div>
+        <div className="seller-form-group">
+          <label>Product Image:</label>
+          <input
+            type="file"
+            onChange={handleImageChange}
+            accept=".jpg, .jpeg, .png"
+            multiple
           />
         </div>
         <button type="submit">Add Product</button>

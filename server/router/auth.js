@@ -12,10 +12,24 @@ const jwt = require("jsonwebtoken");
 
 dotenv.config();
 const router = express.Router();
+const multer = require("multer");
 router.use(express.json());
 router.use(cors());
 
 const JWT_Secret = process.env.JWT_Secret;
+
+//mutler configuration
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, file.fieldname + "-" + uniqueSuffix + ".jpg");
+  },
+});
+
+const upload = multer({ storage: storage });
 
 //Signup for user
 router.post("/usersignup", async (req, res) => {
@@ -75,156 +89,176 @@ router.post("/userlogin", async (req, res) => {
 });
 
 //signup for seller
-// router.post("/sellersignup", async (req, res) => {
-//   console.log(req.body);
-//   const { name, email, mobile, password, cpassword, gst } = req.body;
-//   if (!name || !email || !mobile || !password || !cpassword) {
-//     return res.status(422).json({ error: "Pls fill all the fields" });
-//   }
-//   console.log(req.body);
-//   try {
-//     const SellerExists = await Seller.findOne({ email: email });
+router.post("/sellersignup", async (req, res) => {
+  console.log(req.body);
+  const { name, email, mobile, password, cpassword, gst } = req.body;
+  if (!name || !email || !mobile || !password || !cpassword) {
+    return res.status(422).json({ error: "Pls fill all the fields" });
+  }
+  console.log(req.body);
+  try {
+    const SellerExists = await Seller.findOne({ email: email });
 
-//     if (SellerExists) {
-//       return res.status(422).json("Seller already Exists");
-//     } else if (password != cpassword) {
-//       return res.status(422).json({
-//         error: "Password and Confirm Password must be same!",
-//       });
-//     } else {
-//       const user = await Seller.create({
-//         name,
-//         email,
-//         mobile,
-//         password,
-//         cpassword,
-//         gst,
-//       });
+    if (SellerExists) {
+      return res.status(422).json("Seller already Exists");
+    } else if (password != cpassword) {
+      return res.status(422).json({
+        error: "Password and Confirm Password must be same!",
+      });
+    } else {
+      const user = await Seller.create({
+        name,
+        email,
+        mobile,
+        password,
+        cpassword,
+        gst,
+      });
 
-//       if (user) {
-//         res.status(200).json({
-//           _id: user._id,
-//           name: user.name,
-//           email: user.email,
-//           mobile: user.mobile,
-//           message: "User registered successfully",
-//         });
-//       } else res.status(400).json("Signup failed");
-//     }
-//   } catch (error) {
-//     res.status(422).json(`${error}`);
-//   }
-// });
+      if (user) {
+        res.status(200).json({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          mobile: user.mobile,
+          message: "User registered successfully",
+        });
+      } else res.status(400).json("Signup failed");
+    }
+  } catch (error) {
+    res.status(422).json(`${error}`);
+  }
+});
 
 // //login for seller
-// router.post("/sellerlogin", async (req, res) => {
-//   try {
-//     const details = req.body;
-//     console.log(req.body);
+router.post("/sellerlogin", async (req, res) => {
+  try {
+    const details = req.body;
+    console.log(req.body);
 
-//     const { email, password } = details;
-//     if (!email || !password) {
-//       return res.status(400).json({ error: "Please fill all the details" });
-//     }
-//     const sellerLogin = await Seller.findOne({ email });
+    const { email, password } = details;
+    if (!email || !password) {
+      return res.status(400).json({ error: "Please fill all the details" });
+    }
+    const sellerLogin = await Seller.findOne({ email });
 
-//     if (sellerLogin) {
-//       const isMatch = await bcrypt.compare(password, sellerLogin.password);
-//       const token = jwt.sign(details, JWT_Secret);
-//       res.json({
-//         token: token,
-//         message: "Login Success!!",
-//       });
+    if (sellerLogin) {
+      const isMatch = await bcrypt.compare(password, sellerLogin.password);
+      const token = jwt.sign(details, JWT_Secret);
+      res.json({
+        token: token,
+        message: "Login Success!!",
+      });
 
-//       if (!isMatch) {
-//         res.json({ message: "Invalid Credential" });
-//       } else {
-//         res.json({ message: "User signin successful" });
-//       }
-//     } else {
-//       res.send("Invalid Credentials");
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
+      if (!isMatch) {
+        res.json({ message: "Invalid Credential" });
+      } else {
+        res.json({ message: "User signin successful" });
+      }
+    } else {
+      res.send("Invalid Credentials");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 // //Product Details
-// router.post("/product", async (req, res) => {
-//   console.log(req.body);
-//   const { name, type, price, model, special_feature } = req.body;
-//   if (!name || !type || !price || !model || !special_feature) {
-//     return res.status(422).json({ error: "Pls fill all the fields" });
-//   }
-//   console.log(req.body);
-//   try {
-//     const product = await Product.create({
-//       name,
-//       type,
-//       price,
-//       model,
-//       special_feature,
-//     });
 
-//     if (product) {
-//       res.status(200).json({
-//         _id: product._id,
-//         name: product.name,
-//         type: product.type,
-//         message: "Product registered successfully",
-//       });
-//     } else res.status(400).json("Product unregistered");
-//   } catch (error) {
-//     res.status(422).json(`${error}`);
-//   }
-// });
+router.post("/product", upload.array("productImages", 5), async (req, res) => {
+  console.log(req.body);
+  const { name, type, price, model, special_feature } = req.body;
+  const productImages = req.files.map((file) => file.path);
 
-// //post address
+  if (
+    !name ||
+    !type ||
+    !price ||
+    !model ||
+    !special_feature ||
+    productImages.length === 0
+  ) {
+    return res
+      .status(422)
+      .json({
+        error: "Please fill all the fields and add at least one product image",
+      });
+  }
 
-// router.post("/address", async (req, res) => {
-//   console.log(req.body);
-//   const { address_line, city, state, postal_code } = req.body;
-//   if (!address_line || !city || !state || !postal_code) {
-//     return res.status(422).json({ error: "Pls fill all the fields" });
-//   }
-//   try {
-//     const address = await Address.create({
-//       address_line,
-//       city,
-//       state,
-//       postal_code,
-//     });
+  try {
+    const product = await Product.create({
+      name,
+      type,
+      price,
+      model,
+      special_feature,
+      productImages: productImages, // Save the array of image paths in the database
+    });
 
-//     if (address) {
-//       res.status(200).json({
-//         message: "Product registered successfully",
-//       });
-//     } else res.status(400).json("Product unregistered");
-//   } catch (error) {
-//     res.status(422).json(`${error}`);
-//   }
-// });
-// //get address
-// router.get("/address", async (req, res) => {
-//   try {
-//     const address = await Address.find();
-//     res.send(address);
-//   } catch (error) {
-//     res.status(422).json(`${error}`);
-//   }
-// });
+    if (product) {
+      res.status(200).json({
+        _id: product._id,
+        name: product.name,
+        type: product.type,
+        message: "Product registered successfully",
+      });
+    } else {
+      res.status(400).json("Product unregistered");
+    }
+  } catch (error) {
+    res.status(422).json(`${error}`);
+  }
+});
+
+
+
+
+ //post address
+
+router.post("/address", async (req, res) => {
+  console.log(req.body);
+  const { address_line, city, state, postal_code } = req.body;
+  if (!address_line || !city || !state || !postal_code) {
+    return res.status(422).json({ error: "Pls fill all the fields" });
+  }
+  try {
+    const address = await Address.create({
+      address_line,
+      city,
+      state,
+      postal_code,
+    });
+
+    if (address) {
+      res.status(200).json({
+        message: "Product registered successfully",
+      });
+    } else res.status(400).json("Product unregistered");
+  } catch (error) {
+    res.status(422).json(`${error}`);
+  }
+});
+//get address
+router.get("/address", async (req, res) => {
+  try {
+    const address = await Address.find();
+    res.send(address);
+  } catch (error) {
+    res.status(422).json(`${error}`);
+  }
+});
 
 // //get single address
-// router.get("/address/:id", async (req, res) => {
-//   try {
-//     const _id = req.params.id;
-//     console.log(_id);
-//     const address = await Address.findById(_id);
-//     res.send(address);
-//   } catch (error) {
-//     res.send(error);
-//   }
-// });
+router.get("/address/:id", async (req, res) => {
+  try {
+    const _id = req.params.id;
+    console.log(_id);
+    const address = await Address.findById(_id);
+    res.send(address);
+  } catch (error) {
+    res.send(error);
+  }
+});
 
 // //delete address
 // router.delete("/address/:id", async (req, res) => {

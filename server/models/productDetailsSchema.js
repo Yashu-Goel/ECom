@@ -9,19 +9,21 @@ const productDetailsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  price:{
+  price: {
     type: String,
-    required: true
-  },  
-  model:{
-    type: String,
-    required: true
+    required: true,
   },
-  special_feature:{
+  model: {
     type: String,
-    required: true
+    required: true,
   },
-
+  special_feature: {
+    type: String,
+    required: true,
+  },
+  productImages: [{ 
+    type: String,
+    required: true }],
   // description: {
   //   price: {
   //     type: String,
@@ -39,10 +41,10 @@ const productDetailsSchema = new mongoose.Schema({
   //     type: String,
   //     required: true,
   //   },
-    // seller: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Seller",
-    // },
+  // seller: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "Seller",
+  // },
   //},
 });
 
