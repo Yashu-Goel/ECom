@@ -1,9 +1,11 @@
 const express = require("express");
+const app = require('express');
+// const cookieParser = require("cookie-parser");
 const User = require("../models/userSchema.js");
 const Seller = require("../models/sellerSchema.js");
 const Address = require("../models/addressSchema.js");
 const Product = require("../models/productDetailsSchema.js");
-const OrderHistory = require("../models/order_historySchema.js");
+// const OrderHistory = require("../models/order_historySchema.js");
 const bcrypt = require("bcryptjs");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -15,6 +17,7 @@ const router = express.Router();
 const multer = require("multer");
 router.use(express.json());
 router.use(cors());
+// router.use(cookieParser());
 
 const JWT_Secret = process.env.JWT_Secret;
 
@@ -48,6 +51,10 @@ router.post("/usersignup", async (req, res) => {
       });
       if (user) {
         const token = jwt.sign({ email, password }, JWT_Secret);
+
+        // res.setHeader('jwt',token);
+        // res.cookie("jwt", token);
+        // console.log(cookie);
         return res.json({
           token: token,
           message: "Registration Success!!",
@@ -74,6 +81,7 @@ router.post("/userlogin", async (req, res) => {
         res.status(400).json("Invalid Credential");
         return;
       }
+      res.cookie("token", token, { httpOnly: true, maxAge: 3600000 });
 
       res.json({
         token: token,
@@ -178,11 +186,9 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
     !special_feature ||
     productImages.length === 0
   ) {
-    return res
-      .status(422)
-      .json({
-        error: "Please fill all the fields and add at least one product image",
-      });
+    return res.status(422).json({
+      error: "Please fill all the fields and add at least one product image",
+    });
   }
 
   try {
@@ -210,10 +216,7 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
   }
 });
 
-
-
-
- //post address
+//post address
 
 router.post("/address", async (req, res) => {
   console.log(req.body);

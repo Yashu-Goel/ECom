@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "./Auth.css";
 import axios from "axios";
+import "./Auth.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -29,14 +29,19 @@ export const Auth = () => {
     }
     // Perform login or signup logic here
     if (isLogin) {
-      // Perform login
+      setContent("Login Success!!");
       try {
         const config = {
           headers: {
             "Content-type": "application/json",
           },
         };
-        await axios.post(API_BASE + "/userlogin", { email, password }, config);
+        const { data } = await axios.post(
+          API_BASE + "/userlogin",
+          { email, password },
+          config
+        );
+
         setIsLoading(true);
         setTimeout(() => {
           setContent("Redirecting to home page...");
@@ -58,7 +63,7 @@ export const Auth = () => {
             "Content-type": "application/json",
           },
         };
-        await axios.post(
+        const { data } = await axios.post(
           API_BASE + "/usersignup",
           {
             name,
