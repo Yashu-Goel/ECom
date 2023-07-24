@@ -217,15 +217,20 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
 });
 //get product details
 
-router.get("/products", async (req, res) => {
+router.get("/products/:productId", async (req, res) => {
+  const productId = req.params.productId;
+  console.log('okok');
+  console.log(productId);
   try {
-    const products = await Product.find();
-    res.status(200).json(products);
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
 
 
 

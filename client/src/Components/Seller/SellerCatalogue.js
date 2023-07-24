@@ -8,7 +8,7 @@ const SellerCatalogue = () => {
 
   useEffect(() => {
     axios
-      .get("/products")
+      .get("/products/64be1480fa7684fcd56a9ccf")
       .then((response) => {
         setProducts(response.data);
       })
@@ -34,7 +34,7 @@ const SellerCatalogue = () => {
           price={product.price}
           model={product.model}
           special_feature={product.special_feature}
-          imageUrl={product.productImages[0]} // Assuming you want to display the first image in the array
+          imageUrl={product.productImages} 
         />
       ))}
     </div>
