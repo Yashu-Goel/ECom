@@ -1,13 +1,12 @@
 import "./CartModal.css";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import { UserState } from "../Context/UserProvider";
+import { removeItem } from "../functions/functions";
 
-const CartModal = ({
-  cartItems,
-  closeModal,
-  proceedToCheckout,
-  deleteItem,
-}) => {
+const CartModal = ({ closeModal }) => {
+  const { setUser, cart, setCart } = UserState();
+
   const truncateName = (name) => {
     if (name.length > 15) {
       return name.slice(0, 15) + "...";
@@ -16,7 +15,7 @@ const CartModal = ({
   };
   const calculateTotalAmount = () => {
     let total = 0;
-    cartItems.forEach((item) => {
+    cart.forEach((item) => {
       total += item.price * item.cnt;
     });
     return total.toFixed(2);
@@ -30,18 +29,19 @@ const CartModal = ({
         </span>
         <h2 className="cart-heading">Your Shopping Cart</h2>
         <div className="cart-items">
-          {cartItems.length > 0 ? (
+          {cart.length > 0 ? (
             <ul className="cart-list">
-              {cartItems.map((item, index) => (
+              {cart.map((item, index) => (
                 <li key={index} className="cart-item">
                   <div className="item-info">
                     <div className="item-image">
                       <img
-                        src={require(`../TopSecHome/img_1/slider10Images/${item.pic}`)}
+                        src={require(`../TopSecHome/img_1/slider10Images/image1.webp`)}
                       />
                     </div>
                     <div className="item-details">
-                      <div className="item-name">{truncateName(item.name)}</div>
+                      {/* <div className="item-name">{truncateName(item.name)}</div> */}
+                      <div className="item-name">NA</div>
                       <div className="item-actions">
                         <span className="item-count">x {item.cnt}</span>
                         <div className="item-actions">
@@ -54,7 +54,9 @@ const CartModal = ({
                           </Link>
                           <button
                             className="delete-button items"
-                            onClick={() => deleteItem(item.id)}
+                            onClick={() =>
+                              removeItem(item.id, setUser, cart, setCart)
+                            }
                           >
                             Delete
                           </button>
@@ -62,9 +64,10 @@ const CartModal = ({
                       </div>
                     </div>
                   </div>
-                  <div className="item-price">₹{item.price}</div>
+                  <div className="item-price">₹ NA </div>
                   <div className="item-total">
-                    ₹{(item.price * item.cnt).toFixed(2)}
+                    {/* ₹{(item.price * item.cnt).toFixed(2)} */}
+                    NA
                   </div>
                 </li>
               ))}
@@ -78,7 +81,7 @@ const CartModal = ({
           )}
         </div>
         <div className="cart-footer">
-          {cartItems.length > 0 && (
+          {cart.length > 0 && (
             <Link className="checkout-button" to={"/proceed-to-checkout"}>
               Proceed to Checkout
             </Link>

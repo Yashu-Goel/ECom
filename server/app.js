@@ -1,15 +1,20 @@
 const express = require("express");
-const auth = require("./router/auth.js");
 const app = express();
-app.use(auth);
+const cors = require("cors");
+
+//routes...
+const userRouter = require("./router/userRouter.js");
+const editCart = require("./router/editCart.js");
+const tokenMiddleware = require("./MiddleWares/tokenMiddleWare.js");
+//middle wares
+app.use(cors());
+app.use("/user", userRouter);
+app.use("/edit", tokenMiddleware, editCart);
 
 app.get("/", (req, res) => {
-  res.cookie('foo','bar')
   res.send("Hello World!");
 });
-const PORT = process.env.PORT;
 
-
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Example app listening on port ${process.env.PORT}`);
 });

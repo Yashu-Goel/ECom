@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,10 +8,17 @@ import firstSlider from "../dummyDatas/firstSlider.json";
 import "./Product.css";
 import { UserState } from "../Context/UserProvider";
 import CartModal from "../Modal/CartModal";
+import { addedToCart } from "../functions/functions";
 
-const Product = () => {
+export const Product = () => {
   const { user, setUser, cart, setCart } = UserState();
   const [showModal, setShowModal] = useState(false);
+  const [count, setCount] = useState(1);
+
+  // useEffect(()=>{
+  //   localStorage.
+  // })
+
   const openModal = () => {
     setShowModal(true);
   };
@@ -28,6 +35,7 @@ const Product = () => {
   };
 
   const { id } = useParams();
+
   const productDetails = {
     id: id,
     name: "Perfume Da Lowda Mera Wood Flavour Brasil the silva santos Juinioh gauushy  hguahsj ",
@@ -75,9 +83,6 @@ const Product = () => {
   const starStyle = {
     color: "orange",
   };
-  const [count, setCount] = useState(1);
-
-  const ind = cart.findIndex((element) => element.id === id);
 
   const increment = () => {
     if (count < productDetails.quantityOptions) {
@@ -94,63 +99,9 @@ const Product = () => {
     color: "#fff",
     backgroundColor: "#FF7F7F",
   };
-  const removeItem = (itemId) => {
-    const updatedItems = cart.filter((item) => item.id !== itemId);
-    setCart(updatedItems);
-  };
-  function addedToCart() {
-    if (user == null) {
-      toast.error("Please login !", {
-        position: toast.POSITION.BOTTOM_CENTER,
-        autoClose: 2500,
-        className: "toast-message",
-      });
-      return;
-    }
-
-    if (ind === -1) {
-      setCart((oldCart) => [
-        ...oldCart,
-        {
-          id,
-          cnt: count,
-          price: productDetails.price,
-          name: productDetails.name,
-          pic: productDetails.pics[0],
-        },
-      ]);
-      toast.success("Product added succesfully !!", {
-        position: toast.POSITION.BOTTOM_CENTER,
-        autoClose: 2500,
-        className: "toast-message",
-      });
-    } else {
-      if (count !== cart[ind].cnt) {
-        cart[ind].cnt = count;
-        toast.info("Cart updated successfully !", {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 2500,
-          className: "toast-message",
-        });
-      } else {
-        toast.warning("Product already added in cart!", {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 2500,
-          className: "toast-message",
-        });
-      }
-    }
-  }
-
   return (
     <>
-      {showModal && (
-        <CartModal
-          cartItems={cart}
-          closeModal={closeModal}
-          deleteItem={removeItem}
-        />
-      )}
+      {showModal && user && <CartModal closeModal={closeModal} />}
       <div className="product-container">
         <Navbar />
         <div className="product-page">
@@ -194,7 +145,8 @@ const Product = () => {
                   </span>
                 ))}
                 &nbsp;|&nbsp;
-                <Link to={"#reviews"} className="total-reviews">
+                {/* coorevt the below to Link */}
+                <Link to={""} className="total-reviews">
                   {productDetails.reviews.length} ratings
                 </Link>
               </div>
@@ -281,7 +233,12 @@ const Product = () => {
             <div className="cart-button">
               {productDetails.quantityOptions !== 0 && (
                 <>
-                  <button className="add-to-cart" onClick={addedToCart}>
+                  <button
+                    className="add-to-cart"
+                    onClick={(e) => {
+                      addedToCart(id, count, user);
+                    }}
+                  >
                     Add to Cart
                   </button>
                   <button onClick={openModal}>Buy now</button>
@@ -334,5 +291,3 @@ const Product = () => {
     </>
   );
 };
-
-export default Product;

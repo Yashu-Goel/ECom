@@ -1,7 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
 import Home from "./Components/Home/Home";
-import Product from "./Components/IndividualProduct/Product";
+import {Product} from "./Components/IndividualProduct/Product";
 import { Auth } from "./Components/Authentication/Auth.js";
 import ProceedToCheckOut from "./Components/ProceedToCheckOut/ProceedToCheckOut";
 import OrderConfirmationPage from "./Components/OrderConfirmationPage/OrderConfirmationPage";

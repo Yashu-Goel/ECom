@@ -7,18 +7,20 @@ import CartModal from "../Modal/CartModal";
 
 const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
+  const { user, setUser, cart, setCart } = UserState();
+
   const openModal = () => {
     setShowModal(true);
   };
 
-  const removeItem = (itemId) => {
-    const updatedItems = cart.filter((item) => item.id !== itemId);
-    setCart(updatedItems);
-  };
+  // const removeItem = (itemId) => {
+  //   const updatedItems = cart.filter((item) => item.id !== itemId);
+  //   setCart(updatedItems);
+  //   setUser((old) => ({ ...old, cart }));
+  // };
   const closeModal = () => {
     setShowModal(false);
   };
-  const { user, setUser, cart, setCart } = UserState();
 
   const [heart, setHeart] = useState(false);
 
@@ -49,9 +51,9 @@ const Navbar = () => {
     <>
       {showModal && (
         <CartModal
-          cartItems={cart}
+          cartItems={user.cart}
           closeModal={closeModal}
-          deleteItem={removeItem}
+          // deleteItem={removeItem}
         />
       )}
       <div className="navbar-header">
@@ -280,7 +282,8 @@ const Navbar = () => {
         </div>
 
         <div className="nav-icons">
-          {user !== null ? (
+          {/* correction nnedded her  user !== null */}
+          {user ? (
             <div className="nav-symbols">
               <button class="nav-heart" id="dropdown-btn" onClick={loadAccount}>
                 <i class="fa-solid fa-user"></i>
@@ -296,10 +299,10 @@ const Navbar = () => {
                 />
               </div>
               <button className="nav-shop" onClick={openModal}>
-                {cart.length === 0 ? (
+                {user.cart.length === 0 ? (
                   <i class="fa-solid fa-cart-shopping"></i>
                 ) : (
-                  <i class="fa badge" value={cart.length}>
+                  <i class="fa badge" value={user.cart.length}>
                     &#xf07a;
                   </i>
                 )}
