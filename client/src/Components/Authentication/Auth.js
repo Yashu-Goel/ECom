@@ -4,8 +4,10 @@ import "./Auth.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { UserState } from "../Context/UserProvider";
 
 export const Auth = () => {
+  // const { user, setUser, cart, setCart } = UserState();
   const [isLoading, setIsLoading] = useState(false);
   const [buttonLoad, setButtonLoad] = useState(false);
   const [contentInIsloading, setContent] = useState("Login Success..");
@@ -27,7 +29,6 @@ export const Auth = () => {
       setButtonLoad(false);
       return;
     }
-    // Perform login or signup logic here
     if (isLogin) {
       setContent("Login Success!!");
       try {
@@ -37,11 +38,11 @@ export const Auth = () => {
           },
         };
         const { data } = await axios.post(
-          API_BASE + "/userlogin",
+          API_BASE + "/user/userlogin",
           { email, password },
           config
         );
-
+        localStorage.setItem("profile", JSON.stringify(data));
         setIsLoading(true);
         setTimeout(() => {
           setContent("Redirecting to home page...");
@@ -64,7 +65,7 @@ export const Auth = () => {
           },
         };
         const { data } = await axios.post(
-          API_BASE + "/usersignup",
+          API_BASE + "/user/usersignup",
           {
             name,
             email,
@@ -72,6 +73,7 @@ export const Auth = () => {
           },
           config
         );
+        localStorage.setItem("profile", JSON.stringify(data));
         setIsLoading(true);
         setTimeout(() => {
           setContent("Redirecting to home page...");

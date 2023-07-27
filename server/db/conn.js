@@ -2,8 +2,7 @@ const { connect } = require("mongoose");
 
 const { config } = require("dotenv");
 config();
-const DB = process.env.DATABASE;
-connect(DB)
+connect(process.env.DATABASE)
   .then(() => {
     console.log("Connected");
   })

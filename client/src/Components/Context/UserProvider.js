@@ -5,15 +5,13 @@ const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const navigate = useNavigate();
-  const [user, setUser] = useState();
-  const [cart, setCart] = useState([]);
-  const [selectedAddress, setSelectedAddress] = useState({});
-
-  // selectedAddress will be the default user addresss
+  const [user, setUser] = useState(null);
+  const [cart, setCart] = useState(user ? user.cart : []);
+  const [selectedAddress, setSelectedAddress] = useState([]);
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("profile"));
-    setUser(userInfo);
+    if (userInfo !== null) setUser(userInfo);
   }, [navigate]);
 
   return (

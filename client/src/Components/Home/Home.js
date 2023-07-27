@@ -5,18 +5,9 @@ import ImageSlider from "../TopSecHome/ImageSlider";
 import firstSlider from "../dummyDatas/firstSlider.json";
 import kitchenSlider from "../dummyDatas/kitchen.json";
 import fragranceSlider from "../dummyDatas/fragranceSlider.json";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Home.css";
 const Home = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("profile"));
-    // if (!userInfo) {
-    //   navigate("/auth");
-    // }
-  }, [navigate]);
-
   return (
     <div>
       <Navbar />
@@ -45,5 +36,5 @@ const Home = () => {
     </div>
   );
 };
-
 export default Home;
+

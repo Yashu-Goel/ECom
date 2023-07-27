@@ -15,17 +15,37 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  cart:[
+  cart: [
     {
-      product_id:{
-        type: String
+      product_id: {
+        type: String,
       },
-      count:{
-        type: Number
-      }
-    }
-  ]
-  
+      count: {
+        type: Number,
+      },
+    },
+  ],
+  addresses: [
+    {
+      address_line: {
+        type: String,
+        required: true,
+        minLength: 10,
+      },
+      city: {
+        type: String,
+        required: true,
+      },
+      state: {
+        type: String,
+        required: true,
+      },
+      postal_code: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
 
 //password hashing
