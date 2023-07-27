@@ -65,7 +65,7 @@ const SellerAuth = () => {
       };
 
       const { data } = await axios.post(
-        API_BASE + "/sellersignup",
+        API_BASE + "/seller/sellersignup",
         {
           name,
           email,
@@ -105,18 +105,18 @@ const SellerAuth = () => {
       };
 
       const { data } = await axios.post(
-        API_BASE + "/sellerlogin",
+        API_BASE + "/seller/sellerlogin",
         { email, password },
         config
       );
-
+        console.log("data: "+ data);
       toast.success("Login successful");
       toggleLoginStatus();
       setTimeout(() => {
         navigate("/seller");
       }, 5000);
     } catch (error) {
-      console.log(error);
+      console.log("Error: "+ error);
       toast.error(error.response.data);
     }
   };

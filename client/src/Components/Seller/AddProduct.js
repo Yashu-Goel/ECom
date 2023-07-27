@@ -52,7 +52,7 @@ const handleFormSubmit = async (e) => {
       },
     };
 
-    const { data } = await axios.post(API_BASE + "/product", formData, config);
+    const { data } = await axios.post(API_BASE + "/seller/product", formData, config);
 
     toast.success("Product added successfully");
   } catch (error) {

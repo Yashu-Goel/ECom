@@ -1,6 +1,7 @@
 import React from "react";
 import "./CatalogueItems.css";
 
+
 const CatalogueItems = ({
   name,
   type,
@@ -9,10 +10,19 @@ const CatalogueItems = ({
   special_feature,
   imageUrl,
 }) => {
+const parts = imageUrl.split("\\");
+const fileName = parts[parts.length - 1];
+console.log(fileName);
   return (
     <div className="CatalogueItemMainContainer">
       <div className="CatalogueItemImageContainer">
-        <img src={imageUrl} alt="Product" />
+        <img
+          src={
+            process.env.PUBLIC_URL +
+            "/uploads/"+ fileName
+          }
+          alt={name}
+        />
       </div>
       <div className="CatalogueItemProductDetails">
         <p>Product Name: {name}</p>
