@@ -14,30 +14,40 @@ const parts = imageUrl.split("\\");
 const fileName = parts[parts.length - 1];
 console.log(fileName);
   return (
-    <div className="CatalogueItemMainContainer">
-      <div className="CatalogueItemImageContainer">
-        <img
-          src={
-            process.env.PUBLIC_URL +
-            "/uploads/"+ fileName
-          }
-          alt={name}
-        />
-      </div>
-      <div className="CatalogueItemProductDetails">
-        <p>Product Name: {name}</p>
-      </div>
-      <div className="CatalogueItemProductDetails">
-        <p>Product Type: {type}</p>
-      </div>
-      <div className="CatalogueItemProductDetails">
-        <p>Product Price: {price}</p>
-      </div>
-      <div className="CatalogueItemProductDetails">
-        <p>Product Model: {model}</p>
-      </div>
-      <div className="CatalogueItemProductDetails">
-        <p>Special Feature: {special_feature}</p>
+    <div className="CatalogueOuter">
+      <h1>Catalogue</h1>
+      <div className="CatalogueItemMainContainer">
+        <div className="CatalogueItemImageContainer">
+          <img
+            src={process.env.PUBLIC_URL + "/uploads/" + fileName}
+            alt={name}
+          />
+        </div>
+        <div className="CatalogueItemProductDetails">
+          <p>
+            Product Name: <span> {name} </span>
+          </p>
+        </div>
+        <div className="CatalogueItemProductDetails">
+          <p>
+            Product Type:<span> {type} </span>
+          </p>
+        </div>
+        <div className="CatalogueItemProductDetails">
+          <p>
+            Product Price: <span>{price} </span>
+          </p>
+        </div>
+        <div className="CatalogueItemProductDetails">
+          <p>
+            Product Model:<span> {model} </span>
+          </p>
+        </div>
+        <div className="CatalogueItemProductDetails">
+          <p>
+            Special Feature: <span>{special_feature}</span>
+          </p>
+        </div>
       </div>
     </div>
   );

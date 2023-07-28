@@ -1,10 +1,55 @@
-.CatalogueItemMainContainer
-{
-    border: 2px solid red;
-    height: 25rem;
+.CatalogueOuter{
+    height: 100vh;
+    width: 100%;
+    background-color: aliceblue;
+    border: 1px solid transparent;
+}
+.CatalogueOuter h1{
+    font-size: 3rem;
+    text-align: center;
+    text-decoration: underline;
+    margin-top: 1rem;
+}
+.CatalogueItemMainContainer {
+    max-height: 25rem; 
     width: 18rem;
     border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    overflow-y: auto; 
+    overflow-x: hidden;
+    scrollbar-width: thin; 
+    -ms-overflow-style: none;
+    margin: 2rem; 
+    border: 2px solid black;
+    background-color: aliceblue;
 }
-.CatalogueItemImageContainer{
 
+.CatalogueItemMainContainer::-webkit-scrollbar {
+    width: 5px;
+}
+
+.CatalogueItemMainContainer::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+}
+
+.CatalogueItemMainContainer::-webkit-scrollbar-track {
+    background-color: rgba(0,0,0,0.1);
+}
+
+.CatalogueItemImageContainer img {
+    min-height: 15rem;
+    min-width: 18rem;
+}
+
+.CatalogueItemProductDetails {
+    font-size: 1.1rem;
+    padding: 1px 0.3rem;
+    color: black;
+    font-weight: bold;
+}
+.CatalogueItemProductDetails span{
+    font-weight: 400;
 }
