@@ -88,23 +88,21 @@ router.post("/sellerlogin", async (req, res) => {
     }
     const sellerLogin = await Seller.findOne({ email });
     console.log("sellerLogin: "+ sellerLogin );
-    if (sellerLogin) {
-      const isMatch = await bcrypt.compare(password, sellerLogin.password);
-      console.log('okok');
-      const token = jwt.sign(details, JWT_Secret);
-      res.json({
-        token: token,
-        message: "Login Success!!",
-      });
-
-      if (!isMatch) {
-        res.json({ message: "Invalid Credential" });
-      } else {
-        res.json({ message: "User signin successful" });
-      }
-    } else {
-      res.send("Invalid Credentials");
-    }
+   if (sellerLogin) {
+     const isMatch = await bcrypt.compare(password, sellerLogin.password);
+     if (!isMatch) {
+       res.json({ message: "Invalid Credential" });
+     } else {
+       const token = jwt.sign({ _id: sellerLogin._id }, JWT_Secret);
+       res.json({
+         token: token,
+         _id: sellerLogin._id,
+         message: "Login Success!!",
+       });
+     }
+   } else {
+     res.status(400).send("Invalid Credentials");
+   }
   } catch (error) {
     console.log("error: " + error);
   }
@@ -114,8 +112,9 @@ router.post("/sellerlogin", async (req, res) => {
 
 router.post("/product", upload.array("productImages", 5), async (req, res) => {
   console.log(req.body);
-  const { name, type, price, model, special_feature } = req.body;
+  const { name, type, price, model, special_feature, sellerId } = req.body;
   const productImages = req.files.map((file) => file.path);
+  console.log(req.body);
 
   if (
     !name ||
@@ -123,6 +122,7 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
     !price ||
     !model ||
     !special_feature ||
+    !sellerId||
     productImages.length === 0
   ) {
     return res
@@ -140,13 +140,14 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
       model,
       special_feature,
       productImages: productImages, // Save the array of image paths in the database
+      sellerId: sellerId,
     });
 
     if (product) {
       res.status(200).json({
         _id: product._id,
-        name: product.name,
         type: product.type,
+        sellerId: product.sellerId,
         message: "Product registered successfully",
       });
     } else {

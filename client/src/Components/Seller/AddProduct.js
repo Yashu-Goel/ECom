@@ -25,19 +25,20 @@ const handleFormSubmit = async (e) => {
 
   const { name, type, price, model, special_feature } = ProductData;
 
-  if (!name || !type || !price || !model) {
+  if ( !type || !price || !model) {
     toast.error("Fill All Details");
     return;
   }
 
   try {
+    const sellerId = localStorage.getItem("_id");
     const formData = new FormData();
     formData.append("name", name);
     formData.append("type", type);
     formData.append("price", price);
     formData.append("model", model);
     formData.append("special_feature", special_feature);
-
+    formData.append("sellerId", sellerId);
     if(selectedImage.length>5)
     {
       toast.error("Maximum Images Limit: 5")

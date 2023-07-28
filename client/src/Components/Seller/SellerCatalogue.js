@@ -10,8 +10,9 @@ const SellerCatalogue = () => {
   useEffect(() => {
     (async () => {
       try {
+        const sellerId = localStorage.getItem("_id");
         const response = await axios.get(
-          API_BASE + "/seller/products/64c2981e5aea20c708e36441"
+          API_BASE + "/seller/products/64c3640246bc83d7916b46ed"
         );
         setProducts(response.data); // Set the retrieved product details to the state
         if (response.data.productImages && response.data.productImages.length > 0

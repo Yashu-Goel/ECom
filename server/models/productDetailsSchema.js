@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const productDetailsSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -21,9 +20,16 @@ const productDetailsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  productImages: [{ 
-    type: String,
-    required: true }],
+  productImages: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
+  sellerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Seller",
+  },
   // description: {
   //   price: {
   //     type: String,

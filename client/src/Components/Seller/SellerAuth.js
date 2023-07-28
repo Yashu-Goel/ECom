@@ -109,12 +109,14 @@ const SellerAuth = () => {
         { email, password },
         config
       );
-        console.log("data: "+ data);
+      const { _id, token } = data;
+      console.log('id: '+ _id);
+      localStorage.setItem("_id", _id);
       toast.success("Login successful");
       toggleLoginStatus();
-      setTimeout(() => {
-        navigate("/seller");
-      }, 5000);
+      // setTimeout(() => {
+      //   navigate("/seller");
+      // }, 5000);
     } catch (error) {
       console.log("Error: "+ error);
       toast.error(error.response.data);
