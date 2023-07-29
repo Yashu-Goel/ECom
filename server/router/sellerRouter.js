@@ -142,7 +142,7 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
       productImages: productImages, // Save the array of image paths in the database
       sellerId: sellerId,
     });
-
+    
     if (product) {
       res.status(200).json({
         _id: product._id,
@@ -154,7 +154,7 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
       res.status(400).json("Product unregistered");
     }
   } catch (error) {
-    res.status(422).json(`${error}`);
+    res.status(422).json("Error: "+error);
   }
 });
 

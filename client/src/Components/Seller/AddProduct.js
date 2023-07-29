@@ -54,7 +54,7 @@ const handleFormSubmit = async (e) => {
     };
 
     const { data } = await axios.post(API_BASE + "/seller/product", formData, config);
-
+    console.log(data);
     toast.success("Product added successfully");
   } catch (error) {
     toast.error("Error occurred while adding the product");
