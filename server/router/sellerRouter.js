@@ -112,37 +112,39 @@ router.post("/sellerlogin", async (req, res) => {
 
 router.post("/product", upload.array("productImages", 5), async (req, res) => {
   console.log(req.body);
-  const { name, type, price, model, special_feature, sellerId } = req.body;
+  const {
+    name,
+    category,
+    price,
+    MRP,
+    model,
+    description,
+    brand,
+    rating,
+    // reviews,
+    pics, 
+    sellerId: sellerId,
+  } = req.body;
   const productImages = req.files.map((file) => file.path);
+  console.log('OK');
   console.log(req.body);
 
-  if (
-    !name ||
-    !type ||
-    !price ||
-    !model ||
-    !special_feature ||
-    !sellerId||
-    productImages.length === 0
-  ) {
-    return res
-      .status(422)
-      .json({
-        error: "Please fill all the fields and add at least one product image",
-      });
-  }
 
   try {
     const product = await Product.create({
       name,
-      type,
+      category,
       price,
+      MRP,
       model,
-      special_feature,
-      productImages: productImages, // Save the array of image paths in the database
+      description,
+      brand,
+      rating,
+      // reviews,
+      pics, // Save the array of image paths in the database
       sellerId: sellerId,
     });
-    
+
     if (product) {
       res.status(200).json({
         _id: product._id,

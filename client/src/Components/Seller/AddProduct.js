@@ -8,13 +8,42 @@ import axios from "axios";
 const AddProduct = () => {
   const API_BASE = "http://localhost:5000"; 
  const [selectedImage, setSelectedImage] = useState(null);
-  const [ProductData, setProductData] = useState({
-    name: "",
-    type: "",
-    price: "",
-    model: "",
-    special_feature: "",
-  });
+const [ProductData, setProductData] = useState({
+  name: "",
+  category: "",
+  price: "",
+  MRP: "",
+  model: "",
+  description: "",
+  brand: "",
+  rating: "",
+  // reviews: [], 
+});
+
+const handleReviewChange = (index, field, value) => {
+  // Create a copy of the current reviews array to avoid directly mutating state
+  const updatedReviews = [...ProductData.reviews];
+  // Update the specific review field based on the provided index and field
+  updatedReviews[index][field] = value;
+  // Update the ProductData state with the new reviews array
+  setProductData({ ...ProductData, reviews: updatedReviews });
+};
+
+const handleRemoveReview = (index) => {
+  const updatedReviews = [...ProductData.reviews];
+  updatedReviews.splice(index, 1);
+  setProductData({ ...ProductData, reviews: updatedReviews });
+};
+
+const handleAddReview = () => {
+  // Create a copy of the current reviews array to avoid directly mutating state
+  const updatedReviews = [...ProductData.reviews];
+  // Add an empty review object to the array
+  updatedReviews.push({ name: "", rating: 0, message: "" });
+  // Update the ProductData state with the new reviews array
+  setProductData({ ...ProductData, reviews: updatedReviews });
+};
+
 const handleImageChange = (e) => {
   const files = e.target.files;
   setSelectedImage(files);
@@ -23,9 +52,19 @@ const handleImageChange = (e) => {
 const handleFormSubmit = async (e) => {
   e.preventDefault();
 
-  const { name, type, price, model, special_feature } = ProductData;
+  const {
+    name,
+    category,
+    price,
+    MRP,
+    model,
+    description,
+    brand,
+    // rating,
+    // reviews,
+  } = ProductData;
 
-  if ( !type || !price || !model) {
+  if (!category || !price || !model || !MRP) {
     toast.error("Fill All Details");
     return;
   }
@@ -34,17 +73,21 @@ const handleFormSubmit = async (e) => {
     const sellerId = localStorage.getItem("_id");
     const formData = new FormData();
     formData.append("name", name);
-    formData.append("type", type);
+    formData.append("category", category);
     formData.append("price", price);
+    formData.append("MRP", MRP);
     formData.append("model", model);
-    formData.append("special_feature", special_feature);
+    formData.append("description", description);
+    formData.append("brand", brand);
+    // formData.append("rating", rating);
+    // formData.append("reviews", JSON.stringify(reviews)); // Convert reviews array to JSON string
     formData.append("sellerId", sellerId);
-    if(selectedImage.length>5)
-    {
-      toast.error("Maximum Images Limit: 5")
+    if (selectedImage.length > 5) {
+      toast.error("Maximum Images Limit: 5");
+      return;
     }
     for (let i = 0; i < selectedImage.length; i++) {
-      formData.append("productImages", selectedImage[i]); // 
+      formData.append("productImages", selectedImage[i]);
     }
 
     const config = {
@@ -53,23 +96,32 @@ const handleFormSubmit = async (e) => {
       },
     };
 
-    const { data } = await axios.post(API_BASE + "/seller/product", formData, config);
+    const { data } = await axios.post(API_BASE + "/product", formData, config);
     console.log(data);
     toast.success("Product added successfully");
   } catch (error) {
-    toast.error("Error occurred while adding the product");
-    console.log("Error: "+ error);
+    if (error.response && error.response.data) {
+      toast.error(error.response.data);
+    } else {
+      toast.error("Error occurred while adding the product");
+    }
+    console.log("Error: " + error);
   }
 
   // Clear form fields after submission
   // setProductData({
   //   name: "",
-  //   type: "",
+  //   category: "",
   //   price: "",
+  //   MRP: "",
   //   model: "",
-  //   special_feature: "",
+  //   description: "",
+  //   brand: "",
+  //   rating: "",
+  //   reviews: [], // Reset reviews after submission
   // });
 };
+
 
 
   return (
@@ -89,11 +141,11 @@ const handleFormSubmit = async (e) => {
           />
         </div>
         <div className="seller-form-group">
-          <label>Product Type:</label>
+          <label>Product Category:</label>
           <select
-            value={ProductData.type}
+            value={ProductData.category}
             onChange={(e) =>
-              setProductData({ ...ProductData, type: e.target.value })
+              setProductData({ ...ProductData, category: e.target.value })
             }
             id="cat-select"
           >
@@ -128,6 +180,16 @@ const handleFormSubmit = async (e) => {
           />
         </div>
         <div className="seller-form-group">
+          <label>MRP(₹):</label>
+          <input
+            type="text"
+            value={ProductData.MRP}
+            onChange={(e) =>
+              setProductData({ ...ProductData, MRP: e.target.value })
+            }
+          />
+        </div>
+        <div className="seller-form-group">
           <label>Model:</label>
           <input
             type="text"
@@ -137,18 +199,67 @@ const handleFormSubmit = async (e) => {
             }
           />
         </div>
+
         <div className="seller-form-group">
-          <label>Special Feature:</label>
+          <label> Description:</label>
           <input
-            value={ProductData.special_feature}
+            value={ProductData.description}
             onChange={(e) =>
               setProductData({
                 ...ProductData,
-                special_feature: e.target.value,
+                description: e.target.value,
               })
             }
           />
         </div>
+
+        <div className="seller-form-group">
+          <label> Brand:</label>
+          <input
+            value={ProductData.brand}
+            onChange={(e) =>
+              setProductData({
+                ...ProductData,
+                brand: e.target.value,
+              })
+            }
+          />
+        </div>
+
+        {/* <div className="seller-form-group">
+          <label>Product Reviews:</label>
+          {ProductData.reviews.map((review, index) => (
+            <div key={index}>
+              <input
+                type="text"
+                value={review.name}
+                onChange={(e) =>
+                  handleReviewChange(index, "name", e.target.value)
+                }
+                placeholder="Name"
+              />
+              <input
+                type="number"
+                value={review.rating}
+                onChange={(e) =>
+                  handleReviewChange(index, "rating", e.target.value)
+                }
+                placeholder="Rating"
+              />
+              <input
+                type="text"
+                value={review.message}
+                onChange={(e) =>
+                  handleReviewChange(index, "message", e.target.value)
+                }
+                placeholder="Message"
+              />
+              <button onClick={() => handleRemoveReview(index)}>Remove</button>
+            </div>
+          ))}
+          <button onClick={handleAddReview}>Add Review</button>
+        </div> */}
+
         <div className="seller-form-group">
           <label>Product Image:</label>
           <input

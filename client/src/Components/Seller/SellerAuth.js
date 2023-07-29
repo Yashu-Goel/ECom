@@ -114,9 +114,9 @@ const SellerAuth = () => {
       localStorage.setItem("_id", _id);
       toast.success("Login successful");
       toggleLoginStatus();
-      // setTimeout(() => {
-      //   navigate("/seller");
-      // }, 5000);
+      setTimeout(() => {
+        navigate("/seller");
+      }, 5000);
     } catch (error) {
       console.log("Error: "+ error);
       toast.error(error.response.data);
