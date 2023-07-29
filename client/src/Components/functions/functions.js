@@ -4,10 +4,14 @@ import axios from "axios";
 
 export const API_BASE = "http://localhost:5000";
 
-export const addedToCart = async (itemId, count, user) => {
-  const data = JSON.parse(localStorage.getItem("profile"));
-
-  if (data === null) {
+export const addedToCart = async (
+  itemId,
+  count,
+  user,
+  cart,
+  setCart
+) => {
+  if (user === null) {
     toast.error("Please login !", {
       position: toast.POSITION.BOTTOM_CENTER,
       autoClose: 2500,
@@ -17,26 +21,30 @@ export const addedToCart = async (itemId, count, user) => {
   }
   const config = {
     headers: {
-      Authorization: `Bearer ${data.token}`,
+      Authorization: `Bearer ${user.token}`,
     },
   };
   var ind = -1;
-  if (data !== null)
-    ind = data.cart.findIndex((element) => element.product_id === itemId);
+  if (user !== null) ind = cart.findIndex((element) => element._id === itemId);
+
   if (ind === -1) {
     const updatedItems = {
-      product_id: itemId,
+      _id: itemId,
       count: count,
     };
-
-    axios
-      .post(API_BASE + "/edit/additem", { updatedItems }, config)
+    await axios
+      .post(API_BASE + "/edit/additem", updatedItems, config)
       .then(function (response) {
-        console.log(response.data);
         localStorage.setItem("profile", JSON.stringify(response.data));
+        setCart([...cart, updatedItems]);
       })
       .catch(function (error) {
-        console.log(error);
+        toast.error(`${error}`, {
+          position: toast.POSITION.BOTTOM_CENTER,
+          autoClose: 2500,
+          className: "toast-message",
+        });
+        return;
       });
     toast.success("Product added succesfully !!", {
       position: toast.POSITION.BOTTOM_CENTER,
@@ -44,15 +52,17 @@ export const addedToCart = async (itemId, count, user) => {
       className: "toast-message",
     });
   } else {
-    if (count !== data.cart[ind].count) {
-      axios
+    if (count !== cart[ind].count) {
+      await axios
         .post(
           API_BASE + "/edit/upitem",
-          { product_id: data.cart[ind].product_id, count: count },
+          { _id: cart[ind]._id, count: count },
           config
         )
         .then(function (response) {
-          console.log(response);
+          const updatedItem = { ...cart[ind], count: count };
+          cart[ind] = updatedItem;
+          setCart(cart);
           localStorage.setItem("profile", JSON.stringify(response.data));
         })
         .catch(function (error) {
@@ -74,20 +84,17 @@ export const addedToCart = async (itemId, count, user) => {
   }
 };
 
-export const removeItem = (itemId, user) => {
-  const data = JSON.parse(localStorage.getItem("profile"));
-
+export const removeItem = async (itemId, user, cart, setCart) => {
   const config = {
     headers: {
-      Authorization: `Bearer ${data.token}`,
+      Authorization: `Bearer ${user.token}`,
     },
   };
-
-  const updatedItems = data.cart.filter((item) => item.id !== itemId);
-  axios
+  const updatedItems = cart.filter((item) => item._id !== itemId);
+  await axios
     .post(API_BASE + "/edit/removeItem", { updatedItems }, config)
     .then(function (response) {
-      console.log(response);
+      setCart(updatedItems);
       localStorage.setItem("profile", JSON.stringify(response.data));
     })
     .catch(function (error) {

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const Product = require("../models/productDetailsSchema");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -17,11 +18,10 @@ const userSchema = new mongoose.Schema({
   },
   cart: [
     {
-      product_id: {
-        type: String,
-      },
+      _id: { type: "ObjectId", ref: "Product" },
       count: {
         type: Number,
+        default: 1,
       },
     },
   ],

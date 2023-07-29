@@ -1,6 +1,8 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const Product = require("../models/productDetailsSchema.js");
+
 require("../db/conn.js");
 
 dotenv.config();
@@ -10,65 +12,84 @@ router.use(express.json());
 router.use(cors());
 
 router.post("/removeItem", async (req, res) => {
-  const user = req.user;
-  const { updatedItems } = req.body;
-  const authToken = req.token;
+  try {
+    const user = req.user;
+    const authToken = req.token;
 
-  Object.assign(user.cart, updatedItems);
-  await user.save();
+    const { updatedItems } = req.body;
 
-  const resp = {
-    addresses: user.addresses,
-    cart: user.cart,
-    email: user.email,
-    name: user.name,
-    token: authToken,
-  };
+    user.cart = updatedItems;
+    await user.save();
 
-  res.status(200).json(resp);
+    const resp = {
+      addresses: user.addresses,
+      cart: user.cart,
+      email: user.email,
+      name: user.name,
+      token: authToken,
+    };
+
+    return res.status(200).json(resp);
+  } catch (err) {
+    return res.status(403).send("FORBIDDEN");
+  }
 });
 
 router.post("/additem", async (req, res) => {
-  const user = req.user;
-  const { updatedItems } = req.body;
-  const authToken = req.token;
+  try {
+    const user = req.user;
+    const authToken = req.token;
+    
+    await user.cart.push(req.body);
+    await user.save();
 
-  await user.cart.push(updatedItems);
-  await user.save();
-
-  const resp = {
-    addresses: user.addresses,
-    cart: user.cart,
-    email: user.email,
-    name: user.name,
-    token: authToken,
-  };
-  res.status(200).json(resp);
+    const resp = {
+      addresses: user.addresses,
+      cart: user.cart,
+      email: user.email,
+      name: user.name,
+      token: authToken,
+    };
+    res.status(200).json(resp);
+  } catch (err) {
+    console.log(err);
+    return res.status(403).send("FORBIDDEN");
+  }
 });
 
 router.post("/upitem", async (req, res) => {
-  const user = req.user;
-  const { product_id, count } = req.body;
-  const authToken = req.token;
-
   try {
+    const user = req.user;
+    const authToken = req.token;
+
+    const { _id, count } = req.body;
     user.cart.find((e) => {
-      if (e.product_id === product_id) {
+      if (e._id === _id) {
         e.count = count;
       }
     });
+    await user.save();
+    const resp = {
+      addresses: user.addresses,
+      cart: user.cart,
+      email: user.email,
+      name: user.name,
+      token: authToken,
+    };
+    return res.status(200).json(resp);
   } catch (e) {
-    console.log(e);
+    return res.status(403).send("FORBIDDEN");
   }
-  await user.save();
-  const resp = {
-    addresses: user.addresses,
-    cart: user.cart,
-    email: user.email,
-    name: user.name,
-    token: authToken,
-  };
-  res.status(200).json(resp);
+});
+
+router.get("/getProductDetails/:_id", async (req, res) => {
+  try {
+    await Product.findOne({ _id: req.params._id }).then((response) => {
+      return res.json(response);
+    });
+  } catch (err) {
+    return res.status(403).send("FORBIDDEN");
+  }
 });
 
 module.exports = router;

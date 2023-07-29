@@ -6,12 +6,23 @@ const UserContext = createContext();
 const UserProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [cart, setCart] = useState(user ? user.cart : []);
+  const [cart, setCart] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState([]);
 
   useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("profile"));
-    if (userInfo !== null) setUser(userInfo);
+    const fetchData = async () => {
+      try {
+        const userInfo = JSON.parse(localStorage.getItem("profile"));
+        if (userInfo !== null) {
+          setUser(userInfo);
+          setCart(userInfo.cart);
+          console.log("Use effect is running");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
   }, [navigate]);
 
   return (

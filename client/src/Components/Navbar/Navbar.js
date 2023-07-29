@@ -6,32 +6,25 @@ import { UserState } from "../Context/UserProvider";
 import CartModal from "../Modal/CartModal";
 
 const Navbar = () => {
+  const [isConfirmationOpen, setConfirmationOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const { user, setUser, cart, setCart } = UserState();
+  const [heart, setHeart] = useState(false);
+  const { user, cart } = UserState();
 
   const openModal = () => {
     setShowModal(true);
   };
-
-  // const removeItem = (itemId) => {
-  //   const updatedItems = cart.filter((item) => item.id !== itemId);
-  //   setCart(updatedItems);
-  //   setUser((old) => ({ ...old, cart }));
-  // };
   const closeModal = () => {
     setShowModal(false);
   };
 
-  const [heart, setHeart] = useState(false);
-
   const dropdownMenu = document.getElementById("dropdown-menu");
+
   function loadAccount() {
     dropdownMenu.classList.toggle("show");
   }
 
   /* logout logic */
-
-  const [isConfirmationOpen, setConfirmationOpen] = useState(false);
 
   const handleLogout = () => {
     setConfirmationOpen(true);
@@ -49,13 +42,7 @@ const Navbar = () => {
 
   return (
     <>
-      {showModal && (
-        <CartModal
-          cartItems={user.cart}
-          closeModal={closeModal}
-          // deleteItem={removeItem}
-        />
-      )}
+      {showModal && <CartModal closeModal={closeModal} />}
       <div className="navbar-header">
         <div className="logo nav-elements">Logo</div>
 
@@ -282,8 +269,7 @@ const Navbar = () => {
         </div>
 
         <div className="nav-icons">
-          {/* correction nnedded her  user !== null */}
-          {user ? (
+          {user !== null ? (
             <div className="nav-symbols">
               <button class="nav-heart" id="dropdown-btn" onClick={loadAccount}>
                 <i class="fa-solid fa-user"></i>
@@ -299,11 +285,11 @@ const Navbar = () => {
                 />
               </div>
               <button className="nav-shop" onClick={openModal}>
-                {user.cart.length === 0 ? (
+                {cart.length === 0 ? (
                   <i class="fa-solid fa-cart-shopping"></i>
                 ) : (
-                  <i class="fa badge" value={user.cart.length}>
-                    &#xf07a;
+                  <i class="fa badge" value={cart.length}>
+                    &#xf07a; {cart.length}
                   </i>
                 )}
               </button>

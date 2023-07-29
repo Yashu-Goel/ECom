@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../Navbar/Navbar";
 import ImageSlider from "../TopSecHome/ImageSlider";
@@ -11,14 +11,9 @@ import CartModal from "../Modal/CartModal";
 import { addedToCart } from "../functions/functions";
 
 export const Product = () => {
-  const { user, setUser, cart, setCart } = UserState();
+  const { user, cart, setCart } = UserState();
   const [showModal, setShowModal] = useState(false);
   const [count, setCount] = useState(1);
-
-  // useEffect(()=>{
-  //   localStorage.
-  // })
-
   const openModal = () => {
     setShowModal(true);
   };
@@ -37,7 +32,7 @@ export const Product = () => {
   const { id } = useParams();
 
   const productDetails = {
-    id: id,
+    _id: id,
     name: "Perfume Da Lowda Mera Wood Flavour Brasil the silva santos Juinioh gauushy  hguahsj ",
     description:
       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam explicabo nesciunt consequuntur a eligendi ipsa ex rerum doloribus distinctio, ratione corrupti saepe ipsam commodi perferendis aspernatur expedita numquam dolores quisquam!",
@@ -95,10 +90,10 @@ export const Product = () => {
       setCount(count - 1);
     }
   };
-  const oos = {
-    color: "#fff",
-    backgroundColor: "#FF7F7F",
-  };
+  // const oos = {
+  //   color: "#fff",
+  //   backgroundColor: "#FF7F7F",
+  // };
   return (
     <>
       {showModal && user && <CartModal closeModal={closeModal} />}
@@ -236,7 +231,13 @@ export const Product = () => {
                   <button
                     className="add-to-cart"
                     onClick={(e) => {
-                      addedToCart(id, count, user);
+                      addedToCart(
+                        productDetails._id,
+                        count,
+                        user,
+                        cart,
+                        setCart
+                      );
                     }}
                   >
                     Add to Cart

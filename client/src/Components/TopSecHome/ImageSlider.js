@@ -24,7 +24,7 @@ const ImageSlider = ({ slider, loop, text }) => {
               <div className="card-wrapper swiper-wrapper">
                 <Link
                   to={{
-                    pathname: `/product/${val.link}`,
+                    pathname: `/product/${val._id}`,
                   }}
                 >
                   <div className="card swiper-slide">
