@@ -21,11 +21,8 @@ const [ProductData, setProductData] = useState({
 });
 
 const handleReviewChange = (index, field, value) => {
-  // Create a copy of the current reviews array to avoid directly mutating state
   const updatedReviews = [...ProductData.reviews];
-  // Update the specific review field based on the provided index and field
   updatedReviews[index][field] = value;
-  // Update the ProductData state with the new reviews array
   setProductData({ ...ProductData, reviews: updatedReviews });
 };
 
@@ -36,11 +33,8 @@ const handleRemoveReview = (index) => {
 };
 
 const handleAddReview = () => {
-  // Create a copy of the current reviews array to avoid directly mutating state
   const updatedReviews = [...ProductData.reviews];
-  // Add an empty review object to the array
   updatedReviews.push({ name: "", rating: 0, message: "" });
-  // Update the ProductData state with the new reviews array
   setProductData({ ...ProductData, reviews: updatedReviews });
 };
 
@@ -96,7 +90,7 @@ const handleFormSubmit = async (e) => {
       },
     };
 
-    const { data } = await axios.post(API_BASE + "/product", formData, config);
+    const { data } = await axios.post(API_BASE + "/seller/product", formData, config);
     console.log(data);
     toast.success("Product added successfully");
   } catch (error) {

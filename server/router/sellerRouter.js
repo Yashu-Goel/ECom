@@ -120,7 +120,7 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
     model,
     description,
     brand,
-    rating,
+    //rating,
     // reviews,
     pics, 
     sellerId: sellerId,
@@ -139,7 +139,7 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
       model,
       description,
       brand,
-      rating,
+      //rating,
       // reviews,
       pics, // Save the array of image paths in the database
       sellerId: sellerId,
