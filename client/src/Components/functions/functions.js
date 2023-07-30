@@ -33,7 +33,7 @@ export const addedToCart = async (
       count: count,
     };
     await axios
-      .post(API_BASE + "/edit/additem", updatedItems, config)
+      .post(API_BASE + "/cart/additem", updatedItems, config)
       .then(function (response) {
         localStorage.setItem("profile", JSON.stringify(response.data));
         setCart([...cart, updatedItems]);
@@ -55,7 +55,7 @@ export const addedToCart = async (
     if (count !== cart[ind].count) {
       await axios
         .post(
-          API_BASE + "/edit/upitem",
+          API_BASE + "/cart/upitem",
           { _id: cart[ind]._id, count: count },
           config
         )
@@ -92,7 +92,7 @@ export const removeItem = async (itemId, user, cart, setCart) => {
   };
   const updatedItems = cart.filter((item) => item._id !== itemId);
   await axios
-    .post(API_BASE + "/edit/removeItem", { updatedItems }, config)
+    .post(API_BASE + "/cart/removeItem", { updatedItems }, config)
     .then(function (response) {
       setCart(updatedItems);
       localStorage.setItem("profile", JSON.stringify(response.data));

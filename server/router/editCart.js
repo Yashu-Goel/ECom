@@ -39,7 +39,7 @@ router.post("/additem", async (req, res) => {
   try {
     const user = req.user;
     const authToken = req.token;
-    
+
     await user.cart.push(req.body);
     await user.save();
 
@@ -82,7 +82,7 @@ router.post("/upitem", async (req, res) => {
   }
 });
 
-router.get("/getProductDetails/:_id", async (req, res) => {
+router.get("/getCartInfo/:_id", async (req, res) => {
   try {
     await Product.findOne({ _id: req.params._id }).then((response) => {
       return res.json(response);
@@ -91,5 +91,7 @@ router.get("/getProductDetails/:_id", async (req, res) => {
     return res.status(403).send("FORBIDDEN");
   }
 });
+
+
 
 module.exports = router;

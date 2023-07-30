@@ -20,6 +20,8 @@ router.use(cors());
 const JWT_Secret = process.env.JWT_Secret;
 const path = require("path");
 //mutler configuration
+
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
 const absolutePath = path.join(__dirname, "../../client/public/uploads");

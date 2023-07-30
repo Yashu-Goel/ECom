@@ -24,7 +24,7 @@ const CartModal = ({ closeModal }) => {
         const cartDetails = await Promise.all(
           cart.map(async (item) => {
             const response = await axios.get(
-              API_BASE + `/edit/getProductDetails/${item._id}`,
+              API_BASE + `/cart/getCartInfo/${item._id}`,
               config
             );
             return {

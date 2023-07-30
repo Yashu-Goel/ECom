@@ -1,26 +1,14 @@
 const mongoose = require("mongoose");
 
+
 const addressSchema = new mongoose.Schema({
-  address_line: {
-    type: String,
-    required: true,
-    minLength: 10,
-  },
-  city: {
-    type: String,
-    required: true,
-  },
-  state: {
-    type: String,
-    required: true
-  },
-  postal_code: {
-    type: String,
-    required: true,
-  },
+  name: { type: String, required: true },
+  street: { type: String, required: true },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
+  zip: { type: String, required: true },
+  phone: { type: String, required: true },
 });
 
-//Models
-const Address = new mongoose.model("Address", addressSchema);
 
-module.exports = Address;
+module.exports = mongoose.model("Address", addressSchema);

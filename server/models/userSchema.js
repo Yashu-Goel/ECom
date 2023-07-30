@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-const Product = require("../models/productDetailsSchema");
+const Product = require("./productDetailsSchema");
+const Address = require("./addressSchema");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -25,27 +26,7 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
-  addresses: [
-    {
-      address_line: {
-        type: String,
-        required: true,
-        minLength: 10,
-      },
-      city: {
-        type: String,
-        required: true,
-      },
-      state: {
-        type: String,
-        required: true,
-      },
-      postal_code: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Address" }],
 });
 
 //password hashing
