@@ -25,6 +25,7 @@ const SellerCatalogue = () => {
       }
     })();
   }, []);
+  
   return (
     <div>
       {flag &&
@@ -39,7 +40,7 @@ const SellerCatalogue = () => {
             description={product.description}
             brand={product.brand}
             quantity={product.quantity}
-            pics={product.pics[0]} // Assuming productImages is an array of image URLs
+            pics={product.pics.map((pic) => getFileNameFromPath(pic))} 
           />
         ))}
     </div>
@@ -47,3 +48,7 @@ const SellerCatalogue = () => {
 };
 
 export default SellerCatalogue;
+function getFileNameFromPath(path) {
+  const parts = path.split("\\");
+  return parts[parts.length - 1];
+}

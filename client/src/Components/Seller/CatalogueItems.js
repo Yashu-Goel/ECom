@@ -1,6 +1,7 @@
 import React from "react";
 import "./CatalogueItems.css";
-
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const CatalogueItems = ({
   name,
@@ -14,19 +15,35 @@ const CatalogueItems = ({
   quantity
 }) => {
 
-  const parts = pics.split("\\");
-  const fileName = parts[parts.length - 1];
-  console.log(fileName);
-  console.log(pics);
+ 
+  
+  console.log("pics: "+pics);
   return (
     <div className="CatalogueOuter">
-      
       <div className="CatalogueItemMainContainer">
         <div className="CatalogueItemImageContainer">
-          <img
-            src={process.env.PUBLIC_URL + "/uploads/" + fileName}
-            alt={name}
-          />
+          <Carousel
+        className="coursel"
+        infiniteLoop
+        useKeyboardArrows={true}
+        autoPlay="true"
+        interval="5000"
+        showThumbs={false}
+        showStatus={false}
+      >
+            {pics.map((pic, index) => (
+              <div key={index}>
+                <img
+                  src={
+                    process.env.PUBLIC_URL +
+                    "/uploads/" +
+                    pic
+                  }
+                  alt={name}
+                />
+              </div>
+            ))}
+          </Carousel>
         </div>
         <div className="CatalogueItemProductDetails">
           <p>
