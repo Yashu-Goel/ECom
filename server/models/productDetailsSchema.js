@@ -26,7 +26,7 @@ const productDetailsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  brand: {
+  brand: { // link
     type: String,
     required: true,
   },
@@ -41,14 +41,15 @@ const productDetailsSchema = new mongoose.Schema({
       required: true,
     },
   ],
-  sellerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Seller",
-  },
   quantity: {
     type: Number,
     required: true,
   },
+  sellerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Seller",
+  },
+  
 });
 
 module.exports = mongoose.model("Product", productDetailsSchema);

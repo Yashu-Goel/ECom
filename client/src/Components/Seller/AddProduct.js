@@ -16,8 +16,9 @@ const [ProductData, setProductData] = useState({
   model: "",
   description: "",
   brand: "",
-  rating: "",
-  // reviews: [], 
+  //rating: "",
+  quantity: "",
+  // reviews: [],
 });
 
 const handleReviewChange = (index, field, value) => {
@@ -54,11 +55,12 @@ const handleFormSubmit = async (e) => {
     model,
     description,
     brand,
+    quantity,
     // rating,
     // reviews,
   } = ProductData;
 
-  if (!category || !price || !model || !MRP) {
+  if (!name || !category || !price || !MRP || !model || !description || !brand || !quantity) {
     toast.error("Fill All Details");
     return;
   }
@@ -73,6 +75,7 @@ const handleFormSubmit = async (e) => {
     formData.append("model", model);
     formData.append("description", description);
     formData.append("brand", brand);
+    formData.append("quantity", quantity);
     // formData.append("rating", rating);
     // formData.append("reviews", JSON.stringify(reviews)); // Convert reviews array to JSON string
     formData.append("sellerId", sellerId);
@@ -90,7 +93,11 @@ const handleFormSubmit = async (e) => {
       },
     };
 
-    const { data } = await axios.post(API_BASE + "/seller/product", formData, config);
+    const { data } = await axios.post(
+      API_BASE + "/seller/product",
+      formData,
+      config
+    );
     console.log(data);
     toast.success("Product added successfully");
   } catch (error) {
@@ -111,6 +118,7 @@ const handleFormSubmit = async (e) => {
   //   model: "",
   //   description: "",
   //   brand: "",
+  //   quantity,
   //   rating: "",
   //   reviews: [], // Reset reviews after submission
   // });
@@ -215,6 +223,19 @@ const handleFormSubmit = async (e) => {
               setProductData({
                 ...ProductData,
                 brand: e.target.value,
+              })
+            }
+          />
+        </div>
+
+        <div className="seller-form-group">
+          <label> Quantity:</label>
+          <input
+            value={ProductData.quantity}
+            onChange={(e) =>
+              setProductData({
+                ...ProductData,
+                quantity: e.target.value,
               })
             }
           />

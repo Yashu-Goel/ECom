@@ -122,9 +122,10 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
     model,
     description,
     brand,
-    //rating,
-    // reviews,
+    rating,
+    reviews,
     pics, 
+    quantity,
     sellerId: sellerId,
   } = req.body;
   const productImages = req.files.map((file) => file.path);
@@ -141,9 +142,10 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
       model,
       description,
       brand,
-      //rating,
-      // reviews,
+      rating,
+      reviews,
       pics, // Save the array of image paths in the database
+      quantity,
       sellerId: sellerId,
     });
 
@@ -177,6 +179,7 @@ router.get("/products/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 // router.get("/products", async (req, res) => {
 //   try {
