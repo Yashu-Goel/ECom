@@ -118,7 +118,7 @@ const handleFormSubmit = async (e) => {
   //   model: "",
   //   description: "",
   //   brand: "",
-  //   quantity,
+  //   quantity: "",
   //   rating: "",
   //   reviews: [], // Reset reviews after submission
   // });

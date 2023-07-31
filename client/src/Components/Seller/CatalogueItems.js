@@ -4,15 +4,19 @@ import "./CatalogueItems.css";
 
 const CatalogueItems = ({
   name,
-  type,
+  category,
   price,
+  MRP,
   model,
-  special_feature,
-  imageUrl,
+  description,
+  brand,
+  pics, // Save
 }) => {
-const parts = imageUrl.split("\\");
-const fileName = parts[parts.length - 1];
-console.log(fileName);
+
+  const parts = pics.split("\\");
+  const fileName = parts[parts.length - 1];
+  console.log(fileName);
+  console.log(pics);
   return (
     <div className="CatalogueOuter">
       <h1>Catalogue</h1>
@@ -30,7 +34,7 @@ console.log(fileName);
         </div>
         <div className="CatalogueItemProductDetails">
           <p>
-            Product Type:<span> {type} </span>
+            Product Category:<span> {category} </span>
           </p>
         </div>
         <div className="CatalogueItemProductDetails">
@@ -45,7 +49,7 @@ console.log(fileName);
         </div>
         <div className="CatalogueItemProductDetails">
           <p>
-            Special Feature: <span>{special_feature}</span>
+            Description: <span>{description}</span>
           </p>
         </div>
       </div>

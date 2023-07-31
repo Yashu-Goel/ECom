@@ -25,21 +25,23 @@ const SellerCatalogue = () => {
       }
     })();
   }, []);
-
   return (
     <div>
-      {/* {flag &&
+      {flag &&
         products.map((product) => (
           <CatalogueItems
             key={product._id}
             name={product.name}
-            type={product.type}
+            category={product.category}
             price={product.price}
+            MRP={product.MRP}
             model={product.model}
-            special_feature={product.special_feature}
-            imageUrl={product.productImages[0]} // Assuming productImages is an array of image URLs
+            description={product.description}
+            brand={product.brand}
+            quantity={product.quantity}
+            pics={product.pics[0]} // Assuming productImages is an array of image URLs
           />
-        ))} */}
+        ))}
     </div>
   );
 };
