@@ -134,13 +134,13 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
 
   try {
     const product = await Product.create({
-      name,
-      category,
-      price,
-      MRP,
-      model,
-      description,
-      brand,
+      name,//
+      category,//
+      price,//
+      MRP,//
+      model,//
+      description,//
+      brand,//
       rating,
       reviews,
       pics: productImages, // Save the array of image paths in the database

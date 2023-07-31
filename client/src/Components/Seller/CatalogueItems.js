@@ -11,6 +11,7 @@ const CatalogueItems = ({
   description,
   brand,
   pics, // Save
+  quantity
 }) => {
 
   const parts = pics.split("\\");
@@ -19,7 +20,7 @@ const CatalogueItems = ({
   console.log(pics);
   return (
     <div className="CatalogueOuter">
-      <h1>Catalogue</h1>
+      
       <div className="CatalogueItemMainContainer">
         <div className="CatalogueItemImageContainer">
           <img
@@ -29,22 +30,37 @@ const CatalogueItems = ({
         </div>
         <div className="CatalogueItemProductDetails">
           <p>
-            Product Name: <span> {name} </span>
+            Name: <span> {name} </span>
           </p>
         </div>
         <div className="CatalogueItemProductDetails">
           <p>
-            Product Category:<span> {category} </span>
+            Brand: <span> {brand} </span>
           </p>
         </div>
         <div className="CatalogueItemProductDetails">
           <p>
-            Product Price: <span>{price} </span>
+            Category:<span> {category} </span>
           </p>
         </div>
         <div className="CatalogueItemProductDetails">
           <p>
-            Product Model:<span> {model} </span>
+            Price: <span>{price} </span>
+          </p>
+        </div>
+        <div className="CatalogueItemProductDetails">
+          <p>
+            MRP: <span>{MRP} </span>
+          </p>
+        </div>
+        <div className="CatalogueItemProductDetails">
+          <p>
+            Model:<span> {model} </span>
+          </p>
+        </div>
+        <div className="CatalogueItemProductDetails">
+          <p>
+            Quantity:<span> {quantity} </span>
           </p>
         </div>
         <div className="CatalogueItemProductDetails">

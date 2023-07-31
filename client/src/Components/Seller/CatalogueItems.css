@@ -3,6 +3,8 @@
     width: 100%;
     background-color: aliceblue;
     border: 1px solid transparent;
+    display: flex;
+    flex-direction: column;
 }
 .CatalogueOuter h1{
     font-size: 3rem;
@@ -10,6 +12,7 @@
     text-decoration: underline;
     margin-top: 1rem;
 }
+
 .CatalogueItemMainContainer {
     max-height: 25rem; 
     width: 18rem;
@@ -52,4 +55,4 @@
 }
 .CatalogueItemProductDetails span{
     font-weight: 400;
-}
+} 
