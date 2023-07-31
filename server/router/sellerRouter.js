@@ -179,7 +179,20 @@ router.get("/products/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
+router.get("/products", async (req, res) => {
+  try {
+    const sellerId = req.query.sellerId; // Get seller ID from query parameter
+    if (!sellerId) {
+      return res
+        .status(400)
+        .json({ error: "Seller ID is required in the query parameters" });
+    }
+    const products = await Product.find({ sellerId: sellerId }); // Find all products with the given seller ID
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 // router.get("/products", async (req, res) => {
 //   try {
