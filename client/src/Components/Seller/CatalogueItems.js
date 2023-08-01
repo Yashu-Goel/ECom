@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import "./CatalogueItems.css";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const CatalogueItems = ({
   name,
@@ -12,81 +13,80 @@ const CatalogueItems = ({
   description,
   brand,
   pics, // Save
-  quantity
+  quantity,
 }) => {
+  const [headingShown, setHeadingShown] = useState(false);
+  console.log("pics: " + pics);
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    swipeToSlide: true, 
+    accessibility: true, 
+    arrow: true
+  };
 
- 
-  
-  console.log("pics: "+pics);
   return (
-    <div className="CatalogueOuter">
-      <div className="CatalogueItemMainContainer">
-        <div className="CatalogueItemImageContainer">
-          <Carousel
-        className="coursel"
-        infiniteLoop
-        useKeyboardArrows={true}
-        autoPlay="true"
-        interval="5000"
-        showThumbs={false}
-        showStatus={false}
-      >
-            {pics.map((pic, index) => (
-              <div key={index}>
-                <img
-                  src={
-                    process.env.PUBLIC_URL +
-                    "/uploads/" +
-                    pic
-                  }
-                  alt={name}
-                />
-              </div>
-            ))}
-          </Carousel>
-        </div>
-        <div className="CatalogueItemProductDetails">
-          <p>
-            Name: <span> {name} </span>
-          </p>
-        </div>
-        <div className="CatalogueItemProductDetails">
-          <p>
-            Brand: <span> {brand} </span>
-          </p>
-        </div>
-        <div className="CatalogueItemProductDetails">
-          <p>
-            Category:<span> {category} </span>
-          </p>
-        </div>
-        <div className="CatalogueItemProductDetails">
-          <p>
-            Price: <span>{price} </span>
-          </p>
-        </div>
-        <div className="CatalogueItemProductDetails">
-          <p>
-            MRP: <span>{MRP} </span>
-          </p>
-        </div>
-        <div className="CatalogueItemProductDetails">
-          <p>
-            Model:<span> {model} </span>
-          </p>
-        </div>
-        <div className="CatalogueItemProductDetails">
-          <p>
-            Quantity:<span> {quantity} </span>
-          </p>
-        </div>
-        <div className="CatalogueItemProductDetails">
-          <p>
-            Description: <span>{description}</span>
-          </p>
+    <>
+      <div className="CatalogueOuter">
+        <div className="CatalogueItemMainContainer">
+          <div className="CatalogueItemImageContainer">
+            <Slider {...settings}>
+              {pics.map((pic, index) => (
+                <div key={index}>
+                  <img
+                    src={process.env.PUBLIC_URL + "/uploads/" + pic}
+                    alt={name}
+                  />
+                </div>
+              ))}
+            </Slider>
+          </div>
+          <div className="CatalogueItemProductDetails">
+            <p>
+              Name: <span> {name} </span>
+            </p>
+          </div>
+          <div className="CatalogueItemProductDetails">
+            <p>
+              Brand: <span> {brand} </span>
+            </p>
+          </div>
+          <div className="CatalogueItemProductDetails">
+            <p>
+              Category:<span> {category} </span>
+            </p>
+          </div>
+          <div className="CatalogueItemProductDetails">
+            <p>
+              Price: <span>{price} </span>
+            </p>
+          </div>
+          <div className="CatalogueItemProductDetails">
+            <p>
+              MRP: <span>{MRP} </span>
+            </p>
+          </div>
+          <div className="CatalogueItemProductDetails">
+            <p>
+              Model:<span> {model} </span>
+            </p>
+          </div>
+          <div className="CatalogueItemProductDetails">
+            <p>
+              Quantity:<span> {quantity} </span>
+            </p>
+          </div>
+          <div className="CatalogueItemProductDetails">
+            <p>
+              Description: <span>{description}</span>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
