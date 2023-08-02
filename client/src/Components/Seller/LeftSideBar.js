@@ -10,6 +10,10 @@ const LeftSideBar = () => {
         {
             data_item: "Catalogue",
             link_to:"/catalogue"
+        },
+        {
+          data_item: "Dashboard",
+          link_to: "/seller_dashboard"
         }
     ]
 

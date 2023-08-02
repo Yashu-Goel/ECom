@@ -14,6 +14,7 @@ import UserProfile from "./Components/UserProfile/UserProfile";
 import SellerCatalogue from "./Components/Seller/SellerCatalogue";
 import Profile from "./Components/Seller/Profile";
 import DealsPage from "./Components/Deals/DealsPage";
+import SellerDashboard from "./Components/Seller/SellerDashboard";
 function App() {
   return (
     <Routes>
@@ -31,8 +32,17 @@ function App() {
         element={<OrderConfirmationPage />}
       />
       <Route exact path="/order-history" element={<OrderHistory />} />
-      <Route exact path="/catalogue" element={<SellerCatalogue/>} />
+      <Route exact path="/catalogue" element={<SellerCatalogue />} />
       <Route exact path="/seller" element={<SellerHome />} />
+      <Route
+        exact
+        path="/seller_dashboard"
+        element={
+          <SellerProvider>
+            <SellerDashboard />
+          </SellerProvider>
+        }
+      />
       <Route exact path="todays_deals" element={<DealsPage />} />
       <Route
         exact

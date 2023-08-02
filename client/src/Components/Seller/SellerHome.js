@@ -18,7 +18,7 @@ const SellerHome = () => {
     },
     {
       img: "https://m.media-amazon.com/images/G/01/sp-marketing-toolkit/guides/design/iconography/Free_Shipping._CB424650773_._SY200_.png",
-      heading: "TrUnbeatable Reach",
+      heading: "Unbeatable Reach",
       msg: "Deliver to 100% of India's serviceable pincodes, through Easy Ship & Fulfillment by PrimeBuy.",
     },
   ];
