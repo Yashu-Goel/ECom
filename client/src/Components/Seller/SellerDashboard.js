@@ -42,7 +42,7 @@ useEffect(() => {
       color: "#32c5d2",
     },
     {
-      value: "2",
+      value: length,
       text: "Total Products",
       color: "#8e44ad",
     },

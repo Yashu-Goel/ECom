@@ -15,7 +15,6 @@ const CatalogueItems = ({
   pics, // Save
   quantity,
 }) => {
-  const [headingShown, setHeadingShown] = useState(false);
   console.log("pics: " + pics);
   const settings = {
     dots: false,
