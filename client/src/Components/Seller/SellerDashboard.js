@@ -1,9 +1,30 @@
-import React from "react";
+import React,{useState, useEffect} from "react";
 import SellerNav from "./SellerNav";
 import ReactApexChart from "react-apexcharts";
+import axios from 'axios'
 import "./SellerDashboard.css";
+const API_BASE = "http://localhost:5000";
 
 const SellerDashboard = () => {
+
+    const [length, setLength]=useState(0)
+useEffect(() => {
+  (async () => {
+    try {
+      const sellerId = localStorage.getItem("_id");
+      const response = await axios.get(
+        API_BASE + `/seller/products?sellerId=${sellerId}`
+      );
+      if (response.data.length>0)
+      {
+        setLength(response.data.length);
+      } console.log("Length:", response.data.length); // Log the response.data directly
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  })();
+}, []);
+  
   const data = [
     {
       value: "₹ 2,000",
@@ -30,19 +51,19 @@ const SellerDashboard = () => {
   const order_data = [
     {
       text: "Total",
-      value: "23",
+      value: length,
     },
     {
       text: "Completed",
-      value: "18",
+      value: 0,
     },
     {
       text: "Pending",
-      value: "3",
+      value: 0,
     },
     {
       text: "Cancelled",
-      value: "2",
+      value: 0,
     },
   ];
 
