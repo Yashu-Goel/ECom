@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CatalogueItems from "./CatalogueItems";
 import './SellerCatalogue.css'
+import SellerNav from './SellerNav'
 const API_BASE = "http://localhost:5000";
 
 const SellerCatalogue = () => {
@@ -27,8 +28,10 @@ const SellerCatalogue = () => {
   }, []);
   
   return (
-    <div>
+    <div className="SellerCatalogueMainContainer">
+      <SellerNav />
       <h1 className="CatalogueHeading">Catalogue</h1>
+
       {flag &&
         products.map((product) => (
           <CatalogueItems
@@ -41,7 +44,7 @@ const SellerCatalogue = () => {
             description={product.description}
             brand={product.brand}
             quantity={product.quantity}
-            pics={product.pics.map((pic) => getFileNameFromPath(pic))} 
+            pics={product.pics.map((pic) => getFileNameFromPath(pic))}
           />
         ))}
     </div>

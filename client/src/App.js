@@ -32,7 +32,15 @@ function App() {
         element={<OrderConfirmationPage />}
       />
       <Route exact path="/order-history" element={<OrderHistory />} />
-      <Route exact path="/catalogue" element={<SellerCatalogue />} />
+      <Route
+        exact
+        path="/catalogue"
+        element={
+          <SellerProvider>
+            <SellerCatalogue />
+          </SellerProvider>
+        }
+      />
       <Route exact path="/seller" element={<SellerHome />} />
       <Route
         exact

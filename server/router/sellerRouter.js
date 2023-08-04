@@ -110,6 +110,28 @@ router.post("/sellerlogin", async (req, res) => {
   }
 });
 
+//get seller details
+router.get("/seller_details/:id", async (req, res) => {
+  try {
+    const sellerId = req.params.id;
+    const seller = await Seller.findById(sellerId);
+    console.log('okok');
+    if (!seller) {
+      return res.status(404).json({ error: "Seller not found" });
+    }
+
+    res.status(200).json({
+      _id: seller._id,
+      name: seller.name,
+      email: seller.email,
+      mobile: seller.mobile,
+      gst: seller.gst,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 //Product Details
 
 router.post("/product", upload.array("productImages", 5), async (req, res) => {
@@ -134,13 +156,13 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
 
   try {
     const product = await Product.create({
-      name,//
-      category,//
-      price,//
-      MRP,//
-      model,//
-      description,//
-      brand,//
+      name,
+      category,
+      price,
+      MRP,
+      model,
+      description,
+      brand,
       rating,
       reviews,
       pics: productImages, // Save the array of image paths in the database
