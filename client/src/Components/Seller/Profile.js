@@ -37,8 +37,21 @@ useEffect(() => {
           <LeftSideBar />
         </div>
         <div className="ProfileMainContent">
-          {/* Profile content */}
-          <p>Name: {sellerData.name}</p>
+          <h1>Profile</h1>
+          <div className="ProfileInnerContent">
+            <div className="ProfileDataItems">
+              <p>Name:</p> <span>{sellerData.name}</span>
+            </div>
+            <div className="ProfileDataItems">
+              <p>E-mail ID:</p> <span>{sellerData.email}</span>
+            </div>
+            <div className="ProfileDataItems">
+              <p>Mobile Number:</p> <span>{sellerData.mobile}</span>
+            </div>
+            <div className="ProfileDataItems">
+              <p>GST:</p> <span>{sellerData.gst}</span>
+            </div>
+          </div>
         </div>
       </div>
     </SellerProvider>

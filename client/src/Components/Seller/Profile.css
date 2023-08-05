@@ -1,5 +1,42 @@
+
 .ProfileMainContent
 {
-    background-color: #eff6f7;
+    background-image: url('./Assets/ProfileBackground.png');
     width: 100%;
+     background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100vh;
+}
+.ProfileMainContent{
+    position: relative;
+ 
+}
+.ProfileMainContent h1{
+    text-align: center;
+    margin-top: 2rem;
+    font-weight: bold;
+    font-size: 2rem;
+    text-decoration: underline;
+    letter-spacing: 1px;
+}
+.ProfileInnerContent{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2rem;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    border-radius: 2px;
+    font-size: 1.2rem;
+}
+.ProfileDataItems{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.371);
+    display: flex;
+    justify-content: space-between;
+    padding-top: 0.3rem;
+}
+.ProfileDataItems p{
+    font-weight: bold;
+    margin-right: 10px;
 }
