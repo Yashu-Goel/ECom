@@ -11,6 +11,7 @@ import { UserState } from "../Context/UserProvider";
 import CartModal from "../Modal/CartModal";
 import { addedToCart } from "../functions/functions";
 import { API_BASE } from "../functions/functions";
+const image_url = "../../../public/uploads";
 
 export const Product = () => {
   const { user, cart, setCart } = UserState();
@@ -22,15 +23,20 @@ export const Product = () => {
     setShowModal(true);
   };
 
+  function convertFilePathToURL(filePath) {
+    const normalizedPath = filePath.replace(/\\/g, "/");
+    console.log("image here", image_url + normalizedPath);
+    return normalizedPath;
+  }
   const closeModal = () => {
     setShowModal(false);
   };
   const [imageSrc, setImageSrc] = useState(
-    require(`../TopSecHome/img_1/slider10Images/image1.webp`)
+    require("../../../public/uploadsuploads/productImages-1690813242998-242481261.jpg")
   );
 
   const addImage = (pic) => {
-    setImageSrc(require(`../TopSecHome/img_1/slider10Images/${pic}`));
+    setImageSrc(image_url + convertFilePathToURL(pic));
   };
 
   const { id } = useParams();
@@ -46,7 +52,7 @@ export const Product = () => {
         );
         setProductDetails(response.data);
         console.log(response.data);
-        console.log(productDetails);
+        console.log(productDetails.pics);
       } catch (error) {
         // console.log(`The use data is ${user}`);
       }
@@ -107,8 +113,8 @@ export const Product = () => {
                     return (
                       <div className="inner-thumb-pics" key={index}>
                         <img
-                          // src={require(`${pic}`)}
-                          alt=""
+                          src={image_url + convertFilePathToURL(pic)}
+                          alt="pic"
                           onMouseOver={() => setClassName(index, pic)}
                           className="current"
                         />
@@ -270,7 +276,7 @@ export const Product = () => {
                         {/* <strong>{reviews.name}</strong> */}
                       </div>
 
-                      {/* {[...Array(5)].map((_, index) => (
+                      {[...Array(5)].map((_, index) => (
                         <strong
                           key={index}
                           style={
@@ -279,9 +285,9 @@ export const Product = () => {
                         >
                           &#9733;
                         </strong>
-                      ))} */}
+                      ))}
 
-                      {/* <p>{reviews.message}</p> */}
+                      <p>{reviews.message}</p>
                     </div>
                   </div>
                 );
