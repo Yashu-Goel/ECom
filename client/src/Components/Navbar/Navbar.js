@@ -47,9 +47,9 @@ const Navbar = () => {
         <div className="logo nav-elements">Logo</div>
 
         <div className="categories">
-          <div class="dropdown">
+          <div className="dropdown">
             <button
-              class="btn btn-primary dropdown-toggle"
+              className="btn btn-primary dropdown-toggle"
               type="button"
               id="dropdownMenuButton"
               data-mdb-toggle="dropdown"
@@ -57,38 +57,38 @@ const Navbar = () => {
             >
               Fasion
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Men
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Women
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Child
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Footwear
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Trousers
                 </a>
               </li>
             </ul>
           </div>
 
-          <div class="dropdown">
+          <div className="dropdown">
             <button
-              class="btn btn-primary dropdown-toggle"
+              className="btn btn-primary dropdown-toggle"
               type="button"
               id="dropdownMenuButton"
               data-mdb-toggle="dropdown"
@@ -96,43 +96,43 @@ const Navbar = () => {
             >
               Electronics
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Smart Phones
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Smart TVs
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Mobile Accessories
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Refridgerators
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Washing Machines
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Other Accessories
                 </a>
               </li>
             </ul>
           </div>
 
-          <div class="dropdown">
+          <div className="dropdown">
             <button
-              class="btn btn-primary dropdown-toggle"
+              className="btn btn-primary dropdown-toggle"
               type="button"
               id="dropdownMenuButton"
               data-mdb-toggle="dropdown"
@@ -140,28 +140,28 @@ const Navbar = () => {
             >
               Health
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Diet And Fitness
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Health Machines
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Ayurvedic Medicines
                 </a>
               </li>
             </ul>
           </div>
 
-          <div class="dropdown">
+          <div className="dropdown">
             <button
-              class="btn btn-primary dropdown-toggle"
+              className="btn btn-primary dropdown-toggle"
               type="button"
               id="dropdownMenuButton"
               data-mdb-toggle="dropdown"
@@ -169,33 +169,33 @@ const Navbar = () => {
             >
               Home Decor
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Curtains
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Bedsheets
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Home Decors
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   More Items
                 </a>
               </li>
             </ul>
           </div>
 
-          <div class="dropdown">
+          <div className="dropdown">
             <button
-              class="btn btn-primary dropdown-toggle"
+              className="btn btn-primary dropdown-toggle"
               type="button"
               id="dropdownMenuButton"
               data-mdb-toggle="dropdown"
@@ -203,33 +203,33 @@ const Navbar = () => {
             >
               Pet Supplies
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Dog Foods
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Cat Foods
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Animal Grooming Kits
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Fish Supplies
                 </a>
               </li>
             </ul>
           </div>
 
-          <div class="dropdown">
+          <div className="dropdown">
             <button
-              class="btn btn-primary dropdown-toggle"
+              className="btn btn-primary dropdown-toggle"
               type="button"
               id="dropdownMenuButton"
               data-mdb-toggle="dropdown"
@@ -237,24 +237,24 @@ const Navbar = () => {
             >
               Gifts
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Readymade Gifts
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Natural Gifts
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Handmade Cards
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Affordable Presents
                 </a>
               </li>
@@ -264,17 +264,21 @@ const Navbar = () => {
         <div className="nav-search">
           <input type="text" placeholder="I'm looking for..." />
           <div className="search-icon">
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <i className="fa-solid fa-magnifying-glass"></i>
           </div>
         </div>
 
         <div className="nav-icons">
           {user !== null ? (
             <div className="nav-symbols">
-              <button class="nav-heart" id="dropdown-btn" onClick={loadAccount}>
-                <i class="fa-solid fa-user"></i>
+              <button
+                className="nav-heart"
+                id="dropdown-btn"
+                onClick={loadAccount}
+              >
+                <i className="fa-solid fa-user"></i>
               </button>
-              <div class="dropdown-menu" id="dropdown-menu">
+              <div className="dropdown-menu" id="dropdown-menu">
                 <Link to={"/order-history"}>My Orders</Link>
                 <Link to={"/user-profile"}>Account</Link>
                 <button onClick={handleLogout}>Logout</button>
@@ -286,16 +290,16 @@ const Navbar = () => {
               </div>
               <button className="nav-shop" onClick={openModal}>
                 {cart.length === 0 ? (
-                  <i class="fa-solid fa-cart-shopping"></i>
+                  <i className="fa-solid fa-cart-shopping"></i>
                 ) : (
-                  <i class="fa badge" value={cart.length}>
+                  <i className="fa badge" value={cart.length}>
                     &#xf07a; {cart.length}
                   </i>
                 )}
               </button>
               <button className="nav-heart" onClick={() => setHeart(!heart)}>
                 <i
-                  class="fa-solid fa-heart"
+                  className="fa-solid fa-heart"
                   style={{ color: heart && "red" }}
                 ></i>
               </button>

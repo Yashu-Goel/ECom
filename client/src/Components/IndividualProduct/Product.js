@@ -21,26 +21,24 @@ export const Product = () => {
   const [imageSrc, setImageSrc] = useState("");
   const [pic, setPic] = useState([]);
 
-  useEffect(() => {
-    setLoading(true);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   const getProductDetails = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         API_BASE + `/get/getProductDetails/${id}`
+  //       );
+  //       setProductDetails(response.data);
+  //       setPic(response.data.pics);
+  //       console.log("OKOK: "+pic);        
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   // getProductDetails();
+  //   setLoading(false);
 
-    // setTimeout(() => {
-    const getProductDetails = async () => {
-      try {
-        const response = await axios.get(
-          API_BASE + `/get/getProductDetails/${id}`
-        );
-        setProductDetails(response.data);
-        !response ? setPic(response.data.pics) : setPic([]);
-        console.log("", pic);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getProductDetails();
-    setLoading(false);
-    // }, 2500);
-  }, []);
+  // }, []);
 
   const openModal = () => {
     setShowModal(true);
@@ -77,7 +75,7 @@ export const Product = () => {
           API_BASE + `/get/getProductDetails/${id}`
         );
         setProductDetails(response.data);
-        console.log(response.data);
+        setPic(response.data.pics); 
       } catch (error) {
         console.log(error);
       }
@@ -137,12 +135,19 @@ export const Product = () => {
                   productDetails.pics.map((pic, index) => {
                     return (
                       <div className="inner-thumb-pics" key={index}>
-                        {/* <img
-                          src={convertFilePathToURL(pic)}
-                          alt="pic"
-                          onMouseOver={() => setClassName(index, pic)}
-                          className="current"
-                        /> */}
+                        {console.log("pic: " + pic)}
+                        {
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/uploads/" +
+                              getFileNameFromPath(pic)
+                            }
+                            alt="pic"
+                            onMouseOver={() => setClassName(index, pic)}
+                            className="current"
+                          />
+                        }
                       </div>
                     );
                   })}
