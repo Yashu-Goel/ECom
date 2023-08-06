@@ -21,36 +21,12 @@ export const Product = () => {
   const [imageSrc, setImageSrc] = useState("");
   const [pic, setPic] = useState([]);
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   const getProductDetails = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         API_BASE + `/get/getProductDetails/${id}`
-  //       );
-  //       setProductDetails(response.data);
-  //       setPic(response.data.pics);
-  //       console.log("OKOK: "+pic);        
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   // getProductDetails();
-  //   setLoading(false);
-
-  // }, []);
-
   const openModal = () => {
     setShowModal(true);
   };
   function getFileNameFromPath(path) {
     const parts = path.split("\\");
     return parts[parts.length - 1];
-  }
-  function convertFilePathToURL(filePath) {
-    const normalizedPath = filePath.replace(/\\/g, "/");
-    console.log("image here", normalizedPath);
-    return normalizedPath;
   }
   const closeModal = () => {
     setShowModal(false);
@@ -67,22 +43,19 @@ export const Product = () => {
 
   useEffect(() => {
     setLoading(true);
-
-    // setTimeout(() => {
     const getProductDetails = async () => {
       try {
         const response = await axios.get(
           API_BASE + `/get/getProductDetails/${id}`
         );
         setProductDetails(response.data);
-        setPic(response.data.pics); 
+        setPic(response.data.pics);
       } catch (error) {
         console.log(error);
       }
     };
     getProductDetails();
     setLoading(false);
-    // }, 2500);
   }, []);
 
   function setClassName(index, pic) {
