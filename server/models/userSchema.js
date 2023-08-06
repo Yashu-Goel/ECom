@@ -26,7 +26,16 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
-  addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Address" }],
+  addresses: [
+    {
+      name: { type: String, required: true },
+      street: { type: String, required: true },
+      city: { type: String, required: true },
+      state: { type: String, required: true },
+      zip: { type: String, required: true },
+      phone: { type: String, required: true },
+    },
+  ],
 });
 
 //password hashing

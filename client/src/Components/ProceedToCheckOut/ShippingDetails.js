@@ -1,58 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./ShippingDetails.css";
 import { UserState } from "../Context/UserProvider";
+import { API_BASE } from "../functions/functions";
+import axios from "axios";
 
 function ShippingDetails() {
-  const { user, setUser, cart, setCart, selectedAddress, setSelectedAddress } =
-    UserState();
+  const { selectedAddress, setSelectedAddress } = UserState();
 
-  //the below address will come from the user schema address
-  const [addresses, setAddresses] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      street: "123 Main St",
-      city: "Cityville",
-      state: "State",
-      zip: "12345",
-      phone: 9416510269,
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      street: "456 Elm St",
-      city: "Townville",
-      state: "State",
-      zip: "67890",
-      phone: 9354549047,
-    },
-  ]);
-  const [newAddress, setNewAddress] = useState({
-    name: "",
-    street: "",
-    city: "",
-    state: "",
-    zip: "",
-    phone: "",
-  });
+  const [addresses, setAddresses] = useState([]);
+  const [newAddress, setNewAddress] = useState({});
+  const [addNew, setAddnew] = useState(false);
 
-  const handleAddressSelect = (id) => {
-    setSelectedAddress(id);
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("profile"));
+    setAddresses(data.addresses);
+    setSelectedAddress({});
+  }, []);
+
+  const handleAddressSelect = (address) => {
+    setSelectedAddress(address);
   };
 
-  const handleAddAddress = (event) => {
+  const handleAddAddress = async (event) => {
     event.preventDefault();
     const updatedAddresses = [
       ...addresses,
       {
-        id: addresses.length + 1,
         ...newAddress,
       },
     ];
-    setAddresses(updatedAddresses);
-    setSelectedAddress(addresses[addresses.length - 1].id);
+
+    try {
+      const user = JSON.parse(localStorage.getItem("profile"));
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const { data } = await axios.post(
+        API_BASE + "/updateAddress/add",
+        updatedAddresses,
+        config
+      );
+      localStorage.setItem("profile", JSON.stringify(data));
+      setAddresses(data.addresses);
+    } catch (error) {
+      return;
+    }
     setNewAddress({
       name: "",
       street: "",
@@ -61,6 +58,7 @@ function ShippingDetails() {
       zip: "",
       phone: "",
     });
+    setAddnew(false);
   };
 
   const handleInputChange = (event) => {
@@ -70,77 +68,106 @@ function ShippingDetails() {
       [name]: value,
     }));
   };
-  const handleEditAddress = (id) => {
-    // Implement the logic to handle editing the address
-    console.log("Edit address with ID:", id);
-  };
 
-  const handleDeleteAddress = (id) => {
-    const updatedAddresses = addresses.filter((address) => address.id !== id);
-    setAddresses(updatedAddresses);
-    //code for backend also should be implemneted
-    if (selectedAddress === id) {
-      setSelectedAddress(null);
+  // const handleEditAddress = (id) => {
+  //   console.log("Edit address with ID:", id);
+  // };
+
+  const handleDeleteAddress = async (_id) => {
+    const updatedAddresses = addresses.filter((address) => address._id !== _id);
+
+    try {
+      const user = JSON.parse(localStorage.getItem("profile"));
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const { data } = await axios.post(
+        API_BASE + "/updateAddress/add",
+        updatedAddresses,
+        config
+      );
+      localStorage.setItem("profile", JSON.stringify(data));
+      setAddresses(data.addresses);
+    } catch (error) {
+      return;
     }
+    setSelectedAddress({});
   };
+  console.log(selectedAddress)
   return (
     <div className="container-shipping">
       <div className="shipping-page">
         <h2>Shipping Address</h2>
-        <div className="address-list">
-          {addresses.map((address) => (
-            <div
-              key={address.id}
-              className={`address-item ${
-                address.id === selectedAddress ? "selected" : ""
-              }`}
-              onClick={() => handleAddressSelect(address.id)}
-            >
-              <input
-                type="radio"
-                name="selected-address"
-                checked={address.id === selectedAddress}
-                onChange={() => handleAddressSelect(address.id)}
-              />
-              <div className="inner-div">
-                <span>{address.name} </span>
-                <span>{address.street} </span>
-                <span>
-                  {address.city}, {address.state}, {address.zip}, Phone:{" "}
-                  {address.phone}
-                </span>
-              </div>
-              <div className="address-item-actions">
-                <button
-                  className="address-item-edit"
-                  onClick={() => handleEditAddress(address.id)}
+        {addresses.length > 0 ? (
+          <>
+            <div className="address-list">
+              {addresses.map((address) => (
+                <div
+                  key={address._id}
+                  className={`address-item ${
+                    address === selectedAddress ? "selected" : ""
+                  }`}
+                  onClick={() => handleAddressSelect(address)}
                 >
-                  <FaEdit />
-                </button>
-                <button
-                  className="address-item-delete"
-                  onClick={() => handleDeleteAddress(address.id)}
-                >
-                  <FaTrash />
-                </button>
-              </div>
+                  <input
+                    type="radio"
+                    name="selected-address"
+                    checked={address === selectedAddress}
+                    onChange={() => handleAddressSelect(address)}
+                  />
+                  <div className="inner-div">
+                    <span>{address.name} </span>
+                    <span>{address.street} </span>
+                    <span>
+                      {address.city}, {address.state}, {address.zip}, Phone:{" "}
+                      {address.phone}
+                    </span>
+                  </div>
+                  <div className="address-item-actions">
+                    <button
+                      className="address-item-edit"
+                      // onClick={() => handleEditAddress(address._id)}
+                    >
+                      <FaEdit />
+                    </button>
+                    <button
+                      className="address-item-delete"
+                      onClick={() => {
+                        handleDeleteAddress(address._id);
+                      }}
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        ) : (
+          <h1>No address Found</h1>
+        )}
         <div className="shop-procceed">
           <button
-            onClick={() => setSelectedAddress(null)}
+            onClick={() => setAddnew(!addNew)}
             className="add-address-button"
           >
             <FaPlus className="add-icon" />
             <span>Add New Address</span>
           </button>
-          <Link className="add-address-button" to={"/order-confirmation"}>
-            <span>Proceed</span>&nbsp; <i class="fa-solid fa-arrow-right"></i>
-          </Link>
+          {!selectedAddress ? (
+            <></>
+          ) : (
+            <Link className="add-address-button" to={"/order-confirmation"}>
+              <span>Proceed</span>&nbsp;
+              <i className="fa-solid fa-arrow-right"></i>
+            </Link>
+          )}
         </div>
 
-        {selectedAddress === null && (
+        {addNew && (
           <div className="add-address-form">
             <h3>Add New Address</h3>
             <form onSubmit={handleAddAddress}>
@@ -153,7 +180,6 @@ function ShippingDetails() {
                 onChange={handleInputChange}
                 required
               />
-
               <label htmlFor="street">Street:</label>
               <input
                 type="text"

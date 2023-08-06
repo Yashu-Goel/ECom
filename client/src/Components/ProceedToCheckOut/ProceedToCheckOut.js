@@ -3,11 +3,11 @@ import Address from "./ShippingDetails";
 import "./ProceedToCheckOut.css";
 
 const ProceedToCheckOut = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  // const [currentStep, setCurrentStep] = useState(1);
 
-  const handleClick = (step) => {
-    setCurrentStep(step);
-  };
+  // const handleClick = (step) => {
+  //   setCurrentStep(step);
+  // };
 
   return (
     <div>

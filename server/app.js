@@ -8,12 +8,14 @@ const editCart = require("./router/editCart.js");
 const tokenMiddleware = require("./MiddleWares/tokenMiddleWare.js");
 const sellerRouter = require("./router/sellerRouter.js");
 const getDetails = require("./router/getDetailsRouter.js");
+const updateAddress = require("./router/updateAddress");
 //middle wares
 app.use(cors());
 app.use("/user", userRouter);
 app.use("/cart", tokenMiddleware, editCart);
 app.use("/seller", sellerRouter);
 app.use("/get", getDetails);
+app.use("/updateAddress", tokenMiddleware, updateAddress);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

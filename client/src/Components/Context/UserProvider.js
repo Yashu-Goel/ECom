@@ -7,7 +7,7 @@ const UserProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
-  const [selectedAddress, setSelectedAddress] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,6 +16,7 @@ const UserProvider = ({ children }) => {
         if (userInfo !== null) {
           setUser(userInfo);
           setCart(userInfo.cart);
+          console.log(userInfo)
           console.log("Use effect is running");
         }
       } catch (error) {
