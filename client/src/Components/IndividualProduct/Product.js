@@ -11,7 +11,6 @@ import { UserState } from "../Context/UserProvider";
 import CartModal from "../Modal/CartModal";
 import { addedToCart } from "../functions/functions";
 import { API_BASE } from "../functions/functions";
-const image_url = "../../../public/uploads";
 
 export const Product = () => {
   const { user, cart, setCart } = UserState();
@@ -19,24 +18,51 @@ export const Product = () => {
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(1);
   const [productDetails, setProductDetails] = useState(null);
+  const [imageSrc, setImageSrc] = useState("");
+  const [pic, setPic] = useState([]);
+
+  useEffect(() => {
+    setLoading(true);
+
+    // setTimeout(() => {
+    const getProductDetails = async () => {
+      try {
+        const response = await axios.get(
+          API_BASE + `/get/getProductDetails/${id}`
+        );
+        setProductDetails(response.data);
+        !response ? setPic(response.data.pics) : setPic([]);
+        console.log("", pic);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProductDetails();
+    setLoading(false);
+    // }, 2500);
+  }, []);
+
   const openModal = () => {
     setShowModal(true);
   };
-
+  function getFileNameFromPath(path) {
+    const parts = path.split("\\");
+    return parts[parts.length - 1];
+  }
   function convertFilePathToURL(filePath) {
     const normalizedPath = filePath.replace(/\\/g, "/");
-    console.log("image here", image_url + normalizedPath);
+    console.log("image here", normalizedPath);
     return normalizedPath;
   }
   const closeModal = () => {
     setShowModal(false);
   };
-  const [imageSrc, setImageSrc] = useState(
-    require("../../../public/uploadsuploads/productImages-1690813242998-242481261.jpg")
-  );
+  //error
 
   const addImage = (pic) => {
-    setImageSrc(image_url + convertFilePathToURL(pic));
+    setImageSrc(
+      process.env.PUBLIC_URL + "/uploads/" + getFileNameFromPath(pic)
+    );
   };
 
   const { id } = useParams();
@@ -52,9 +78,8 @@ export const Product = () => {
         );
         setProductDetails(response.data);
         console.log(response.data);
-        console.log(productDetails.pics);
       } catch (error) {
-        // console.log(`The use data is ${user}`);
+        console.log(error);
       }
     };
     getProductDetails();
@@ -112,12 +137,12 @@ export const Product = () => {
                   productDetails.pics.map((pic, index) => {
                     return (
                       <div className="inner-thumb-pics" key={index}>
-                        <img
-                          src={image_url + convertFilePathToURL(pic)}
+                        {/* <img
+                          src={convertFilePathToURL(pic)}
                           alt="pic"
                           onMouseOver={() => setClassName(index, pic)}
                           className="current"
-                        />
+                        /> */}
                       </div>
                     );
                   })}
