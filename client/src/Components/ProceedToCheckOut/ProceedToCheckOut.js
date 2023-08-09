@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Address from "./ShippingDetails";
 import "./ProceedToCheckOut.css";
 
 const ProceedToCheckOut = () => {
@@ -11,7 +10,7 @@ const ProceedToCheckOut = () => {
 
   return (
     <div>
-      <Address />
+      {/* <Address /> */}
       {/* <div className="progress-bar">
         <div
           className={`step ${currentStep === 1 ? "active" : ""}`}

@@ -5,7 +5,6 @@ require("../db/conn.js");
 
 const tokenMiddleware = async (req, res, next) => {
   const token = req.header("Authorization");
-  
   if (!token || !token.startsWith("Bearer ")) {
     return res.status(401).json({ error: "Unauthorized" });
   }

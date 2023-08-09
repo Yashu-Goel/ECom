@@ -64,7 +64,6 @@
 
 .empty-cart-message {
   text-align: center;
-
 }
 
 .cart-summary {
@@ -119,8 +118,8 @@
   margin: 10px;
 }
 .item-image {
-  width: auto;
-  height: 50px;
+  width: 60px;
+  height: 60px;
 }
 .item-image > img {
   height: 100%;
@@ -132,17 +131,17 @@
   margin: auto 10px;
 }
 .item-actions .items {
-    margin: auto 5px;
-    border: 1px solid black;
-    padding: 5px;
-    border-radius: 5px;
-    font-weight: bold;
+  margin: auto 5px;
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: bold;
 }
-.update-button{
-    background-color: #4caf50;
-    color: white;
+.update-button {
+  background-color: #4caf50;
+  color: white;
 }
-.delete-button{
-    background-color: red;
-    color: white;
+.delete-button {
+  background-color: red;
+  color: white;
 }

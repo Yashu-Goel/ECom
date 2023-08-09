@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, Link, Navigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../Navbar/Navbar";
@@ -11,32 +11,18 @@ import { UserState } from "../Context/UserProvider";
 import CartModal from "../Modal/CartModal";
 import { addedToCart } from "../functions/functions";
 import { API_BASE } from "../functions/functions";
-import { getFileNameFromPath, calculateDiscount } from "./function";
+import { getFileNameFromPath, calculateDiscount, addImage } from "./function";
 
 export const Product = () => {
+  const { id } = useParams();
   const { user, cart, setCart } = UserState();
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(1);
   const [productDetails, setProductDetails] = useState(null);
   const [pic, setPic] = useState([]);
-
   const [imageSrc, setImageSrc] = useState(null);
 
-  const openModal = () => {
-    setShowModal(true);
-  };
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
-  const addImage = (pic) => {
-    setImageSrc(
-      process.env.PUBLIC_URL + "/uploads/" + getFileNameFromPath(pic)
-    );
-  };
-
-  const { id } = useParams();
   useEffect(() => {
     setLoading(true);
     const getProductDetails = async () => {
@@ -52,7 +38,7 @@ export const Product = () => {
     };
     getProductDetails();
     setLoading(false);
-  }, []);
+  }, [id]);
 
   function setClassName(index, pic) {
     const Img = document.querySelectorAll(".current");
@@ -61,12 +47,8 @@ export const Product = () => {
     });
 
     Img[index].classList.add("active");
-    addImage(pic);
+    setImageSrc(() => addImage(pic));
   }
-
-  const starStyle = {
-    color: "orange",
-  };
 
   const increment = () => {
     if (count < productDetails.quantity) {
@@ -81,8 +63,8 @@ export const Product = () => {
   };
   return (
     <>
-      {showModal && <CartModal closeModal={closeModal} />}
-      {!productDetails ? (
+      {showModal && <CartModal closeModal={() => setShowModal(false)} />}
+      {!productDetails  ? (
         <div className="loading-modal">
           <div className="loading-spinner"></div>
           <p>Loading ...</p>
@@ -98,7 +80,6 @@ export const Product = () => {
                     productDetails.pics.map((pic, index) => {
                       return (
                         <div className="inner-thumb-pics" key={index}>
-                          {console.log("pic: " + pic)}
                           {
                             <img
                               src={
@@ -144,7 +125,11 @@ export const Product = () => {
                       <span
                         key={index}
                         style={
-                          index < productDetails.ratings ? starStyle : null
+                          index < productDetails.ratings
+                            ? {
+                                color: "orange",
+                              }
+                            : null
                         }
                       >
                         &#9733;
@@ -256,7 +241,9 @@ export const Product = () => {
                       >
                         Add to Cart
                       </button>
-                      <button onClick={openModal}>Buy now</button>
+                      <button onClick={() => setShowModal(true)}>
+                        Buy now
+                      </button>
                     </>
                   )}
                 </div>
@@ -270,12 +257,10 @@ export const Product = () => {
               )}
               <div>
                 {Object.entries(productDetails.reviews).forEach((reviews) => {
-                  console.log(reviews);
                   return (
                     <div className="review-box">
                       <div className="review-icon">
                         <div>
-                          {" "}
                           <i class="fa fa-user" aria-hidden="true"></i>&nbsp;
                           <strong>{reviews.name}</strong>
                         </div>

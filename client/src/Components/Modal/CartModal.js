@@ -5,6 +5,11 @@ import { Link } from "react-router-dom";
 import { UserState } from "../Context/UserProvider";
 import { removeItem } from "../functions/functions";
 import { API_BASE } from "../functions/functions";
+import { getFileNameFromPath } from "../IndividualProduct/function";
+import {
+  calculateTotal,
+  truncateName,
+} from "../OrderConfirmationPage/function";
 
 const CartModal = ({ closeModal }) => {
   const { cart, setCart, user } = UserState();
@@ -33,27 +38,13 @@ const CartModal = ({ closeModal }) => {
             };
           })
         );
-        setProducts(cartDetails); // Use setProducts instead of setProduct
+        setProducts(cartDetails);
       } catch (error) {}
     };
 
     getProductDetails();
     setIsLoading(false);
   }, [cart, user.token]);
-
-  const truncateName = (name) => {
-    if (name.length > 15) {
-      return name.slice(0, 15) + "...";
-    }
-    return name;
-  };
-  const calculateTotalAmount = () => {
-    let total = 0;
-    products.forEach((item) => {
-      total += item.product.price * item.count;
-    });
-    return total.toFixed(2);
-  };
 
   return (
     <>
@@ -71,15 +62,21 @@ const CartModal = ({ closeModal }) => {
           </span>
           <h2 className="cart-heading">Your Shopping Cart</h2>
           <div className="cart-items">
-            {products.length > 0 ? (
+            {isLoading ? (
+              <div>Loading items...</div>
+            ) : products.length > 0 ? (
               <ul className="cart-list">
                 {products.map((item, index) => (
                   <li key={index} className="cart-item">
                     <div className="item-info">
                       <div className="item-image">
                         <img
-                          src={require(`../TopSecHome/img_1/slider10Images/image1.webp`)}
-                          alt="images"
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/uploads/" +
+                            getFileNameFromPath(item.product.pics[0])
+                          }
+                          alt={`${item.product.name}`}
                         />
                       </div>
                       <div className="item-details">
@@ -121,7 +118,9 @@ const CartModal = ({ closeModal }) => {
                 ))}
                 <li className="cart-summary">
                   <div className="summary-label">Total:</div>
-                  <div className="summary-total">₹{calculateTotalAmount()}</div>
+                  <div className="summary-total">
+                    ₹{calculateTotal(products)}
+                  </div>
                 </li>
               </ul>
             ) : (
@@ -129,10 +128,15 @@ const CartModal = ({ closeModal }) => {
             )}
           </div>
           <div className="cart-footer">
-            {cart.length > 0 && (
-              <Link className="checkout-button" to={"/proceed-to-checkout"}>
-                Proceed to Checkout
-              </Link>
+            {isLoading ? (
+              // Render loading indicator while data is being fetched
+              <div>Loading...</div>
+            ) : (
+              cart.length > 0 && (
+                <Link className="checkout-button" to={"/shipping-address"}>
+                  Proceed to Checkout
+                </Link>
+              )
             )}
             <button className="continue-shopping-button" onClick={closeModal}>
               Continue Shopping

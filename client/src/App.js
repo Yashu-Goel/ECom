@@ -1,9 +1,8 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
 import Home from "./Components/Home/Home";
-import {Product} from "./Components/IndividualProduct/Product";
+import { Product } from "./Components/IndividualProduct/Product";
 import { Auth } from "./Components/Authentication/Auth.js";
-import ProceedToCheckOut from "./Components/ProceedToCheckOut/ProceedToCheckOut";
 import OrderConfirmationPage from "./Components/OrderConfirmationPage/OrderConfirmationPage";
 import SellerHome from "./Components/Seller/SellerHome";
 import AddProduct from "./Components/Seller/AddProduct";
@@ -15,17 +14,15 @@ import SellerCatalogue from "./Components/Seller/SellerCatalogue";
 import Profile from "./Components/Seller/Profile";
 import DealsPage from "./Components/Deals/DealsPage";
 import SellerDashboard from "./Components/Seller/SellerDashboard";
+import ShippingDetails from "./Components/ProceedToCheckOut/ShippingDetails";
+import RazorpayPaymentPage from "./Components/PaymentPage/RazorPay";
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route exact path="/product/:id" element={<Product />} />
       <Route exact path="/auth" element={<Auth />} />
-      <Route
-        exact
-        path="/proceed-to-checkout"
-        element={<ProceedToCheckOut />}
-      />
+      <Route exact path="/shipping-address" element={<ShippingDetails />} />
       <Route
         exact
         path="/order-confirmation"
@@ -80,6 +77,7 @@ function App() {
           </SellerProvider>
         }
       />
+      {/* <Route exact path="/payment-page" element={<RazorpayPaymentPage />} /> */}
     </Routes>
   );
 }

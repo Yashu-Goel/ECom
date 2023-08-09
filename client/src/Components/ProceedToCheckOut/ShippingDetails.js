@@ -2,25 +2,41 @@ import React, { useEffect, useState } from "react";
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./ShippingDetails.css";
-import { UserState } from "../Context/UserProvider";
 import { API_BASE } from "../functions/functions";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 function ShippingDetails() {
-  const { selectedAddress, setSelectedAddress } = UserState();
-
   const [addresses, setAddresses] = useState([]);
   const [newAddress, setNewAddress] = useState({});
   const [addNew, setAddnew] = useState(false);
+  const [selected, setSelected] = useState({});
+  const [proceed, setProceed] = useState(false);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("profile"));
-    setAddresses(data.addresses);
-    setSelectedAddress({});
+    try {
+      const data = JSON.parse(localStorage.getItem("profile"));
+      const address = JSON.parse(localStorage.getItem("address"));
+      if (address) {
+        setSelected(address);
+        setProceed(true);
+      }
+      setAddresses(data.addresses);
+    } catch (error) {
+      console.log(error);
+      toast.error(error);
+    }
   }, []);
 
   const handleAddressSelect = (address) => {
-    setSelectedAddress(address);
+    try {
+      localStorage.setItem("address", JSON.stringify(address));
+      setSelected(address);
+      setProceed(true);
+    } catch (error) {
+      console.log({ error });
+      toast.error(error);
+    }
   };
 
   const handleAddAddress = async (event) => {
@@ -48,7 +64,8 @@ function ShippingDetails() {
       localStorage.setItem("profile", JSON.stringify(data));
       setAddresses(data.addresses);
     } catch (error) {
-      return;
+      console.log({ error });
+      toast.error(error);
     }
     setNewAddress({
       name: "",
@@ -76,6 +93,14 @@ function ShippingDetails() {
   const handleDeleteAddress = async (_id) => {
     const updatedAddresses = addresses.filter((address) => address._id !== _id);
 
+    const localAddress = addresses.filter((address) => address._id === _id);
+
+    if (localAddress[0] && localAddress[0]._id === selected._id) {
+      localStorage.removeItem("address");
+      toast.warn("Selected address has been removed");
+      setProceed(false);
+      setSelected({});
+    }
     try {
       const user = JSON.parse(localStorage.getItem("profile"));
       const config = {
@@ -92,11 +117,10 @@ function ShippingDetails() {
       localStorage.setItem("profile", JSON.stringify(data));
       setAddresses(data.addresses);
     } catch (error) {
-      return;
+      console.log({ error });
+      toast.error(error);
     }
-    setSelectedAddress({});
   };
-  console.log(selectedAddress)
   return (
     <div className="container-shipping">
       <div className="shipping-page">
@@ -108,14 +132,13 @@ function ShippingDetails() {
                 <div
                   key={address._id}
                   className={`address-item ${
-                    address === selectedAddress ? "selected" : ""
+                    address === selected ? "selected" : ""
                   }`}
-                  onClick={() => handleAddressSelect(address)}
                 >
                   <input
                     type="radio"
                     name="selected-address"
-                    checked={address === selectedAddress}
+                    checked={address._id === selected._id}
                     onChange={() => handleAddressSelect(address)}
                   />
                   <div className="inner-div">
@@ -157,9 +180,7 @@ function ShippingDetails() {
             <FaPlus className="add-icon" />
             <span>Add New Address</span>
           </button>
-          {!selectedAddress ? (
-            <></>
-          ) : (
+          {proceed && (
             <Link className="add-address-button" to={"/order-confirmation"}>
               <span>Proceed</span>&nbsp;
               <i className="fa-solid fa-arrow-right"></i>
@@ -235,6 +256,7 @@ function ShippingDetails() {
           </div>
         )}
       </div>
+      <ToastContainer />
     </div>
   );
 }
