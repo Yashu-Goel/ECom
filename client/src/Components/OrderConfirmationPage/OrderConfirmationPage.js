@@ -112,20 +112,22 @@ const OrderConfirmationPage = () => {
           description: "Payment for Order",
           order_id: orderId,
           handler: function (response) {
-            // This function is called after successful payment
-            // You can perform further actions here, like updating your database
+
+
+            //idhar karna jo bhi karoge ...
+            
             console.log("Payment Successful:", response);
           },
           prefill: {
             name: `${user.name}`,
             email: `${user.email}`,
-            contact: `${user.email}`,
+            contact: `${user.phone}`,
           },
           notes: {
             address: address,
           },
           theme: {
-            color: "#F37254",
+            color: "#012652",
           },
         };
         const rzp = new window.Razorpay(options);
