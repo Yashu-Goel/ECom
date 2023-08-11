@@ -137,6 +137,7 @@ const OrderConfirmationPage = () => {
       }
     }, 2000);
   };
+  console.log(products);
   return (
     <>
       {!proceed && !isLoading ? (
