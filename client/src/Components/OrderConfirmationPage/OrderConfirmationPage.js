@@ -112,10 +112,8 @@ const OrderConfirmationPage = () => {
           description: "Payment for Order",
           order_id: orderId,
           handler: function (response) {
-
-
             //idhar karna jo bhi karoge ...
-            
+
             console.log("Payment Successful:", response);
           },
           prefill: {
@@ -139,7 +137,6 @@ const OrderConfirmationPage = () => {
       }
     }, 2000);
   };
-
   return (
     <>
       {!proceed && !isLoading ? (
