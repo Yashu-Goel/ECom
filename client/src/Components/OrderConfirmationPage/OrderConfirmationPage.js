@@ -7,6 +7,7 @@ import "./OrderConfirmationPage.css";
 import { truncateName, calculateTotal } from "./function";
 import { getFileNameFromPath } from "../IndividualProduct/function";
 import Error from "./Error";
+import ProgressBar from "../ProceedToCheckOut/ProgressBar";
 
 const OrderConfirmationPage = () => {
   const [promoCode, setPromoCode] = useState("");
@@ -139,6 +140,7 @@ const OrderConfirmationPage = () => {
   };
   return (
     <>
+      <ProgressBar />
       {!proceed && !isLoading ? (
         <Error />
       ) : (
