@@ -71,6 +71,7 @@ const OrderConfirmationPage = () => {
     // You can use the promoCode value and perform necessary operations
     // Update the total amount or display a message based on the promo code
   };
+  console.log('OKOKKOKKO');
   const loadRazorpay = () => {
     return new Promise((resolve) => {
       if (window.Razorpay) {
