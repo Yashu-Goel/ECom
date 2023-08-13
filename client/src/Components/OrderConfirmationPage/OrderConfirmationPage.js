@@ -8,6 +8,7 @@ import { truncateName, calculateTotal } from "./function";
 import { getFileNameFromPath } from "../IndividualProduct/function";
 import Error from "./Error";
 import ProgressBar from "../ProceedToCheckOut/ProgressBar";
+import Loading from "../Loaders/Loading";
 
 const OrderConfirmationPage = () => {
   const [promoCode, setPromoCode] = useState("");
@@ -71,7 +72,7 @@ const OrderConfirmationPage = () => {
     // You can use the promoCode value and perform necessary operations
     // Update the total amount or display a message based on the promo code
   };
-  console.log('OKOKKOKKO');
+  console.log("OKOKKOKKO");
   const loadRazorpay = () => {
     return new Promise((resolve) => {
       if (window.Razorpay) {
@@ -139,90 +140,98 @@ const OrderConfirmationPage = () => {
       }
     }, 2000);
   };
-  console.log(products);
   return (
     <>
-      <ProgressBar />
-      {!proceed && !isLoading ? (
-        <Error />
+      {!products.length ? (
+        <Loading />
       ) : (
-        <div className="order-confirmation-page">
-          <h1>Order Confirmation</h1>
-          <div className="order-summary">
-            <h2>Order Summary</h2>
-            <div className="table-responsive">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map((item) => (
-                    <tr key={item.product._id}>
-                      <td>
-                        <div className="product-info">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/uploads/" +
-                              getFileNameFromPath(item.product.pics[0])
-                            }
-                            alt={`${item.product.name}`}
-                          />
-                          <p>{truncateName(item.product.name)}</p>
-                        </div>
-                      </td>
-                      <td>{item.count}</td>
-                      <td>₹{item.product.price}</td>
-                      <td>₹{item.product.price * item.count}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="total-amount">
-              <p>Total: ₹{calculateTotal(products)}</p>
-            </div>
-          </div>
-          <div className="shipping-address">
-            <h3>Shipping Address</h3>
-            <div className="address-details">
-              <p className="name">{address.name}</p>
-              <p className="street">{address.street}</p>
-              <p>
-                {address.city}, {address.state} {address.zip}
-              </p>
-              <p>{address.phone}</p>
-            </div>
-          </div>
+        <>
+          <ProgressBar />
+          {!proceed && !isLoading ? (
+            <Error />
+          ) : (
+            <div className="order-confirmation-page">
+              <h1>Order Confirmation</h1>
+              <div className="order-summary">
+                <h2>Order Summary</h2>
+                <div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {products.map((item) => (
+                        <tr key={item.product._id}>
+                          <td>
+                            <div className="product-info">
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/uploads/" +
+                                  getFileNameFromPath(item.product.pics[0])
+                                }
+                                alt={`${item.product.name}`}
+                              />
+                              <p>{truncateName(item.product.name)}</p>
+                            </div>
+                          </td>
+                          <td>{item.count}</td>
+                          <td>₹{item.product.price}</td>
+                          <td>₹{item.product.price * item.count}</td>
+                        </tr>
+                      ))}
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Total:</td>
+                        <td>₹{calculateTotal(products)}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="shipping-address">
+                <h2>Shipping Address</h2>
+                <div className="address-details">
+                  <p className="name">{address.name}</p>
+                  <p className="street">{address.street}</p>
+                  <p>
+                    {address.city}, {address.state} {address.zip}
+                  </p>
+                  <p>{address.phone}</p>
+                </div>
+              </div>
 
-          <div className="promo-code">
-            <h2>Apply Promo Code</h2>
-            <input
-              type="text"
-              value={promoCode}
-              onChange={(e) => setPromoCode(e.target.value)}
-              placeholder="Enter promo code"
-            />
-            <button onClick={handleApplyPromoCode}>Apply</button>
-          </div>
+              <div className="promo-code">
+                <h2>Apply Promo Code</h2>
+                <input
+                  type="text"
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value)}
+                  placeholder="Enter promo code"
+                />
+                <button onClick={handleApplyPromoCode}>Apply</button>
+              </div>
 
-          <div className="buttons">
-            <button onClick={handleContinueToPayment}>
-              Proceed to Payment
-            </button>
-          </div>
-          {isLoading && (
-            <div className="loading-modal">
-              <div className="loading-spinner"></div>
-              <p>Processing payment...</p>
+              <div className="buttons">
+                <button onClick={handleContinueToPayment}>
+                  Proceed to Payment
+                </button>
+              </div>
+              {isLoading && (
+                <div className="loading-modal">
+                  <div className="loading-spinner"></div>
+                  <p>Processing payment...</p>
+                </div>
+              )}
             </div>
           )}
-        </div>
+        </>
       )}
     </>
   );

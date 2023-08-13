@@ -15,7 +15,7 @@ const Loading = () => {
 
     if (secondsRemaining === 0) {
       clearInterval(timer);
-      navigate("/auth");
+      // navigate("/auth");
     }
 
     return () => {
@@ -45,7 +45,7 @@ const Loading = () => {
         If it takes more than {secondsRemaining} seconds, you will be redirected
         to the{" "}
         <span>
-          <Link to={"/auth"}>
+          <Link to={"/"}>
             {" "}
             <span
               style={{
@@ -54,7 +54,7 @@ const Loading = () => {
                 cursor: "pointer" /* Show pointer cursor on hover */,
               }}
             >
-              login
+              home
             </span>{" "}
           </Link>
         </span>
