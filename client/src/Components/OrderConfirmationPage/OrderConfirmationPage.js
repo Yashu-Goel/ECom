@@ -72,7 +72,6 @@ const OrderConfirmationPage = () => {
     // You can use the promoCode value and perform necessary operations
     // Update the total amount or display a message based on the promo code
   };
-  console.log("OKOKKOKKO");
   const loadRazorpay = () => {
     return new Promise((resolve) => {
       if (window.Razorpay) {
@@ -87,8 +86,6 @@ const OrderConfirmationPage = () => {
   };
   const handleContinueToPayment = async () => {
     setIsLoading(true);
-
-    // Simulate loading delay with setTimeout
     setTimeout(async () => {
       try {
         await loadRazorpay();
@@ -114,15 +111,32 @@ const OrderConfirmationPage = () => {
           name: "PrimeBuy",
           description: "Payment for Order",
           order_id: orderId,
-          handler: function (response) {
-            //idhar karna jo bhi karoge ...
+          handler: async function (response) {
+            const paymentData = {
+              razorpay_order_id: orderId,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            };
+
+            try {
+              const verifyResponse = await axios.post(
+                `${API_BASE}/verify-payment/capture/${response.razorpay_payment_id}`,
+                {
+                  amount: calculateTotal(products)*100,
+                }
+              );
+              // console.log(verifyResponse.data);
+            } catch (error) {
+              console.log(error);
+              // console.error("Payment verification error:", error.response.data);
+            }
 
             console.log("Payment Successful:", response);
           },
           prefill: {
             name: `${user.name}`,
             email: `${user.email}`,
-            contact: `${user.phone}`,
+            contact: 9899253639,
           },
           notes: {
             address: address,
