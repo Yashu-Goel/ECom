@@ -10,6 +10,7 @@ const sellerRouter = require("./router/sellerRouter.js");
 const getDetails = require("./router/getDetailsRouter.js");
 const updateAddress = require("./router/updateAddress");
 const createOrderId = require("./router/razorPay.js");
+const verifySign = require("./router/verifySign");
 //middle wares
 app.use(cors());
 app.use("/user", userRouter);
@@ -18,6 +19,7 @@ app.use("/seller", sellerRouter);
 app.use("/get", getDetails);
 app.use("/updateAddress", tokenMiddleware, updateAddress);
 app.use("/create-razorpay-order", tokenMiddleware, createOrderId);
+app.use("/verify-payment", verifySign);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
