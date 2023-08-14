@@ -44,6 +44,7 @@ router.post("/capture/:id", async (req, res) => {
       "INR"
     );
     console.log(resp);
+    res.status(200).send({resp});
     // const options = {
     //   amount: amount * 100, // Amount in paise (convert to smallest currency unit)
     //   currency: "INR",

@@ -7,6 +7,7 @@ import OrderConfirmationPage from "./Components/OrderConfirmationPage/OrderConfi
 import SellerHome from "./Components/Seller/SellerHome";
 import AddProduct from "./Components/Seller/AddProduct";
 import SellerAuth from "./Components/Seller/SellerAuth";
+import SellerOrders from "./Components/Seller/SellerOrders" 
 import OrderHistory from "./Components/OrderHistory/OrderHistory";
 import SellerProvider from "./Components/Seller/SellerProvider";
 import UserProfile from "./Components/UserProfile/UserProfile";
@@ -38,6 +39,17 @@ function App() {
           </SellerProvider>
         }
       />
+
+      <Route
+        exact
+        path="/orders"
+        element={
+          <SellerProvider>
+            <SellerOrders />
+          </SellerProvider>
+        }
+      />
+
       <Route exact path="/seller" element={<SellerHome />} />
       <Route
         exact

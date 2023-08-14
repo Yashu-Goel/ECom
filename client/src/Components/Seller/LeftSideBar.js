@@ -14,9 +14,12 @@ const LeftSideBar = () => {
         {
           data_item: "Dashboard",
           link_to: "/seller_dashboard"
-        }
+        },
+      {
+        data_item: "Orders",
+        link_to: "/orders"
+      }
     ]
-
   return (
     <div className="SellerLeftSideBarMain">
       <div className="DataItems">

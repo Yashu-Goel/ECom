@@ -4,6 +4,7 @@ const app = require("express");
 const Seller = require("../models/sellerSchema.js");
 const Address = require("../models/addressSchema.js");
 const Product = require("../models/productDetailsSchema.js");
+const Order = require("../models/orderSchema.js")
 // const OrderHistory = require("../models/order_historySchema.js");
 const bcrypt = require("bcryptjs");
 const dotenv = require("dotenv");
@@ -224,6 +225,56 @@ router.get("/products", async (req, res) => {
 //   }
 // });
 
+// post order_details
+router.post("/order_details",async (req, res) => {
+  console.log(req.body);
+  const {
+    sellerId: sellerId,
+    customerId: customerId,
+    productId: productId,
+    count, 
+    amount
+  } = req.body;
+  console.log(req.body);
+
+  try {
+    const order = await Order.create({
+      sellerId: sellerId,
+      customerId: customerId,
+      productId: productId,
+      count,
+      amount,
+    });
+
+    if (order) {
+      res.status(200).json({
+        _id: order._id,
+        type: order.type,
+        orderId: order.orderId,
+        message: "order details success",
+      });
+    } else {
+      res.status(400).json("order details unsuccess");
+    }
+  } catch (error) {
+    res.status(422).json("Error: " + error);
+  }
+});
+//get order_details
+router.get("/order_details/:id", async (req, res) => {
+  const sellerId = req.params.id;
+  console.log(sellerId);
+  try {
+    const order = await Order.find({ sellerId: sellerId });
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+    res.status(200).json(order);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 //post address
 
 router.post("/address", async (req, res) => {
@@ -259,7 +310,7 @@ router.get("/address", async (req, res) => {
   }
 });
 
-// //get single address
+//get single address
 router.get("/address/:id", async (req, res) => {
   try {
     const _id = req.params.id;

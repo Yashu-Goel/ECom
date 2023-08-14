@@ -16,11 +16,32 @@ const OrderConfirmationPage = () => {
   const [proceed, setProceed] = useState(false);
   const [address, setAddress] = useState({});
   const [products, setProducts] = useState([]);
+  const [userId, setUserId] = useState();
   const { user, cart } = UserState();
 
   useEffect(() => {
     setIsLoading(true);
+    const fetchUserId= async () => {
+      try {
+        const userEmail = JSON.parse(localStorage.getItem("profile"));
+        console.log(userEmail.email);
+        if(userEmail.email)
+        {
+          toast.error("Email id not found");
+          return
+        }
+       const response = await axios.post("http://localhost:5000/user/userid", {
+         email: userEmail.email,
+       });
+       
+        setUserId(response.data); 
 
+        console.log("ID:", response.data); 
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    fetchUserId();
     const address = JSON.parse(localStorage.getItem("address"));
     if (!address) {
       toast.error("Address not found");
@@ -122,7 +143,7 @@ const OrderConfirmationPage = () => {
               const verifyResponse = await axios.post(
                 `${API_BASE}/verify-payment/capture/${response.razorpay_payment_id}`,
                 {
-                  amount: calculateTotal(products)*100,
+                  amount: calculateTotal(products) * 100,
                 }
               );
               // console.log(verifyResponse.data);
@@ -130,7 +151,41 @@ const OrderConfirmationPage = () => {
               console.log(error);
               // console.error("Payment verification error:", error.response.data);
             }
+            console.log(products);
+             try {
+               for (const product of products) {
+                 const orderDetails = {
+                   sellerId: product.product.sellerId,
+                   productId: product.product._id,
+                   customerId: product.product.sellerId,
+                   amount: product.product.price,
+                   count: product.count,
 
+                 };
+
+                 const config = {
+                   headers: {
+                     "Content-type": "application/json",
+                     Authorization: `Bearer ${user.token}`,
+                   },
+                 };
+
+                 try {
+                   const { data } = await axios.post(
+                     API_BASE + "/seller/order_details",
+                     orderDetails,
+                     config
+                   );
+                    console.log('Success');
+                   toast.success("Order details sent to seller");
+                 } catch (error) {
+                   console.log("Error sending order details: " + error);
+                 }
+               }
+             } catch (error) {
+               console.error("Error creating Razorpay order:", error);
+               setIsLoading(false);
+             }
             console.log("Payment Successful:", response);
           },
           prefill: {
@@ -148,6 +203,9 @@ const OrderConfirmationPage = () => {
         const rzp = new window.Razorpay(options);
         rzp.open();
         setIsLoading(false);
+
+        // yaha kara hai
+        
       } catch (error) {
         console.error("Error creating Razorpay order:", error);
         setIsLoading(false);

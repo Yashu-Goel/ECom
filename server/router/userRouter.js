@@ -77,7 +77,6 @@ router.post("/userlogin", async (req, res) => {
 
     const { email, password } = details;
     const userLogin = await User.findOne({ email });
-
     if (userLogin) {
       const isMatch = await bcrypt.compare(password, userLogin.password);
       const token = jwt.sign(details, JWT_Secret);
@@ -102,7 +101,24 @@ router.post("/userlogin", async (req, res) => {
     res.status(400).json(error);
   }
 });
+//get user id
+router.post("/userid", async (req, res) => {
+  try {
+    console.log('okok');
+    const { email } = req.body;
+    const user = await User.findOne({ email });
 
+    if (user) {
+      console.log(user._id);
+      res.status(200).json(user._id);
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 //signup for seller
 // router.post("/sellersignup", async (req, res) => {
 //   console.log(req.body);
