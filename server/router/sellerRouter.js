@@ -187,7 +187,6 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
 });
 
 //get product details
-
 router.get("/products/:id", async (req, res) => {
   const productId = req.params.id;
   console.log(productId);
@@ -215,6 +214,7 @@ router.get("/products", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 // router.get("/products", async (req, res) => {
 //   try {

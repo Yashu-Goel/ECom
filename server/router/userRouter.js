@@ -2,10 +2,6 @@ const express = require("express");
 const app = require("express");
 // const cookieParser = require("cookie-parser");
 const User = require("../models/userSchema.js");
-const Seller = require("../models/sellerSchema.js");
-const Address = require("../models/addressSchema.js");
-const Product = require("../models/productDetailsSchema.js");
-const tokenMiddleware = require("../MiddleWares/tokenMiddleWare.js");
 // const OrderHistory = require("../models/order_historySchema.js");
 const bcrypt = require("bcryptjs");
 const dotenv = require("dotenv");
@@ -104,7 +100,6 @@ router.post("/userlogin", async (req, res) => {
 //get user id
 router.post("/userid", async (req, res) => {
   try {
-    console.log('okok');
     const { email } = req.body;
     const user = await User.findOne({ email });
 
@@ -116,6 +111,22 @@ router.post("/userid", async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+//get user details
+router.get("/user_details/:id", async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const user = await User.findById(userId);
+    console.log(user);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
 });
