@@ -25,14 +25,17 @@ const OrderConfirmationPage = () => {
       try {
         const userEmail = JSON.parse(localStorage.getItem("profile"));
         console.log(userEmail.email);
-        if(userEmail.email)
+        if(!userEmail.email)
         {
           toast.error("Email id not found");
           return
         }
-       const response = await axios.post("http://localhost:5000/user/userid", {
-         email: userEmail.email,
-       });
+       const response = await axios.post(API_BASE+
+         "/user/userid",
+         {
+           email: userEmail.email,
+         }
+       );
        
         setUserId(response.data); 
 
@@ -151,16 +154,14 @@ const OrderConfirmationPage = () => {
               console.log(error);
               // console.error("Payment verification error:", error.response.data);
             }
-            console.log(products);
              try {
                for (const product of products) {
                  const orderDetails = {
                    sellerId: product.product.sellerId,
                    productId: product.product._id,
-                   customerId: product.product.sellerId,
+                   customerId: userId,
                    amount: product.product.price,
                    count: product.count,
-
                  };
 
                  const config = {
