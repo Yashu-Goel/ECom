@@ -1,0 +1,14 @@
+.TableHeading{
+  background-color: #b2dbfa;
+  font-weight: bold;
+  color: black;
+
+}
+.TableHead{
+  border: 1.6px solid black;
+
+}
+
+.TableBody{
+  font-weight: bold;
+}

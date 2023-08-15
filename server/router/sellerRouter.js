@@ -233,7 +233,8 @@ router.post("/order_details",async (req, res) => {
     customerId: customerId,
     productId: productId,
     count, 
-    amount
+    amount,
+    date
   } = req.body;
   console.log(req.body);
 
@@ -244,6 +245,7 @@ router.post("/order_details",async (req, res) => {
       productId: productId,
       count,
       amount,
+      date
     });
 
     if (order) {
@@ -260,6 +262,47 @@ router.post("/order_details",async (req, res) => {
     res.status(422).json("Error: " + error);
   }
 });
+//update status of order
+router.patch("/order_details", async (req, res) => {
+  const newStatus = req.body.status;
+  const id = req.body.id;
+
+  try {
+    const updatedOrder = await Order.findOneAndUpdate(
+      { _id: id },
+      { status: newStatus },
+      { new: true } // This returns the updated document
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json("Order not found");
+    }
+
+    res.status(200).json(updatedOrder);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("Internal Server Error");
+  }
+});
+
+//get order status
+router.get("/order_status", async (req, res) => {
+  const orderId = req.body.id;
+
+  try {
+    const order = await Order.findById(orderId);
+    console.log(order);
+    if (!order) {
+      return res.status(404).json("Order not found");
+    }
+
+    res.status(200).json({ status: order.status });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("Internal Server Error");
+  }
+});
+
 //get order_details
 router.get("/order_details/:id", async (req, res) => {
   const sellerId = req.params.id;

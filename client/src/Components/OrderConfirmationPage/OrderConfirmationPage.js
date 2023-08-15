@@ -162,15 +162,14 @@ const OrderConfirmationPage = () => {
                    customerId: userId,
                    amount: product.product.price,
                    count: product.count,
+                   date: new Date().toISOString().split("T")[0],
                  };
-
                  const config = {
                    headers: {
                      "Content-type": "application/json",
                      Authorization: `Bearer ${user.token}`,
                    },
                  };
-
                  try {
                    const { data } = await axios.post(
                      API_BASE + "/seller/order_details",
