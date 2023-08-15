@@ -1,19 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
-.DashboardDataItems{
+
+.DashboardDataItems {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
-.DashboardHeading{
+
+.DashboardHeading {
     text-align: center;
     font-size: 2.5rem;
     margin-top: 1.3rem;
     text-decoration: underline;
     color: black;
 }
-.DashboardDataItem{
+
+.DashboardDataItem {
     color: white;
     height: 8rem;
     width: 20%;
-    margin: 2rem ;
+    margin: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -23,32 +28,77 @@
     padding-right: 10px;
     box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
-.OrdersMainContainer{
-    border: 1px solid black ;
+
+.OrdersMainContainer {
+    border: 1px solid black;
+    margin-top: 2rem;
+    padding: 2rem;
+    overflow: hidden; 
 }
-.OrderHeading{
+
+.OrderHeading {
     border-bottom: 1px solid black;
     font-size: 2rem;
     font-weight: 600;
     padding-left: 2rem;
 }
-.OrderInnerContainer{
+
+.OrderInnerContainer {
     display: flex;
     justify-content: space-between;
 }
-.OrderDataItems{
-    margin-left: 2rem;
+
+.OrderDataItems {
+    margin-top: 2rem;
     font-size: 1.6rem;
-    display: flex; 
-  flex-direction: column;
-  justify-content: space-between;
-}
-.OrderDataItem {
-  text-align: center;
-}
-.PieChart{
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    margin-right: 4rem;
 }
 
+.OrderDataItem {
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.PieChart {
+    display: flex;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 1200px) {
+    .DashboardDataItem {
+        width: 30%;
+        margin: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .DashboardDataItem {
+        width: 45%;
+        margin: 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    .OrdersMainContainer {
+        padding: 1rem;
+    }
+
+    .OrderDataItems {
+        margin-top: 1rem;
+        font-size: 1.4rem;
+    }
+
+    .PieChart {
+        margin-top: 1rem;
+    }
+    .OrderInnerContainer{
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Add more media queries as needed */

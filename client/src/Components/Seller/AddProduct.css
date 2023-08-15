@@ -1,15 +1,16 @@
-/*   */
-.ProductDetailOuterContainer{
+.ProductDetailOuterContainer {
     background-color: #eff6f7;
-    height: 100vh;
+    height: 110vh;
 }
-.ProductDetailHeading{
+
+.ProductDetailHeading {
     text-align: center;
     color: #263b3e;
     font-size: 3rem;
     margin-top: 1rem;
 }
-.ProductDetailMainContainer{
+
+.ProductDetailMainContainer {
     border: 1px solid black;
     margin: 1rem auto;
     width: 60%;
@@ -21,14 +22,15 @@
     background-color: #ffffff;
     border-radius: 5px;
 }
-.ProductDetailMainContainer input
-{
+
+.ProductDetailMainContainer input {
     border-bottom: 1px solid black;
     margin-left: 1rem;
     background-color: transparent;
     width: 60%;
 }
-.ProductDetailMainContainer button{
+
+.ProductDetailMainContainer button {
     background-color: #007b8b;
     padding: 0.4rem;
     color: white;
@@ -36,12 +38,14 @@
     margin-top: 1rem;
     border: 1px solid transparent;
 }
-.ProductDetailMainContainer button:hover{
+
+.ProductDetailMainContainer button:hover {
     background-color: #eff6f7;
     color: #007b8b;
     border: 1px solid black;
 }
-.seller-form-group{
+
+.seller-form-group {
     width: 70%;
     display: flex;
     justify-content: space-between;
@@ -49,11 +53,30 @@
     font-size: 1.4rem;
     padding: 0.5rem;
 }
-#cat-select
-{
+
+#cat-select {
     border-radius: 0.3rem;
     border: 1px solid black;
     width: 60%;
     padding: 0.4rem;
+}
 
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .ProductDetailHeading{
+        font-size: 1.5rem;
+    }
+    .ProductDetailMainContainer {
+        width: 80%;
+        padding: 1.5rem 0.5rem;
+    }
+    .seller-form-group {
+        width: 90%;
+        font-size: 1rem;
+    }
+
+    #cat-select {
+        width: 70%;
+        font-size: 1rem;
+    }
 }
