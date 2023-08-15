@@ -1,43 +1,120 @@
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import SellerNav from "./SellerNav";
 import ReactApexChart from "react-apexcharts";
-import axios from 'axios'
+import axios from "axios";
 import "./SellerDashboard.css";
 const API_BASE = "http://localhost:5000";
 
 const SellerDashboard = () => {
+  const [length, setLength] = useState(0);
+  const [orderDetails, setOrderDetails] = useState([]); // Combining order, product, and customer data
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [totalSales, setTotalSales] = useState(0);
+  const [creditAmount, setCreditAmount] = useState(0);
+  const [orderData, setOrderData] = useState([
+    {
+      text: "Total",
+      value: 0,
+    },
+    {
+      text: "Completed",
+      value: 0,
+    },
+    {
+      text: "Shipped",
+      value: 0,
+    },
+    {
+      text: "Pending",
+      value: 0,
+    },
+  ]);
 
-    const [length, setLength]=useState(0)
-useEffect(() => {
-  (async () => {
-    try {
-      const sellerId = localStorage.getItem("_id");
-      const response = await axios.get(
-        API_BASE + `/seller/products?sellerId=${sellerId}`
-      );
-      if (response.data.length>0)
-      {
-        setLength(response.data.length);
-      } console.log("Length:", response.data.length); // Log the response.data directly
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  })();
-}, []);
-  
+  useEffect(() => {
+    (async () => {
+      try {
+        const sellerId = localStorage.getItem("_id");
+        const response = await axios.get(
+          API_BASE + `/seller/products?sellerId=${sellerId}`
+        );
+        if (response.data.length > 0) {
+          setLength(response.data.length);
+        }
+
+        const order_response = await axios.get(
+          API_BASE + `/seller/order_details/${sellerId}`
+        );
+
+        let completedOrders = 0;
+        let shippedOrders = 0;
+        let pendingOrders = 0;
+
+        order_response.data.forEach((order) => {
+          if (order.status === "Delivered") {
+            completedOrders++;
+          } else if (order.status === "Shipped") {
+            shippedOrders++;
+          } else if (order.status === "Pending") {
+            pendingOrders++;
+          }
+        });
+
+        let totalOrders = 0;
+        let totalSales = 0;
+
+        order_response.data.forEach((order) => {
+          totalOrders += parseInt(order.count);
+          totalSales += parseInt(order.amount);
+        });
+
+        // Calculate credit amount (98% of total sales)
+        const creditAmount = Math.floor(totalSales * 0.98);
+
+        // Update the state variables
+        setOrderDetails(order_response.data);
+        setTotalOrders(totalOrders);
+        setTotalSales(totalSales);
+        setCreditAmount(creditAmount);
+
+        // Update the order_data array
+        const updatedOrderData = [
+          {
+            text: "Total",
+            value: totalOrders,
+          },
+          {
+            text: "Completed",
+            value: completedOrders,
+          },
+          {
+            text: "Shipped",
+            value: shippedOrders,
+          },
+          {
+            text: "Pending",
+            value: pendingOrders,
+          },
+        ];
+        setOrderData(updatedOrderData);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    })();
+  }, []);
+
   const data = [
     {
-      value: "₹ 2,000",
+      value: `₹ ${creditAmount}`,
       text: "Credit Amount",
       color: "#e7505a",
     },
     {
-      value: "₹ 40,000",
+      value: `₹ ${totalSales}`,
       text: "Total Sales",
       color: "#3598dc",
     },
     {
-      value: "23",
+      value: totalOrders,
       text: "Total Orders",
       color: "#32c5d2",
     },
@@ -48,32 +125,14 @@ useEffect(() => {
     },
   ];
 
-  const order_data = [
-    {
-      text: "Total",
-      value: length,
+  const pieChartData = {
+    series: orderData.map((item) => Number(item.value)),
+    options: {
+      labels: orderData.map((item) => item.text),
+      colors: ["#e7505a", "#3598dc", "#32c5d2", "#8e44ad"],
     },
-    {
-      text: "Completed",
-      value: 0,
-    },
-    {
-      text: "Pending",
-      value: 0,
-    },
-    {
-      text: "Cancelled",
-      value: 0,
-    },
-  ];
+  };
 
-   const pieChartData = {
-     series: order_data.map((item) => Number(item.value)),
-     options: {
-       labels: order_data.map((item) => item.text),
-       colors: ["#e7505a", "#3598dc", "#32c5d2", "#8e44ad"],
-     },
-   };
   return (
     <div>
       <SellerNav />
@@ -96,10 +155,10 @@ useEffect(() => {
         </div>
         <div className="OrderInnerContainer">
           <div className="OrderDataItems">
-            {order_data.map((item, index) => (
+            {orderData.map((item, index) => (
               <div key={index} className="OrderDataItem">
                 <p>
-                  {item.text}  <p>{item.value}</p>
+                  {item.text} <p>{item.value}</p>
                 </p>
               </div>
             ))}
