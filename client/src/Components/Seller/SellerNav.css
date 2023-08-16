@@ -6,6 +6,7 @@
   justify-content: flex-end;
   align-items: center;
   padding-right: 1rem;
+  z-index: 4;
 }
 
 .UserProfileLogo {
@@ -14,7 +15,17 @@
   margin-left: auto;
   margin-right: 1rem;
 }
+.BurgerLogo{
+  color: white;
+  font-size: 1.8rem;
+  margin-right: auto;
+  margin-left: 1rem;
 
+}
+.BurgerLogo:hover{
+  color: aliceblue;
+  cursor: pointer;
+}
 .UserProfileLogo:hover {
   color: aliceblue;
   cursor: pointer;

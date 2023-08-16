@@ -3,13 +3,16 @@
     padding: 0;
 }
 .SellerLeftSideBarMain{
-    height: 94vh;
-    border-right: 1px solid rgba(0, 0, 0, 0.149);
-    z-index: 5; 
-    width: 16rem;
+box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;    width: 16rem;
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    top: 7vh;
+    background-color: white;
+    border-bottom-right-radius: 5px;
 }
 .DataItems{
-    padding-top: 2rem;
+    padding-top: 1rem;
 }
 .DataItem{
     display: flex;

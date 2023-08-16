@@ -285,13 +285,12 @@ router.patch("/order_details", async (req, res) => {
   }
 });
 
-//get order status
+//get order status from orderId
 router.get("/order_status", async (req, res) => {
   const orderId = req.body.id;
 
   try {
     const order = await Order.findById(orderId);
-    console.log(order);
     if (!order) {
       return res.status(404).json("Order not found");
     }
@@ -301,6 +300,27 @@ router.get("/order_status", async (req, res) => {
     console.error(error);
     res.status(500).json("Internal Server Error");
   }
+});
+// get order status from userId
+router.get("/OrderStatus", async (req, res) => {
+const userId = req.query.id; 
+try {
+  const orders = await Order.find({ customerId: userId }); 
+
+  if (!orders || orders.length === 0) {
+    return res.status(404).json({ message: "No orders found for this user" });
+  }
+
+  const orderStatuses = orders.map((order) => ({
+    orderId: order._id,
+    status: order.status,
+  }));
+
+  res.status(200).json(orderStatuses);
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ message: "Internal Server Error" });
+}
 });
 
 //get order_details

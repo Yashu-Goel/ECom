@@ -24,22 +24,33 @@ const OrderConfirmationPage = () => {
     const fetchUserId= async () => {
       try {
         const userEmail = JSON.parse(localStorage.getItem("profile"));
-        console.log(userEmail.email);
-        if(!userEmail.email)
-        {
+        if (!userEmail.email) {
           toast.error("Email id not found");
-          return
+          return;
         }
-       const response = await axios.post(API_BASE+
-         "/user/userid",
-         {
-           email: userEmail.email,
-         }
-       );
-       
-        setUserId(response.data); 
+        const response = await axios.post(API_BASE + "/user/userid", {
+          email: userEmail.email,
+        });
 
-        console.log("ID:", response.data); 
+        setUserId(response.data);
+        // getting order Status from user id
+        try {
+          const statusResponse = await axios.get(
+            API_BASE + "/seller/OrderStatus",
+            {
+              params: {
+                id: response.data,
+              },
+            }
+          );
+          console.log("Status:", statusResponse.data);
+
+
+          // jo karna hai yaha karo
+          
+        } catch (error) {
+          console.error("Error fetching order statuses:", error);
+        }
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -82,6 +93,7 @@ const OrderConfirmationPage = () => {
           })
         );
         setProducts(cartDetails);
+
       } catch (error) {
         console.log(error);
         toast.error(error);

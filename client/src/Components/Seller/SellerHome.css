@@ -6,10 +6,16 @@
 
 .SellerMainContainer {
   display: flex;
+  position: relative;
+  z-index: 1;
 }
-
+#WhyUsHeading{
+  margin: 2rem 0;
+  font-size: 2rem;
+  text-align: center;
+}
 .MainContent {
-  width: 84%;
+  width: 100%;
   display: flex;
   background-color: #eff6f7;
 }
@@ -25,19 +31,24 @@
   font-size: 3rem;
   font-weight: bold;
   color: black;
-  margin-top: 10%;
+  margin-top: 5%;
+  text-align: center;
 }
 
 .LeftMainContainer h2 {
   font-size: 1.6rem;
   font-weight: bold;
   margin-bottom: 2rem;
+  text-align: center;
+  margin-top: 10px;
 }
 
 .LeftMainContainer h3 {
   font-size: 1.2rem;
   font-weight: bold;
   margin-top: 8rem;
+    text-align: center;
+
 }
 
 .LeftMainContainer span {
@@ -53,7 +64,12 @@
 .RequiredThingsImages {
   display: flex;
 }
-
+.RequiredThingsImages .DataItems{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .RequiredThingsImages img {
   height: 4rem;
   padding: 1rem 3rem;
@@ -72,6 +88,8 @@
 
 .WhyUsOuterContainer {
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .WhyUsOuterContainer div {
@@ -82,7 +100,6 @@
   margin: 1rem 1.5rem;
   transition: transform 0.3s ease;
 }
-
 .WhyUsOuterContainer div:hover {
   transform: scale(1.04);
   cursor: pointer;
@@ -90,6 +107,7 @@
 
 .WhyUsOuterContainer div img {
   height: 5rem;
+  margin-left: 37%;
 }
 
 .WhyUsOuterContainer div h1 {
@@ -98,12 +116,10 @@
 
 .WhyUsOuterContainer div p {
   font-size: 1rem;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 
-/* Media Queries */
 
-/* For screens smaller than 768px */
 @media screen and (max-width: 767px) {
   .SellerMainContainer {
     flex-direction: column;
@@ -118,7 +134,7 @@
   }
 
   .LeftMainContainer h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-top: 5%;
   }
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import LeftSideBar from './LeftSideBar'
 import './SellerHome.css'
 import { Link } from 'react-router-dom'
 import SellerProvider from "./SellerProvider";
@@ -28,9 +27,6 @@ const SellerHome = () => {
         <SellerNav />
       </div>
       <div className="SellerMainContainer">
-        <div className="LeftSideBar">
-          <LeftSideBar />
-        </div>
         <div className="MainContent">
           <div className="LeftMainContainer">
             <h1>Welcome to PrimeBuy Seller</h1>
@@ -40,15 +36,15 @@ const SellerHome = () => {
             </Link>
             <h3>You will need only 3 things to start selling on PrimeBuy</h3>
             <div className="RequiredThingsImages">
-              <div>
+              <div className="DataItems">
                 <img src="https://m.media-amazon.com/images/G/31/selldot/icons/GSTIcon1.svg" />
                 <p>GST Details</p>
               </div>
-              <div>
+              <div className="DataItems">
                 <img src="https://m.media-amazon.com/images/G/31/selldot/icons/PANIcon.svg" />
                 <p>PAN Details</p>
               </div>
-              <div>
+              <div className="DataItems">
                 <img src="https://m.media-amazon.com/images/G/31/selldot/icons/BankAccountIcon1.svg" />
                 <p>Active Bank Account</p>
               </div>

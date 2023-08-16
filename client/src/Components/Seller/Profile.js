@@ -33,9 +33,6 @@ useEffect(() => {
         <SellerNav />
       </div>
       <div className="SellerMainContainer">
-        <div className="LeftSideBar">
-          <LeftSideBar />
-        </div>
         <div className="ProfileMainContent">
           <h1>Profile</h1>
           <div className="ProfileInnerContent">
