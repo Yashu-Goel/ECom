@@ -56,7 +56,7 @@ import React from "react";
 import { useLocation, Link } from "react-router-dom"; // Import Link from react-router-dom
 import "./Progressbar.css";
 
-const ProgressBar = () => {
+const ProgressBar = ({ paymentModal }) => {
   const location = useLocation();
 
   const steps = [
@@ -78,7 +78,7 @@ const ProgressBar = () => {
             key={step.label}
             className={`step ${
               index <= getCurrentStepIndex() ? "step-done" : "step-todo"
-            }`}
+            } ${paymentModal ? "li" : ""} `}
           >
             <Link to={step.path == "/payment" ? "" : step.path}>
               {step.label}

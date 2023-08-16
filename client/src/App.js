@@ -7,7 +7,7 @@ import OrderConfirmationPage from "./Components/OrderConfirmationPage/OrderConfi
 import SellerHome from "./Components/Seller/SellerHome";
 import AddProduct from "./Components/Seller/AddProduct";
 import SellerAuth from "./Components/Seller/SellerAuth";
-import SellerOrders from "./Components/Seller/SellerOrders" 
+import SellerOrders from "./Components/Seller/SellerOrders";
 import OrderHistory from "./Components/OrderHistory/OrderHistory";
 import SellerProvider from "./Components/Seller/SellerProvider";
 import UserProfile from "./Components/UserProfile/UserProfile";
@@ -17,6 +17,7 @@ import DealsPage from "./Components/Deals/DealsPage";
 import SellerDashboard from "./Components/Seller/SellerDashboard";
 import ShippingDetails from "./Components/ProceedToCheckOut/ShippingDetails";
 import RazorpayPaymentPage from "./Components/PaymentPage/RazorPay";
+import BillModal from "./Components/OrderConfirmationPage/BillModal";
 function App() {
   return (
     <Routes>
@@ -49,7 +50,7 @@ function App() {
           </SellerProvider>
         }
       />
-
+      <Route exact path="/success" element={<BillModal />} />
       <Route exact path="/seller" element={<SellerHome />} />
       <Route
         exact

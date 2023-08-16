@@ -9,6 +9,7 @@ import { getFileNameFromPath } from "../IndividualProduct/function";
 import Error from "./Error";
 import ProgressBar from "../ProceedToCheckOut/ProgressBar";
 import Loading from "../Loaders/Loading";
+import BillModal from "./BillModal";
 
 const OrderConfirmationPage = () => {
   const [promoCode, setPromoCode] = useState("");
@@ -17,11 +18,14 @@ const OrderConfirmationPage = () => {
   const [address, setAddress] = useState({});
   const [products, setProducts] = useState([]);
   const [userId, setUserId] = useState();
+  const [paymentModal, setPaymentModal] = useState(false);
+  const [bill, setBill] = useState({});
+  const [response, setResponse] = useState({});
   const { user, cart } = UserState();
 
   useEffect(() => {
     setIsLoading(true);
-    const fetchUserId= async () => {
+    const fetchUserId = async () => {
       try {
         const userEmail = JSON.parse(localStorage.getItem("profile"));
         if (!userEmail.email) {
@@ -43,11 +47,8 @@ const OrderConfirmationPage = () => {
               },
             }
           );
-          console.log("Status:", statusResponse.data);
-
 
           // jo karna hai yaha karo
-          
         } catch (error) {
           console.error("Error fetching order statuses:", error);
         }
@@ -93,7 +94,6 @@ const OrderConfirmationPage = () => {
           })
         );
         setProducts(cartDetails);
-
       } catch (error) {
         console.log(error);
         toast.error(error);
@@ -103,11 +103,7 @@ const OrderConfirmationPage = () => {
     setIsLoading(false);
   }, [cart]);
 
-  const handleApplyPromoCode = () => {
-    // Apply the promo code logic here
-    // You can use the promoCode value and perform necessary operations
-    // Update the total amount or display a message based on the promo code
-  };
+  const handleApplyPromoCode = () => {};
   const loadRazorpay = () => {
     return new Promise((resolve) => {
       if (window.Razorpay) {
@@ -142,63 +138,57 @@ const OrderConfirmationPage = () => {
 
         const options = {
           key: "rzp_test_LSiKQ94s76cQTy",
-          amount: calculateTotal(products) * 100, // Amount in paise
+          amount: calculateTotal(products) * 100,
           currency: "INR",
           name: "PrimeBuy",
           description: "Payment for Order",
           order_id: orderId,
           handler: async function (response) {
-            const paymentData = {
-              razorpay_order_id: orderId,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-            };
-
             try {
-              const verifyResponse = await axios.post(
+              const bill = await axios.post(
                 `${API_BASE}/verify-payment/capture/${response.razorpay_payment_id}`,
                 {
                   amount: calculateTotal(products) * 100,
                 }
               );
-              // console.log(verifyResponse.data);
+              setPaymentModal(true);
+              setBill(bill);
+              setResponse(response);
             } catch (error) {
               console.log(error);
-              // console.error("Payment verification error:", error.response.data);
+              toast.error("Payment error");
             }
-             try {
-               for (const product of products) {
-                 const orderDetails = {
-                   sellerId: product.product.sellerId,
-                   productId: product.product._id,
-                   customerId: userId,
-                   amount: product.product.price,
-                   count: product.count,
-                   date: new Date().toISOString().split("T")[0],
-                 };
-                 const config = {
-                   headers: {
-                     "Content-type": "application/json",
-                     Authorization: `Bearer ${user.token}`,
-                   },
-                 };
-                 try {
-                   const { data } = await axios.post(
-                     API_BASE + "/seller/order_details",
-                     orderDetails,
-                     config
-                   );
-                    console.log('Success');
-                   toast.success("Order details sent to seller");
-                 } catch (error) {
-                   console.log("Error sending order details: " + error);
-                 }
-               }
-             } catch (error) {
-               console.error("Error creating Razorpay order:", error);
-               setIsLoading(false);
-             }
-            console.log("Payment Successful:", response);
+            try {
+              for (const product of products) {
+                const orderDetails = {
+                  sellerId: product.product.sellerId,
+                  productId: product.product._id,
+                  customerId: userId,
+                  amount: product.product.price,
+                  count: product.count,
+                  date: new Date().toISOString().split("T")[0],
+                };
+                const config = {
+                  headers: {
+                    "Content-type": "application/json",
+                    Authorization: `Bearer ${user.token}`,
+                  },
+                };
+                try {
+                  await axios.post(
+                    API_BASE + "/seller/order_details",
+                    orderDetails,
+                    config
+                  );
+                  toast.success("Order details sent to seller");
+                } catch (error) {
+                  console.log("Error sending order details: " + error);
+                }
+              }
+            } catch (error) {
+              console.error("Error creating Razorpay order:", error);
+              setIsLoading(false);
+            }
           },
           prefill: {
             name: `${user.name}`,
@@ -215,22 +205,25 @@ const OrderConfirmationPage = () => {
         const rzp = new window.Razorpay(options);
         rzp.open();
         setIsLoading(false);
-
-        // yaha kara hai
-        
       } catch (error) {
         console.error("Error creating Razorpay order:", error);
         setIsLoading(false);
       }
     }, 2000);
   };
+  const closeModal = () => {
+    setPaymentModal(false);
+  };
   return (
     <>
+      {paymentModal && bill && response && (
+        <BillModal onClose={closeModal} bill={bill} response={response} />
+      )}
       {!products.length ? (
         <Loading />
       ) : (
         <>
-          <ProgressBar />
+          <ProgressBar paymentModal={paymentModal} />
           {!proceed && !isLoading ? (
             <Error />
           ) : (
