@@ -234,7 +234,9 @@ router.post("/order_details",async (req, res) => {
     productId: productId,
     count, 
     amount,
-    date
+    date,
+    customer_name,
+    customer_address
   } = req.body;
   console.log(req.body);
 
@@ -245,7 +247,9 @@ router.post("/order_details",async (req, res) => {
       productId: productId,
       count,
       amount,
-      date
+      date,
+      customer_name,
+      customer_address,
     });
 
     if (order) {

@@ -22,12 +22,20 @@ const orderSchema = new mongoose.Schema({
     required: true,
   },
   date: {
-    type: Date, 
+    type: Date,
   },
-  status:{
+  status: {
     type: String,
     default: "pending",
-  }
+  },
+  customer_name:{
+    type: String,
+    required: true
+  },
+  customer_address: {
+    type: String,
+    required: true,
+  },
 });
 
 
