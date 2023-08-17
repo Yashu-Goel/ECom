@@ -11,7 +11,9 @@ const API_BASE = "http://localhost:5000";
 const SellerOrders = () => {
   const [orderDetails, setOrderDetails] = useState([]); // Combining order, product, and customer data
   const [loading, setLoading] = useState(true);
+  const [width, setWidth]=useState(window.innerWidth)
   useEffect(() => {
+      setWidth(window.innerWidth);
     const fetchData = async () => {
       try {
         setLoading(true)
@@ -57,7 +59,8 @@ const SellerOrders = () => {
     };
     fetchData();
   }, []);
-
+  console.log('okok');
+console.log(width);
   const handleProductStatusChange = async (orderId, newStatus) => {
     try {
       const response = await axios.patch(API_BASE + `/seller/order_details`, {
@@ -85,49 +88,51 @@ const SellerOrders = () => {
   return (
     <div>
       {loading ? (
-        <Loading/>
+        <Loading />
       ) : (
-        <div>
-          <SellerNav/>
-        <table>
-          <thead className="TableHeading">
-            <tr>
-              <th className="TableHead">OrderID</th>
-              <th className="TableHead">Customer Name</th>
-              <th className="TableHead">Customer Address</th>
-              <th className="TableHead">Product Details</th>
-              <th className="TableHead">Date of Order</th>
-              <th className="TableHead">Quantity</th>
-              <th className="TableHead">Product Status</th>
-            </tr>
-          </thead>
-          <tbody className="TableBody">
-            {orderDetails.map((order) => (
-              <tr key={order.orderId}>
-                <td className="TableHead">{order.orderId}</td>
-                <td className="TableHead">{order.customerName}</td>
-                <td className="TableHead">{order.customerAddress}</td>
-                <td className="TableHead">{`${order.productBrand} - ${order.productModel} ${order.productName}`}</td>
-                <td className="TableHead">
-                  {new Date(order.date).toLocaleDateString()}
-                </td>
-                <td className="TableHead">{order.quantity}</td>
-                <td className="TableHead">
-                  <select
-                    value={order.productStatus}
-                    onChange={(e) =>
-                      handleProductStatusChange(order.orderId, e.target.value)
-                    }
-                  >
-                    <option value="Pending">Pending</option>
-                    <option value="Shipped">Shipped</option>
-                    <option value="Delivered">Delivered</option>
-                  </select>
-                </td>
+        <div className="SellerOrderOuterContainer">
+          <div className="SellerNavContainer" style={{ width: width }}>
+            <SellerNav />
+          </div>
+          <table>
+            <thead className="TableHeading">
+              <tr>
+                <th className="TableHead">OrderID</th>
+                <th className="TableHead">Customer Name</th>
+                <th className="TableHead">Customer Address</th>
+                <th className="TableHead">Product Details</th>
+                <th className="TableHead">Date of Order</th>
+                <th className="TableHead">Quantity</th>
+                <th className="TableHead">Product Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="TableBody">
+              {orderDetails.map((order) => (
+                <tr key={order.orderId}>
+                  <td className="TableHead">{order.orderId}</td>
+                  <td className="TableHead">{order.customerName}</td>
+                  <td className="TableHead">{order.customerAddress}</td>
+                  <td className="TableHead">{`${order.productBrand} - ${order.productModel} ${order.productName}`}</td>
+                  <td className="TableHead">
+                    {new Date(order.date).toLocaleDateString()}
+                  </td>
+                  <td className="TableHead">{order.quantity}</td>
+                  <td className="TableHead">
+                    <select
+                      value={order.productStatus}
+                      onChange={(e) =>
+                        handleProductStatusChange(order.orderId, e.target.value)
+                      }
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="Shipped">Shipped</option>
+                      <option value="Delivered">Delivered</option>
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
 
