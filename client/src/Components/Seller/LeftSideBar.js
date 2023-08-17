@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./LeftSideBar.css";
+
 const LeftSideBar = () => {
+
   const data = [
     {
       data_item: "Home",

@@ -3,6 +3,8 @@ import axios from "axios";
 import './SellerOrders.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SellerNav from "./SellerNav";
+
 import Loading from "./Loading"
 const API_BASE = "http://localhost:5000";
 
@@ -85,6 +87,8 @@ const SellerOrders = () => {
       {loading ? (
         <Loading/>
       ) : (
+        <div>
+          <SellerNav/>
         <table>
           <thead className="TableHeading">
             <tr>
@@ -124,6 +128,7 @@ const SellerOrders = () => {
             ))}
           </tbody>
         </table>
+        </div>
       )}
 
       <ToastContainer position="top-center" autoClose={3000} theme="colored" />

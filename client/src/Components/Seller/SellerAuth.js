@@ -110,7 +110,6 @@ const SellerAuth = () => {
         config
       );
       const { _id, token } = data;
-      console.log('id: '+ _id);
       localStorage.setItem("_id", _id);
       toast.success("Login successful");
       toggleLoginStatus();

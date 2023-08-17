@@ -51,7 +51,8 @@ function App() {
         }
       />
       <Route exact path="/success" element={<BillModal />} />
-      <Route exact path="/seller" element={<SellerHome />} />
+      <Route exact path="/seller" element={          <SellerProvider>
+<SellerHome /> </SellerProvider>} />
       <Route
         exact
         path="/seller_dashboard"
