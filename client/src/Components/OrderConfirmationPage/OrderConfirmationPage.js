@@ -22,9 +22,17 @@ const OrderConfirmationPage = () => {
   const [bill, setBill] = useState({});
   const [response, setResponse] = useState({});
   const { user, cart } = UserState();
+  const [userAddress, setUserAddress] = useState({});
+  const [userName, setUserName] = useState({});
 
   useEffect(() => {
     setIsLoading(true);
+    const user_address = JSON.parse(localStorage.getItem("address"));
+    if (user_address) {
+      const addressString = `${user_address.street}, ${user_address.city}, ${user_address.state}, ${user_address.zip}`;
+      setUserAddress(addressString)
+      setUserName(user_address.name)
+    }
     const fetchUserId = async () => {
       try {
         const userEmail = JSON.parse(localStorage.getItem("profile"));
@@ -189,6 +197,7 @@ const OrderConfirmationPage = () => {
               toast.error("Payment error");
             }
             try {
+              console.log(products);
               for (const product of products) {
                 const orderDetails = {
                   sellerId: product.product.sellerId,
@@ -197,6 +206,8 @@ const OrderConfirmationPage = () => {
                   amount: product.product.price,
                   count: product.count,
                   date: new Date().toISOString().split("T")[0],
+                  customer_name: userName,
+                  customer_address: userAddress,
                 };
                 const config = {
                   headers: {

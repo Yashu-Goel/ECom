@@ -3,15 +3,20 @@ import axios from "axios";
 import './SellerOrders.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SellerNav from "./SellerNav";
 
+import Loading from "./Loading"
 const API_BASE = "http://localhost:5000";
 
 const SellerOrders = () => {
   const [orderDetails, setOrderDetails] = useState([]); // Combining order, product, and customer data
-
+  const [loading, setLoading] = useState(true);
+  const [width, setWidth]=useState(window.innerWidth)
   useEffect(() => {
+      setWidth(window.innerWidth);
     const fetchData = async () => {
       try {
+        setLoading(true)
         const sellerId = localStorage.getItem("_id");
         if (!sellerId) {
           window.alert("Seller Id not found!!");
@@ -27,38 +32,35 @@ const SellerOrders = () => {
               const product_response = await axios.get(
                 API_BASE + `/seller/products/${order.productId}`
               );
-
-              const customer_response = await axios.get(
-                API_BASE + `/user/user_details/${order.customerId}`
-              );
-
               return {
                 orderId: order._id,
                 date: order.date,
-                quantity:order.count,
+                quantity: order.count,
                 productName: product_response.data.name,
                 productBrand: product_response.data.brand,
                 productModel: product_response.data.model,
-                customerName: customer_response.data.name,
-                customerStreet: customer_response.data.addresses[0].street,
-                customerCity: customer_response.data.addresses[0].city,
-                customerState: customer_response.data.addresses[0].state,
-                productStatus: order.status, 
+                customerName: order.customer_name,
+                customerAddress: order.customer_address,
+                productStatus: order.status,
               };
             })
-          );
-          
-          setOrderDetails(combinedData);
+          );       
+            setOrderDetails(combinedData);
         } else {
           window.alert("No orders found for this seller.");
         }
+        setTimeout(()=>{
+        setLoading(false);
+
+        }, 2000)
       } catch (error) {
         console.log("Error: " + error);
       }
     };
     fetchData();
   }, []);
-
+  console.log('okok');
+console.log(width);
   const handleProductStatusChange = async (orderId, newStatus) => {
     try {
       const response = await axios.patch(API_BASE + `/seller/order_details`, {
@@ -85,43 +87,55 @@ const SellerOrders = () => {
   };
   return (
     <div>
-      <table>
-        <thead className="TableHeading">
-          <tr>
-            <th className="TableHead">OrderID</th>
-            <th className="TableHead">Customer Name</th>
-            <th className="TableHead">Customer Address</th>
-            <th className="TableHead">Product Details</th>
-            <th className="TableHead">Date of Order</th>
-            <th className="TableHead">Quantity</th>
-            <th className="TableHead">Product Status</th>
-          </tr>
-        </thead>
-        <tbody className="TableBody">
-          {orderDetails.map((order) => (
-            <tr key={order.orderId}>
-              <td className="TableHead">{order.orderId}</td>
-              <td className="TableHead">{order.customerName}</td>
-              <td className="TableHead">{`${order.customerStreet}, ${order.customerCity}, ${order.customerState}`}</td>
-              <td className="TableHead">{`${order.productBrand} - ${order.productModel} ${order.productName}`}</td>
-              <td className="TableHead">{new Date(order.date).toLocaleDateString()}</td>
-              <td className="TableHead">{order.quantity}</td>
-              <td className="TableHead">
-                <select
-                  value={order.productStatus}
-                  onChange={(e) =>
-                    handleProductStatusChange(order.orderId, e.target.value)
-                  }
-                >
-                  <option value="Pending">Pending</option>
-                  <option value="Shipped">Shipped</option>
-                  <option value="Delivered">Delivered</option>
-                </select>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="SellerOrderOuterContainer">
+          <div className="SellerNavContainer" style={{ width: width }}>
+            <SellerNav />
+          </div>
+          <table>
+            <thead className="TableHeading">
+              <tr>
+                <th className="TableHead">OrderID</th>
+                <th className="TableHead">Customer Name</th>
+                <th className="TableHead">Customer Address</th>
+                <th className="TableHead">Product Details</th>
+                <th className="TableHead">Date of Order</th>
+                <th className="TableHead">Quantity</th>
+                <th className="TableHead">Product Status</th>
+              </tr>
+            </thead>
+            <tbody className="TableBody">
+              {orderDetails.map((order) => (
+                <tr key={order.orderId}>
+                  <td className="TableHead">{order.orderId}</td>
+                  <td className="TableHead">{order.customerName}</td>
+                  <td className="TableHead">{order.customerAddress}</td>
+                  <td className="TableHead">{`${order.productBrand} - ${order.productModel} ${order.productName}`}</td>
+                  <td className="TableHead">
+                    {new Date(order.date).toLocaleDateString()}
+                  </td>
+                  <td className="TableHead">{order.quantity}</td>
+                  <td className="TableHead">
+                    <select
+                      value={order.productStatus}
+                      onChange={(e) =>
+                        handleProductStatusChange(order.orderId, e.target.value)
+                      }
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="Shipped">Shipped</option>
+                      <option value="Delivered">Delivered</option>
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
       <ToastContainer position="top-center" autoClose={3000} theme="colored" />
     </div>
   );

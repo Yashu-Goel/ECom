@@ -4,6 +4,8 @@ import { BiSolidUser } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import { SellerContext } from "./SellerProvider";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import LeftSideBar from "./LeftSideBar"
 const SellerNav = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -12,12 +14,17 @@ const SellerNav = () => {
   const handleUserClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-
+  console.log(isLoggedIn);
   const handleLogout = () => {
     logout();
     setIsDropdownOpen(false);
   };
   const handleMenu=()=>{
+    if(!isLoggedIn)
+    {
+      toast.info("Please Login")
+      return
+    }
     setIsMenuOpen(!isMenuOpen);
     console.log('okok');
   }
@@ -48,6 +55,7 @@ const SellerNav = () => {
           )}
         </div>
       )}
+      <ToastContainer position="top-center" autoClose={3000} theme="colored" />
     </div>
   );
 };

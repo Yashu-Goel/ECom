@@ -1,15 +1,23 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useEffect } from "react";
 const SellerContext = createContext();
 const SellerProvider = ({ children }) => {
-const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+useEffect(() => {
+  // Check if _id is present in local storage
+  const isSellerLoggedIn = localStorage.getItem("_id");
+  if (isSellerLoggedIn) {
+    setIsLoggedIn(true);
+  }
+}, []);
 
-const toggleLoginStatus = () => {
-      setIsLoggedIn(!isLoggedIn);
-    };
+  const toggleLoginStatus = () => {
+    setIsLoggedIn(!isLoggedIn);
+  };
+  const logout = () => {
+    localStorage.removeItem("_id");
 
-const logout = () => {
-       setIsLoggedIn(false);
-     };
+    setIsLoggedIn(false)
+  };
   return (
     <div>
       <SellerContext.Provider value={{ isLoggedIn, toggleLoginStatus, logout }}>
@@ -19,5 +27,5 @@ const logout = () => {
   );
 };
 
-export default SellerProvider
+export default SellerProvider;
 export { SellerContext };

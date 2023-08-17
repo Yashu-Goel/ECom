@@ -3,6 +3,7 @@ import SellerNav from "./SellerNav";
 import ReactApexChart from "react-apexcharts";
 import axios from "axios";
 import "./SellerDashboard.css";
+import Loading from "./Loading";
 const API_BASE = "http://localhost:5000";
 
 const SellerDashboard = () => {
@@ -11,6 +12,7 @@ const SellerDashboard = () => {
   const [totalOrders, setTotalOrders] = useState(0);
   const [totalSales, setTotalSales] = useState(0);
   const [creditAmount, setCreditAmount] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [orderData, setOrderData] = useState([
     {
       text: "Total",
@@ -33,6 +35,7 @@ const SellerDashboard = () => {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true)
         const sellerId = localStorage.getItem("_id");
         const response = await axios.get(
           API_BASE + `/seller/products?sellerId=${sellerId}`
@@ -96,6 +99,10 @@ const SellerDashboard = () => {
           },
         ];
         setOrderData(updatedOrderData);
+                setTimeout(() => {
+                  setLoading(false);
+                }, 2000);
+
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -135,6 +142,11 @@ const SellerDashboard = () => {
 
   return (
     <div>
+      {
+        loading?(
+          <Loading/>
+        ):(
+          <div>       
       <SellerNav />
       <h1 className="DashboardHeading">Dashboard</h1>
       <div className="DashboardDataItems">
@@ -173,6 +185,8 @@ const SellerDashboard = () => {
           </div>
         </div>
       </div>
+      </div>
+       )}
     </div>
   );
 };
