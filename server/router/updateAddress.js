@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const OrderHistory = require("../models/order_historySchema.js");
 require("../db/conn.js");
 
 dotenv.config();
@@ -10,13 +11,10 @@ router.use(express.json());
 router.use(cors());
 
 router.post("/add", async (req, res) => {
-  console.log("Hello");
   try {
     const user = req.user;
     const authToken = req.token;
     const addresses = req.body;
-
-    console.log(addresses);
 
     user.addresses = addresses;
     await user.save();
@@ -36,61 +34,36 @@ router.post("/add", async (req, res) => {
   }
 });
 
-// router.post("/additem", async (req, res) => {
-//   try {
-//     const user = req.user;
-//     const authToken = req.token;
+router.post("/order-history", async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { products, shippingDetails, paymentDetails } = req.body;
 
-//     await user.cart.push(req.body);
-//     await user.save();
+    const newOrderHistory = new OrderHistory({
+      userId: userId,
+      products,
+      shippingDetails,
+      paymentDetails,
+    });
 
-//     const resp = {
-//       addresses: user.addresses,
-//       cart: user.cart,
-//       email: user.email,
-//       name: user.name,
-//       token: authToken,
-//     };
-//     res.status(200).json(resp);
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(403).send("FORBIDDEN");
-//   }
-// });
+    newOrderHistory.userId = userId;
+    const savedOrderHistory = await newOrderHistory.save();
 
-// router.post("/upitem", async (req, res) => {
-//   try {
-//     const user = req.user;
-//     const authToken = req.token;
-
-//     const { _id, count } = req.body;
-//     user.cart.find((e) => {
-//       if (e._id === _id) {
-//         e.count = count;
-//       }
-//     });
-//     await user.save();
-//     const resp = {
-//       addresses: user.addresses,
-//       cart: user.cart,
-//       email: user.email,
-//       name: user.name,
-//       token: authToken,
-//     };
-//     return res.status(200).json(resp);
-//   } catch (e) {
-//     return res.status(403).send("FORBIDDEN");
-//   }
-// });
-
-// router.get("/getCartInfo/:_id", async (req, res) => {
-//   try {
-//     await Product.findOne({ _id: req.params._id }).then((response) => {
-//       return res.json(response);
-//     });
-//   } catch (err) {
-//     return res.status(403).send("FORBIDDEN");
-//   }
-// });
+    res.status(201).json(savedOrderHistory);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+router.get("/order-history", async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const data = await OrderHistory.find({ userId: userId });
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 module.exports = router;

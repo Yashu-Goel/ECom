@@ -26,7 +26,7 @@
 }
 
 .cart-items {
-  max-height: 250px; /* Adjust the height as needed */
+  max-height: 250px;
   overflow-y: auto;
   margin-bottom: 20px;
 }

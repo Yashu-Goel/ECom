@@ -1,36 +1,23 @@
 const mongoose = require("mongoose");
+// const User = require("./userSchema");
 
-const order_history = new mongoose.Schema({
-  date_of_order: {
+const orderHistorySchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  orderDate: {
     type: Date,
-    required: true,
+    default: Date.now,
   },
-  date_of_delivery: {
-    type: Date,
-    required: true,
+  products: [],
+  shippingDetails: {},
+  rating: {
+    type: Number,
+    default: 0,
   },
-  total_amount: {
-    type: String,
-    required: true,
-  },
-  receiver_name: {
-    type: String,
-    required: true,
-  },
-  product_name: {
-    type: String,
-    required: true,
-  },
-  product_image: {
-    type: String,
-    required: true,
-  },
-  order_id:{
-    type: String,
-  }
+  status: {},
+  paymentDetails: {},
 });
 
-//Models
-const OrderHistory = new mongoose.model("OrderHistory", order_history);
+// Create the OrderHistory model
+const OrderHistory = mongoose.model("OrderHistory", orderHistorySchema);
 
 module.exports = OrderHistory;

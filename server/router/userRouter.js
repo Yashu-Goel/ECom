@@ -104,7 +104,6 @@ router.post("/userid", async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user) {
-      console.log(user._id);
       res.status(200).json(user._id);
     } else {
       res.status(404).json({ error: "User not found" });
@@ -120,7 +119,6 @@ router.get("/user_details/:id", async (req, res) => {
   const userId = req.params.id;
   try {
     const user = await User.findById(userId);
-    console.log(user);
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });

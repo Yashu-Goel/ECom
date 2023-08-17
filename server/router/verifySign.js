@@ -24,7 +24,6 @@ router.post("/", async (req, res) => {
     const clientSignature = req.body.razorpay_signature;
 
     if (clientSignature === expectedSignature) {
-      console.log("Verify");
       res.status(200).send("Payment signature is valid");
     } else {
       res.status(400).send("Invalid payment signature");
@@ -36,22 +35,12 @@ router.post("/", async (req, res) => {
 });
 router.post("/capture/:id", async (req, res) => {
   try {
-    console.log(req.params.id);
-    console.log(req.body.amount);
     const resp = await razorpay.payments.capture(
       req.params.id,
       req.body.amount,
       "INR"
     );
-    console.log(resp);
-    res.status(200).send({resp});
-    // const options = {
-    //   amount: amount * 100, // Amount in paise (convert to smallest currency unit)
-    //   currency: "INR",
-    //   receipt: "order_receipt_" + Date.now(),
-    // };
-    // const order = await razorpay.orders.create(options);
-    // res.json(order);
+    res.status(200).send({ resp });
   } catch (error) {
     console.error("Error creating Razorpay order:", error);
     res.status(500).json({ error: "Error creating Razorpay order" });

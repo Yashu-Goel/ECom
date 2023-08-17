@@ -145,6 +145,7 @@ const OrderConfirmationPage = () => {
           order_id: orderId,
           handler: async function (response) {
             try {
+              setIsLoading(true);
               const bill = await axios.post(
                 `${API_BASE}/verify-payment/capture/${response.razorpay_payment_id}`,
                 {
@@ -154,6 +155,35 @@ const OrderConfirmationPage = () => {
               setPaymentModal(true);
               setBill(bill);
               setResponse(response);
+
+              if (
+                bill &&
+                bill.data &&
+                bill.data.resp &&
+                bill.data.resp.captured
+              ) {
+                try {
+                  const config = {
+                    headers: {
+                      Authorization: `Bearer ${user.token}`,
+                    },
+                  };
+                  await axios.post(
+                    API_BASE + "/updateAddress/order-history",
+                    {
+                      products: cart,
+                      shippingDetails: address,
+                      paymentDetails: bill.data.resp,
+                    },
+                    config
+                  );
+                  // toast.success("Order details sent to seller");
+                } catch (error) {
+                  console.log("Error sending order details: " + error);
+                }
+              }
+
+              setIsLoading(false);
             } catch (error) {
               console.log(error);
               toast.error("Payment error");
@@ -217,7 +247,7 @@ const OrderConfirmationPage = () => {
   return (
     <>
       {paymentModal && bill && response && (
-        <BillModal onClose={closeModal} bill={bill} response={response} />
+        <BillModal onClose={closeModal} bill={bill.data.resp} response={response} />
       )}
       {!products.length ? (
         <Loading />
