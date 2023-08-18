@@ -8,7 +8,6 @@ import {
   calculateTotal,
   truncateName,
 } from "../OrderConfirmationPage/function";
-import { Link } from "react-router-dom";
 
 const ProductModal = ({ cart, onClose }) => {
   const { user } = UserState();
@@ -48,56 +47,60 @@ const ProductModal = ({ cart, onClose }) => {
   }, [cart, user]);
 
   return (
-    <div className="modal1">
-      <div className="modal-content1">
-        <span className="close" onClick={onClose}>
-          &times;
-        </span>
-        <div className="cart-items">
-          {isLoading ? (
-            <div>Loading items...</div>
-          ) : products.length > 0 ? (
-            <ul className="cart-list">
-              {products.map((item, index) => (
-                <li key={index} className="cart-item">
-                  <div className="item-info">
-                    <div className="item-image">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/uploads/" +
-                          getFileNameFromPath(item.product.pics[0])
-                        }
-                        alt={`${item.product.name}`}
-                      />
-                    </div>
-                    <div className="item-details">
-                      <div className="item-name">
-                        {truncateName(item.product.name)}
+    <>
+      <div className="modal1">
+        <div className="modal-content1">
+          <span className="close" onClick={onClose}>
+            &times;
+          </span>
+          <div className="cart-items">
+            {isLoading ? (
+              <div>Loading items...</div>
+            ) : products.length > 0 ? (
+              <ul className="cart-list">
+                {products.map((item, index) => (
+                  <li key={index} className="cart-item1">
+                    <div className="item-info">
+                      <div className="item-image">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/uploads/" +
+                            getFileNameFromPath(item.product.pics[0])
+                          }
+                          alt={`${item.product.name}`}
+                        />
                       </div>
-                      <div className="item-actions">
-                        <span className="item-count">x {item.count}</span>
-                        <div className="item-actions"></div>
+                      <div className="item-details">
+                        <div className="item-name">
+                          {truncateName(item.product.name)}
+                        </div>
+                        <div className="item-actions">
+                          <span className="item-count">x {item.count}</span>
+                          <div className="item-actions"></div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="item-price">₹ {item.product.price}</div>
-                  <div className="item-total">
-                    ₹{(item.product.price * item.count).toFixed(2)}
+                    <div className="item-price">₹ {item.product.price}</div>
+                    <div className="item-total">
+                      ₹{(item.product.price * item.count).toFixed(2)}
+                    </div>
+                  </li>
+                ))}
+                <li className="cart-summary">
+                  <div className="summary-label">Total:</div>
+                  <div className="summary-total">
+                    ₹{calculateTotal(products)}
                   </div>
                 </li>
-              ))}
-              <li className="cart-summary">
-                <div className="summary-label">Total:</div>
-                <div className="summary-total">₹{calculateTotal(products)}</div>
-              </li>
-            </ul>
-          ) : (
-            <p className="empty-cart-message">Your cart is empty.</p>
-          )}
+              </ul>
+            ) : (
+              <p className="empty-cart-message">Oops some thing went wrong</p>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -25,7 +25,10 @@ const OrderHistory = () => {
             API_BASE + "/updateAddress/order-history",
             config
           );
-          setOrders(response.data);
+          const sortedOrders = response.data.sort(
+            (a, b) => new Date(b.orderDate) - new Date(a.orderDate)
+          );
+          setOrders(sortedOrders);
         } catch (error) {
           console.log(error);
         }
@@ -34,90 +37,134 @@ const OrderHistory = () => {
       getProductDetails();
     }
   }, [user]);
+  const [selectedFilter, setSelectedFilter] = useState("all");
+
+  const handleFilterClick = (filter) => {
+    setSelectedFilter(filter);
+  };
+
+  const handleSortClick = () => {
+    // Implement the sorting logic here
+  };
+
   return (
-    <div class="table-wrapper">
-      <div class="table-row table-header">
-        <div class="col-wrapper order-date-number-po">
-          <div class="table-col order-date">Order Date</div>
-          <div class="table-col order-number1">Order Id #</div>
-        </div>
-
-        <div class="col-wrapper order-year-model-customer">
-          <div class="table-col order-customer">Product Details</div>
-        </div>
-
-        <div class="col-wrapper order-status-signed">
-          <div class="table-col order-status">Status</div>
-        </div>
-
-        <div class="col-wrapper order-status-signed">
-          <div class="table-col order-status">Payment</div>
-        </div>
-      </div>
-      {orderData.map((order) => {
-        // Convert ISO 8601 formatted date string to JavaScript Date object
-        const orderDate = new Date(order.orderDate);
-
-        // Format the date and time in Indian format
-        const formattedDate = orderDate.toLocaleString("en-IN", {
-          timeZone: "Asia/Kolkata",
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        });
-        return (
-          <div class="table-row" key={order._id}>
-            <div class="col-wrapper order-date-number-po">
-              <div class="table-col order-date">{formattedDate}</div>
-              <div class="table-col order-number1">
-                {order.paymentDetails.order_id}
-              </div>
-            </div>
-
-            <div class="col-wrapper order-year-model-customer">
-              <div class="table-col order-customer">
-                <button
-                  onClick={() => {
-                    if (!selectedProduct) setSelectedProduct(order.products);
-                  }}
-                >
-                  View
-                </button>
-              </div>
-            </div>
-
-            <div class="col-wrapper order-status-signed">
-              <div class="table-col order-status">Placed</div>
-            </div>
-
-            <div class="col-wrapper order-status-signed">
-              <div class="table-col order-status">
-                <button
-                  onClick={() => {
-                    if (!selectedBill) setSelectedBill(order.paymentDetails);
-                  }}
-                >
-                  ₹{order.paymentDetails.amount / 100}
-                </button>
-              </div>
-            </div>
+    <>
+      <div className="order-history-container">
+        <h1 className="order-history-header">Order History</h1>
+        <h2>Your Orders</h2>
+        {/* //filter button */}
+        <div className="filter-buttons">
+          <div className="left-buttons">
+            <button
+              className={selectedFilter === "all" ? "active-btn" : ""}
+              onClick={() => handleFilterClick("all")}
+            >
+              Orders
+            </button>
+            <button
+              className={selectedFilter === "not-shipped" ? "active-btn" : ""}
+              onClick={() => handleFilterClick("not-shipped")}
+            >
+              Not Yet Shipped
+            </button>
+            <button
+              className={selectedFilter === "cancelled" ? "active-btn" : ""}
+              onClick={() => handleFilterClick("cancelled")}
+            >
+              Cancelled Orders
+            </button>
           </div>
-        );
-      })}
-      {selectedProduct && (
-        <ProductModal
-          cart={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
-        />
-      )}
-      {selectedBill && (
-        <BillModal
-          bill={selectedBill}
-          countDown={false}
-          onClose={() => setSelectedBill(null)}
-        />
-      )}
-    </div>
+          <div className="right-buttons">
+            <button
+              className={selectedFilter === "past-3-months" ? "active-btn" : ""}
+              onClick={() => handleFilterClick("past-3-months")}
+            >
+              Past 3 Months
+            </button>
+          </div>
+        </div>
+        {/* each div */}
+        <div className="order-list">
+          {orderData.map((order) => {
+            const orderDate = new Date(order.orderDate);
+
+            const formattedDate = orderDate.toLocaleString("en-IN", {
+              timeZone: "Asia/Kolkata",
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            });
+
+            return (
+              <div className="order-history-item" key={order._id}>
+                <div className="order-history-summary">
+                  <div className="order-history-details">
+                    <div className="order-placed">
+                      <p>Order Placed:</p>
+                      <strong>{formattedDate}</strong>
+                    </div>
+
+                    <div className="order-total">
+                      <p>Total:</p>
+                      <strong>₹{order.paymentDetails.amount / 100}</strong>
+                    </div>
+
+                    <button className="ship-to-button">
+                      <p>Ship to:</p>
+                      <strong>{order.shippingDetails.name}</strong>
+                    </button>
+
+                    <div>
+                      <p>Status</p>
+                      <button className="view-button">Pending</button>
+                    </div>
+                  </div>
+
+                  <div className="order-id">
+                    <p>
+                      <strong>Order #: {order.paymentDetails.order_id}</strong>
+                    </p>
+                    <div className="order-actions">
+                      <button
+                        className="view-button"
+                        onClick={() => {
+                          if (!selectedProduct)
+                            setSelectedProduct(order.products);
+                        }}
+                      >
+                        View Order Details
+                      </button>
+                      <button
+                        className="view-button"
+                        onClick={() => {
+                          if (!selectedBill)
+                            setSelectedBill(order.paymentDetails);
+                        }}
+                      >
+                        View Invoice
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        {selectedProduct && (
+          <ProductModal
+            cart={selectedProduct}
+            onClose={() => setSelectedProduct(null)}
+          />
+        )}
+        {selectedBill && (
+          <BillModal
+            bill={selectedBill}
+            countDown={false}
+            onClose={() => setSelectedBill(null)}
+          />
+        )}
+      </div>
+    </>
   );
 };
 

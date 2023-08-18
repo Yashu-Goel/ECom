@@ -1,53 +1,88 @@
-.table-wrapper {
-  font-family: Arial, sans-serif;
+.order-history-container {
+  min-width: 600px;
+  width: 50%;
+  margin: auto;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+
+  padding: 0px 10px;
+}
+.order-history-header {
+  text-align: center;
+  padding: 25px;
+  font-size: large;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
+.filter-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 10px;
+  margin-top: 10px;
+}
+
+.left-buttons,
+.right-buttons {
+  display: flex;
+  background-color: #e9e9e9;
+  border-radius: 5px;
+  padding: 2px 6px;
+}
+
+.filter-buttons button {
+  color: #92989d;
+  cursor: pointer;
+  padding: 5px 5px;
+  margin: 3px 3px;
   font-size: 14px;
+}
+button.active-btn {
+  background-color: #fff;
+  color: rgb(0, 0, 0);
+  border-radius: 5px;
+}
+
+.order-history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   border: 1px solid #ccc;
   padding: 10px;
-  overflow-x: auto;
-}
-.table-row {
-  display: flex;
-  flex-wrap: nowrap;
-  border-bottom: 1px solid #ccc;
-  padding: 10px;
-}
-.table-header {
-  background-color: #33a889;
-  color: white;
+  margin: 10px 5px;
+  border-radius: 5px;
 }
 
-.col-wrapper {
+.order-history-summary {
+  width: 100%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  text-align: center;
-  flex: 1;
+  flex-grow: 1;
 }
 
-.order-date-number-po {
-  flex: 2;
+.order-history-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  width: 60%;
 }
 
-.order-year-model-customer {
-  flex: 1;
-}
-
-.order-status-signed {
-  flex: 1;
+.order-id {
+  font-size: 12px;
 }
 
 .order-actions {
-  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
-.table-col {
-  padding: 5px 10px;
-}
-.order-customer button,
-.order-status button {
+.view-button {
+  border: none;
   color: blue;
   text-decoration: underline;
-}
-.order-customer button :hover,
-.order-status button:hover {
-  color: blue;
-  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 5px;
 }

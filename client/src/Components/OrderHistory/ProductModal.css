@@ -13,6 +13,15 @@
 .modal-content1 {
   background-color: #fff;
   padding: 10px;
-  width: 400px;
+  width: 450px;
   min-width: 300px;
+}
+.cart-item1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
