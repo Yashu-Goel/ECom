@@ -44,6 +44,7 @@ router.post("/order-history", async (req, res) => {
       products,
       shippingDetails,
       paymentDetails,
+      status: "Pending",
     });
 
     newOrderHistory.userId = userId;

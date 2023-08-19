@@ -5,11 +5,14 @@ import "./OrderHistory.css";
 import { UserState } from "../Context/UserProvider";
 import ProductModal from "./ProductModal";
 import BillModal from "../OrderConfirmationPage/BillModal";
+import RateModal from "./RateModal";
 
 const OrderHistory = () => {
   const [orderData, setOrders] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedBill, setSelectedBill] = useState(null);
+  const [openProductModal, setOpenProductModal] = useState(false);
+  const [isRateModalOpen, setIsRateModalOpen] = useState(false);
 
   const { user } = UserState();
   useEffect(() => {
@@ -128,8 +131,8 @@ const OrderHistory = () => {
                       <button
                         className="view-button"
                         onClick={() => {
-                          if (!selectedProduct)
-                            setSelectedProduct(order.products);
+                          setOpenProductModal(true);
+                          setSelectedProduct(order.products);
                         }}
                       >
                         View Order Details
@@ -146,14 +149,29 @@ const OrderHistory = () => {
                     </div>
                   </div>
                 </div>
+
+                <div className="miscell-button">
+                  <button
+                    className="rate-button"
+                    onClick={() => {
+                      setIsRateModalOpen(true);
+                      setSelectedProduct(order.products);
+                    }}
+                  >
+                    <span className="rate-button-icon">⭐️</span> Rate Order
+                  </button>
+                  <button className="cancel-button" onClick={() => {}}>
+                    Cancel Order
+                  </button>
+                </div>
               </div>
             );
           })}
         </div>
-        {selectedProduct && (
+        {openProductModal && (
           <ProductModal
             cart={selectedProduct}
-            onClose={() => setSelectedProduct(null)}
+            onClose={() => setOpenProductModal(false)}
           />
         )}
         {selectedBill && (
@@ -161,6 +179,12 @@ const OrderHistory = () => {
             bill={selectedBill}
             countDown={false}
             onClose={() => setSelectedBill(null)}
+          />
+        )}
+        {isRateModalOpen && (
+          <RateModal
+            products={selectedProduct} // Pass the products array to the modal
+            onClose={() => setIsRateModalOpen(false)}
           />
         )}
       </div>

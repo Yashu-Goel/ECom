@@ -28,12 +28,14 @@ const BillModal = ({ bill, countDown = true, onClose = {} }) => {
   return (
     <>
       <div className="body-container">
-        <div className="container">
+        <div className="container-bill-modal">
+
           {!countDown && (
             <button className="container-span" onClick={onClose}>
               X
             </button>
           )}
+
           <div className="printer-top"></div>
 
           <div className="paper-container">

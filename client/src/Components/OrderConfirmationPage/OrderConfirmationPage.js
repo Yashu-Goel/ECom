@@ -20,7 +20,6 @@ const OrderConfirmationPage = () => {
   const [userId, setUserId] = useState();
   const [paymentModal, setPaymentModal] = useState(false);
   const [bill, setBill] = useState({});
-  const [response, setResponse] = useState({});
   const { user, cart } = UserState();
   const [userAddress, setUserAddress] = useState({});
   const [userName, setUserName] = useState({});
@@ -30,8 +29,8 @@ const OrderConfirmationPage = () => {
     const user_address = JSON.parse(localStorage.getItem("address"));
     if (user_address) {
       const addressString = `${user_address.street}, ${user_address.city}, ${user_address.state}, ${user_address.zip}`;
-      setUserAddress(addressString)
-      setUserName(user_address.name)
+      setUserAddress(addressString);
+      setUserName(user_address.name);
     }
     const fetchUserId = async () => {
       try {
@@ -162,7 +161,6 @@ const OrderConfirmationPage = () => {
               );
               setPaymentModal(true);
               setBill(bill);
-              setResponse(response);
 
               if (
                 bill &&
@@ -185,7 +183,6 @@ const OrderConfirmationPage = () => {
                     },
                     config
                   );
-                  // toast.success("Order details sent to seller");
                 } catch (error) {
                   console.log("Error sending order details: " + error);
                 }
@@ -257,8 +254,8 @@ const OrderConfirmationPage = () => {
   };
   return (
     <>
-      {paymentModal && bill && response && (
-        <BillModal onClose={closeModal} bill={bill.data.resp} response={response} />
+      {paymentModal && bill && (
+        <BillModal onClose={closeModal} bill={bill.data.resp} />
       )}
       {!products.length ? (
         <Loading />

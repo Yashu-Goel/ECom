@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../Navbar/Navbar";
 import ImageSlider from "../TopSecHome/ImageSlider";
@@ -12,6 +11,7 @@ import CartModal from "../Modal/CartModal";
 import { addedToCart } from "../functions/functions";
 import { API_BASE } from "../functions/functions";
 import { getFileNameFromPath, calculateDiscount, addImage } from "./function";
+import { formatDistanceToNow } from "date-fns";
 
 export const Product = () => {
   const { id } = useParams();
@@ -22,6 +22,20 @@ export const Product = () => {
   const [productDetails, setProductDetails] = useState(null);
   const [pic, setPic] = useState([]);
   const [imageSrc, setImageSrc] = useState(null);
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(`${API_BASE}/api/review/${id}`);
+        setReviews(response.data);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+
+    fetchReviews();
+  }, [id]);
 
   useEffect(() => {
     setLoading(true);
@@ -61,10 +75,11 @@ export const Product = () => {
       setCount(count - 1);
     }
   };
+  console.log(productDetails);
   return (
     <>
       {showModal && <CartModal closeModal={() => setShowModal(false)} />}
-      {!productDetails  ? (
+      {!productDetails ? (
         <div className="loading-modal">
           <div className="loading-spinner"></div>
           <p>Loading ...</p>
@@ -120,26 +135,34 @@ export const Product = () => {
                   </Link>
 
                   <div className="ratings">
-                    <strong>{productDetails.ratings}.0</strong> &nbsp;
-                    {[...Array(5)].map((_, index) => (
-                      <span
-                        key={index}
-                        style={
-                          index < productDetails.ratings
-                            ? {
-                                color: "orange",
-                              }
-                            : null
-                        }
-                      >
-                        &#9733;
-                      </span>
-                    ))}
-                    &nbsp;|&nbsp;
-                    {/* coorevt the below to Link */}
-                    <Link to={""} className="total-reviews">
-                      {Object.keys(productDetails.reviews).length} ratings
-                    </Link>
+                    {productDetails.ratings ? (
+                      <>
+                        <strong>{productDetails.ratings}.0</strong> &nbsp;
+                        {[...Array(5)].map((_, index) => (
+                          <span
+                            key={index}
+                            style={
+                              index < productDetails.ratings
+                                ? {
+                                    color: "orange",
+                                  }
+                                : null
+                            }
+                          >
+                            &#9733;
+                          </span>
+                        ))}
+                        &nbsp;|&nbsp;
+                        <Link
+                          to={`/product/${productDetails._id}`}
+                          className="total-reviews"
+                        >
+                          {reviews && reviews.length} ratings
+                        </Link>
+                      </>
+                    ) : (
+                      <p>No ratings yet</p>
+                    )}
                   </div>
 
                   <div className="product-cost">
@@ -179,7 +202,8 @@ export const Product = () => {
                         <strong>Category:-</strong> {productDetails.category}
                       </li>
                       <li>
-                        <strong>Seller Name:-</strong> {productDetails.sellerId}
+                        <strong>Seller Name:-</strong>{" "}
+                        {productDetails.sellerId.name}
                       </li>
                       <li>
                         <strong>Description:-</strong>{" "}
@@ -249,39 +273,51 @@ export const Product = () => {
                 </div>
               </div>
             </div>
-            <div className="product-reviews">
-              {!Object.keys(productDetails.reviews).length ? (
+            <div id="reviews" className="product-reviews">
+              {reviews.length === 0 ? (
                 <h1>No reviews yet</h1>
               ) : (
-                <h1>Top reviews</h1>
-              )}
-              <div>
-                {Object.entries(productDetails.reviews).forEach((reviews) => {
-                  return (
-                    <div className="review-box">
-                      <div className="review-icon">
-                        <div>
-                          <i class="fa fa-user" aria-hidden="true"></i>&nbsp;
-                          <strong>{reviews.name}</strong>
+                <div>
+                  <h1>Top reviews</h1>
+                  <div className="review-container">
+                    {reviews.map((review) => (
+                      <div className="review-box" key={review._id}>
+                        <div className="review-icon">
+                          <div className="user-info">
+                            <i className="fa fa-user" aria-hidden="true"></i>
+                            &nbsp;
+                            <strong>{review.user.name}</strong>
+                          </div>
+
+                          <div className="rating-stars">
+                            {[...Array(5)].map((_, index) => (
+                              <strong
+                                key={index}
+                                style={
+                                  index < review.stars ? { color: "red" } : null
+                                }
+                              >
+                                &#9733;
+                              </strong>
+                            ))}
+                          </div>
+
+                          <p className="review-message">
+                            {review.reviewMessage}
+                          </p>
+                          <p className="review-date">
+                            Posted:{" "}
+                            {formatDistanceToNow(
+                              new Date(review.dateUploaded),
+                              { addSuffix: true }
+                            )}
+                          </p>
                         </div>
-
-                        {[...Array(5)].map((_, index) => (
-                          <strong
-                            key={index}
-                            style={
-                              index < reviews.rating ? { color: "red" } : null
-                            }
-                          >
-                            &#9733;
-                          </strong>
-                        ))}
-
-                        <p>{reviews.message}</p>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             <ImageSlider
               slider={firstSlider}
@@ -289,7 +325,6 @@ export const Product = () => {
               text={true}
               className="image-slider"
             />
-            <ToastContainer />
           </div>
         )
       )}

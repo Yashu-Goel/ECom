@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Review = require("./reviewSchema");
+const Seller = require("./sellerSchema");
 
 const productDetailsSchema = new mongoose.Schema({
   name: {
@@ -26,7 +27,8 @@ const productDetailsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  brand: { // link
+  brand: {
+    // link
     type: String,
     required: true,
   },
@@ -49,7 +51,6 @@ const productDetailsSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Seller",
   },
-  
 });
 
 module.exports = mongoose.model("Product", productDetailsSchema);

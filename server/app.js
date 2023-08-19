@@ -11,6 +11,7 @@ const getDetails = require("./router/getDetailsRouter.js");
 const updateAddress = require("./router/updateAddress");
 const createOrderId = require("./router/razorPay.js");
 const verifySign = require("./router/verifySign");
+const reviewRouter = require("./router/reviewRouter.js");
 //middle wares
 app.use(cors());
 app.use("/user", userRouter);
@@ -20,6 +21,7 @@ app.use("/get", getDetails);
 app.use("/updateAddress", tokenMiddleware, updateAddress);
 app.use("/create-razorpay-order", tokenMiddleware, createOrderId);
 app.use("/verify-payment", verifySign);
+app.use("/api/review", reviewRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

@@ -11,9 +11,12 @@ router.use(cors());
 
 router.get("/getProductDetails/:_id", async (req, res) => {
   try {
-    await Product.findOne({ _id: req.params._id }).then((response) => {
-      return res.json(response);
-    });
+    const response = await Product.findOne({ _id: req.params._id }).populate(
+      "sellerId",
+      "name"
+    );
+    console.log(response);
+    return res.status(200).json(response);
   } catch (err) {
     return res.status(403).send("FORBIDDEN");
   }
