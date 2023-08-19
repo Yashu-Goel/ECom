@@ -194,7 +194,6 @@ const OrderConfirmationPage = () => {
               toast.error("Payment error");
             }
             try {
-              console.log(products);
               for (const product of products) {
                 const orderDetails = {
                   sellerId: product.product.sellerId,

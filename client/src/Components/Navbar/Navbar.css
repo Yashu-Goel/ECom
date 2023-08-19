@@ -11,9 +11,10 @@
 .logo {
   position: absolute;
   top: 50%;
-  left: 7%;
-  width: 3%;
+  left: 15%;
+  width: 10%;
   transform: translate(-150%, -50%);
+
 }
 .categories {
   display: flex;
@@ -27,16 +28,23 @@
 .nav-elements {
   font-weight: 500;
   padding: 10px 10px;
-  border: 2px solid black;
+  /* border: 2px solid black; */
   font-family: "Work Sans", sans-serif;
 }
+.nav-elements:hover:first-child {
+  border-radius: 5px;
+  cursor: pointer;
+  color: #000;
+  background-color: transparent;
+  border: none;
+} 
 .nav-elements:hover {
   border-radius: 5px;
   background-color: white;
   cursor: pointer;
   color: #000;
   border: 2px solid white;
-}
+} 
 .nav-search {
   display: flex;
   position: absolute;
