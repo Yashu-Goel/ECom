@@ -7,6 +7,7 @@ import { SellerContext } from "./SellerProvider";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LeftSideBar from "./LeftSideBar"
+import Logo from "../Assets/Logo.png"
 const SellerNav = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { isLoggedIn, logout } = useContext(SellerContext);
@@ -31,6 +32,11 @@ const SellerNav = () => {
   return (
     <div className="SellerMainNav">
       <GiHamburgerMenu className="BurgerLogo" onClick={handleMenu} />
+      <div className="SellerLogo">
+        <Link to="/seller">
+          <img src={Logo}></img>
+        </Link>
+      </div>
       <BiSolidUser className="UserProfileLogo" onClick={handleUserClick} />
       {isMenuOpen && (
         <div>

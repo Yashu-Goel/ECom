@@ -4,7 +4,7 @@ import "./Navbar.css";
 import ConfirmationModal from "./ConfirmationModal";
 import { UserState } from "../Context/UserProvider";
 import CartModal from "../Modal/CartModal";
-
+import Logo from "../Assets/Logo.png"
 const Navbar = () => {
   const [isConfirmationOpen, setConfirmationOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -44,7 +44,11 @@ const Navbar = () => {
     <>
       {showModal && <CartModal closeModal={closeModal} />}
       <div className="navbar-header">
-        <div className="logo nav-elements">Logo</div>
+        <div className="logo nav-elements">
+          <Link to="/">
+            <img src={Logo} />
+          </Link>
+        </div>
 
         <div className="categories">
           <div className="dropdown">

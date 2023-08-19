@@ -2,7 +2,6 @@
   background-color: #b2dbfa;
   font-weight: bold;
   color: black;
-  border: 2px solid red;
 }
 .TableHead{
   border: 1.6px solid black;
@@ -12,16 +11,11 @@
   font-weight: bold;
 }
 .SellerOrderOuterContainer{
-  border: 2px solid red;
   display: flex;
   flex-direction: column;
+
 }
 @media (max-width: 768px) {
 
-  .TableHead:nth-child(3){
-    min-width: 200px;
-  }
-  .TableHead:nth-child(4){
-    min-width: 125px;
-  }
+  
 }
