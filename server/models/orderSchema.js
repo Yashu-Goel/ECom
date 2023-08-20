@@ -23,20 +23,20 @@ const orderSchema = new mongoose.Schema({
   },
   date: {
     type: Date,
+    default: Date.now,
   },
   status: {
     type: String,
     default: "pending",
   },
-  customer_name:{
-    type: String,
-    required: true
-  },
   customer_address: {
-    type: String,
+    type: Object,
     required: true,
   },
+  paymentDetails: {
+    type: Object,
+    default: true,
+  },
 });
-
 
 module.exports = mongoose.model("Order", orderSchema);

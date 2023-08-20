@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const Review = require("./reviewSchema");
-const Seller = require("./sellerSchema");
 
 const productDetailsSchema = new mongoose.Schema({
   name: {

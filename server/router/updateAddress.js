@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const OrderHistory = require("../models/order_historySchema.js");
+const OrderSchema = require("../models/orderSchema");
 require("../db/conn.js");
 
 dotenv.config();
@@ -33,7 +33,6 @@ router.post("/add", async (req, res) => {
     return res.status(403).send("FORBIDDEN");
   }
 });
-
 router.post("/order-history", async (req, res) => {
   try {
     const userId = req.user._id;
@@ -56,10 +55,13 @@ router.post("/order-history", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 router.get("/order-history", async (req, res) => {
   try {
     const userId = req.user._id;
-    const data = await OrderHistory.find({ userId: userId });
+    const data = await OrderSchema.find({ customerId: userId }).populate(
+      "productId"
+    );
     res.status(200).json(data);
   } catch (error) {
     console.error(error);

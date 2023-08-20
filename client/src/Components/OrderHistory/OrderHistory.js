@@ -3,15 +3,15 @@ import axios from "axios";
 import { API_BASE } from "../functions/functions";
 import "./OrderHistory.css";
 import { UserState } from "../Context/UserProvider";
-import ProductModal from "./ProductModal";
 import BillModal from "../OrderConfirmationPage/BillModal";
 import RateModal from "./RateModal";
+import { getFileNameFromPath } from "../IndividualProduct/function";
+import { Link } from "react-router-dom";
 
 const OrderHistory = () => {
   const [orderData, setOrders] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedBill, setSelectedBill] = useState(null);
-  const [openProductModal, setOpenProductModal] = useState(false);
   const [isRateModalOpen, setIsRateModalOpen] = useState(false);
 
   const { user } = UserState();
@@ -31,6 +31,7 @@ const OrderHistory = () => {
           const sortedOrders = response.data.sort(
             (a, b) => new Date(b.orderDate) - new Date(a.orderDate)
           );
+          console.log(sortedOrders);
           setOrders(sortedOrders);
         } catch (error) {
           console.log(error);
@@ -46,16 +47,28 @@ const OrderHistory = () => {
     setSelectedFilter(filter);
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const today = new Date();
+
+    const diffInDays = Math.floor((today - date) / (1000 * 60 * 60 * 24));
+
+    if (diffInDays === 0) {
+      return "Today";
+    } else if (diffInDays === 1) {
+      return "Yesterday";
+    } else {
+      return `${diffInDays} days ago`;
+    }
+  };
   const handleSortClick = () => {
     // Implement the sorting logic here
   };
-
   return (
     <>
       <div className="order-history-container">
         <h1 className="order-history-header">Order History</h1>
         <h2>Your Orders</h2>
-        {/* //filter button */}
         <div className="filter-buttons">
           <div className="left-buttons">
             <button
@@ -86,94 +99,144 @@ const OrderHistory = () => {
             </button>
           </div>
         </div>
-        {/* each div */}
+
         <div className="order-list">
-          {orderData.map((order) => {
-            const orderDate = new Date(order.orderDate);
+          {orderData &&
+            orderData.map((order) => {
+              const orderDate = new Date(order.date);
 
-            const formattedDate = orderDate.toLocaleString("en-IN", {
-              timeZone: "Asia/Kolkata",
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            });
+              const formattedDate = orderDate.toLocaleString("en-IN", {
+                timeZone: "Asia/Kolkata",
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              });
 
-            return (
-              <div className="order-history-item" key={order._id}>
-                <div className="order-history-summary">
-                  <div className="order-history-details">
-                    <div className="order-placed">
-                      <p>Order Placed:</p>
-                      <strong>{formattedDate}</strong>
+              return (
+                <div className="order-history-item" key={order._id}>
+                  <div className="order-history-summary">
+                    <div className="order-history-details">
+                      <div className="order-placed">
+                        <p>Order Placed:</p>
+                        <strong>{formattedDate}</strong>
+                      </div>
+
+                      <div className="order-total">
+                        <p>Total:</p>
+                        <strong>₹{order.paymentDetails.amount / 100}</strong>
+                      </div>
+
+                      <button className="ship-to-button">
+                        <p>Ship to:</p>
+                        <strong>{order.customer_address.name}</strong>
+                      </button>
                     </div>
 
-                    <div className="order-total">
-                      <p>Total:</p>
-                      <strong>₹{order.paymentDetails.amount / 100}</strong>
-                    </div>
-
-                    <button className="ship-to-button">
-                      <p>Ship to:</p>
-                      <strong>{order.shippingDetails.name}</strong>
-                    </button>
-
-                    <div>
-                      <p>Status</p>
-                      <button className="view-button">Pending</button>
+                    <div className="order-id">
+                      <p>
+                        <strong>
+                          Order #: {order.paymentDetails.order_id}
+                        </strong>
+                      </p>
+                      <div className="order-actions">
+                        <button
+                          className="view-button"
+                          onClick={() => {
+                            if (!selectedBill)
+                              setSelectedBill(order.paymentDetails);
+                          }}
+                        >
+                          View Invoice
+                        </button>
+                        <button className="view-button">Track Product</button>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="order-id">
-                    <p>
-                      <strong>Order #: {order.paymentDetails.order_id}</strong>
-                    </p>
-                    <div className="order-actions">
-                      <button
-                        className="view-button"
-                        onClick={() => {
-                          setOpenProductModal(true);
-                          setSelectedProduct(order.products);
-                        }}
-                      >
-                        View Order Details
+                  <div className="order-history-second">
+                    <div className="product-order-history-details">
+                      <div className="order-status">
+                        {order.status === "pending" && (
+                          <p>Order placed {formatDate(order.date)}</p>
+                        )}
+                        {order.status === "shipped" && (
+                          <p>Order shipped {formatDate(order.date)}</p>
+                        )}
+                        {order.status === "out_for_delivery" && (
+                          <p>Out for delivery {formatDate(order.date)}</p>
+                        )}
+                        {order.status === "delivered" && (
+                          <p>Delivered {formatDate(order.date)}</p>
+                        )}
+                      </div>
+
+                      <div className="first-second-part">
+                        <div className="product-image">
+                          <Link
+                            to={`/product/${order.productId._id}`}
+                            className="product-link"
+                          >
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/uploads/" +
+                                getFileNameFromPath(order.productId.pics[0])
+                              }
+                              alt={`${order.productId.name}`}
+                            />
+                          </Link>
+                        </div>
+
+                        <div className="product-info">
+                          <Link
+                            to={`/product/${order.productId._id}`}
+                            className="product-link"
+                          >
+                            <strong>{order.productId.name}</strong>{" "}
+                            <strong>{order.productId.brand}</strong>{" "}
+                            <strong>{order.productId.model}</strong>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="miscell-button">
+                      {order.status === "Delivered" ? (
+                        <button
+                          className="rate-button"
+                          onClick={() => {
+                            setIsRateModalOpen(true);
+                            setSelectedProduct(order.productId);
+                          }}
+                        >
+                          <span className="button-icon">⭐️</span> Review
+                          Product
+                        </button>
+                      ) : null}
+
+                      {order.status !== "Delivered" ? (
+                        <button className="cancel-button" onClick={() => {}}>
+                          <span className="button-icon">❌</span> Cancel Order
+                        </button>
+                      ) : null}
+
+                      <button className="buy-again-button" onClick={() => {}}>
+                        <span className="button-icon">🛒</span> Buy Again
                       </button>
+
                       <button
-                        className="view-button"
-                        onClick={() => {
-                          if (!selectedBill)
-                            setSelectedBill(order.paymentDetails);
-                        }}
+                        className="contact-seller-button"
+                        onClick={() => {}}
                       >
-                        View Invoice
+                        <span className="button-icon">📞</span> Contact the
+                        Seller
                       </button>
                     </div>
                   </div>
                 </div>
-
-                <div className="miscell-button">
-                  <button
-                    className="rate-button"
-                    onClick={() => {
-                      setIsRateModalOpen(true);
-                      setSelectedProduct(order.products);
-                    }}
-                  >
-                    <span className="rate-button-icon">⭐️</span> Rate Order
-                  </button>
-                  <button className="cancel-button" onClick={() => {}}>
-                    Cancel Order
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
-        {openProductModal && (
-          <ProductModal
-            cart={selectedProduct}
-            onClose={() => setOpenProductModal(false)}
-          />
-        )}
         {selectedBill && (
           <BillModal
             bill={selectedBill}
@@ -183,7 +246,7 @@ const OrderHistory = () => {
         )}
         {isRateModalOpen && (
           <RateModal
-            products={selectedProduct} // Pass the products array to the modal
+            products={selectedProduct}
             onClose={() => setIsRateModalOpen(false)}
           />
         )}

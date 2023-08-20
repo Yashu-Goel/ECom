@@ -21,17 +21,17 @@ const OrderConfirmationPage = () => {
   const [paymentModal, setPaymentModal] = useState(false);
   const [bill, setBill] = useState({});
   const { user, cart } = UserState();
-  const [userAddress, setUserAddress] = useState({});
-  const [userName, setUserName] = useState({});
+  // const [userAddress, setUserAddress] = useState({});
+  // const [userName, setUserName] = useState({});
 
   useEffect(() => {
     setIsLoading(true);
-    const user_address = JSON.parse(localStorage.getItem("address"));
-    if (user_address) {
-      const addressString = `${user_address.street}, ${user_address.city}, ${user_address.state}, ${user_address.zip}`;
-      setUserAddress(addressString);
-      setUserName(user_address.name);
-    }
+    // const user_address = JSON.parse(localStorage.getItem("address"));
+    // if (user_address) {
+    //   const addressString = `${user_address.street}, ${user_address.city}, ${user_address.state}, ${user_address.zip}`;
+    //   setUserAddress(addressString);
+    //   setUserName(user_address.name);
+    // }
     const fetchUserId = async () => {
       try {
         const userEmail = JSON.parse(localStorage.getItem("profile"));
@@ -45,20 +45,20 @@ const OrderConfirmationPage = () => {
 
         setUserId(response.data);
         // getting order Status from user id
-        try {
-          const statusResponse = await axios.get(
-            API_BASE + "/seller/OrderStatus",
-            {
-              params: {
-                id: response.data,
-              },
-            }
-          );
+        // try {
+        //   const statusResponse = await axios.get(
+        //     API_BASE + "/seller/OrderStatus",
+        //     {
+        //       params: {
+        //         id: response.data,
+        //       },
+        //     }
+        //   );
 
-          // jo karna hai yaha karo
-        } catch (error) {
-          console.error("Error fetching order statuses:", error);
-        }
+        //   // jo karna hai yaha karo
+        // } catch (error) {
+        //   console.error("Error fetching order statuses:", error);
+        // }
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -111,6 +111,7 @@ const OrderConfirmationPage = () => {
   }, [cart]);
 
   const handleApplyPromoCode = () => {};
+
   const loadRazorpay = () => {
     return new Promise((resolve) => {
       if (window.Razorpay) {
@@ -162,29 +163,38 @@ const OrderConfirmationPage = () => {
               setPaymentModal(true);
               setBill(bill);
 
-              if (
-                bill &&
-                bill.data &&
-                bill.data.resp &&
-                bill.data.resp.captured
-              ) {
+              if (bill && bill.data && bill.data.resp) {
                 try {
-                  const config = {
-                    headers: {
-                      Authorization: `Bearer ${user.token}`,
-                    },
-                  };
-                  await axios.post(
-                    API_BASE + "/updateAddress/order-history",
-                    {
-                      products: cart,
-                      shippingDetails: address,
+                  for (const product of products) {
+                    const orderDetails = {
+                      sellerId: product.product.sellerId,
+                      productId: product.product._id,
+                      customerId: userId,
+                      amount: product.product.price,
+                      count: product.count,
+                      customer_address: address,
                       paymentDetails: bill.data.resp,
-                    },
-                    config
-                  );
+                    };
+                    const config = {
+                      headers: {
+                        "Content-type": "application/json",
+                        Authorization: `Bearer ${user.token}`,
+                      },
+                    };
+                    try {
+                      await axios.post(
+                        API_BASE + "/seller/order_details",
+                        orderDetails,
+                        config
+                      );
+                      toast.success("Order details sent to seller");
+                    } catch (error) {
+                      console.log("Error sending order details: " + error);
+                    }
+                  }
                 } catch (error) {
-                  console.log("Error sending order details: " + error);
+                  console.error("Error creating Razorpay order:", error);
+                  setIsLoading(false);
                 }
               }
 
@@ -192,39 +202,6 @@ const OrderConfirmationPage = () => {
             } catch (error) {
               console.log(error);
               toast.error("Payment error");
-            }
-            try {
-              for (const product of products) {
-                const orderDetails = {
-                  sellerId: product.product.sellerId,
-                  productId: product.product._id,
-                  customerId: userId,
-                  amount: product.product.price,
-                  count: product.count,
-                  date: new Date().toISOString().split("T")[0],
-                  customer_name: userName,
-                  customer_address: userAddress,
-                };
-                const config = {
-                  headers: {
-                    "Content-type": "application/json",
-                    Authorization: `Bearer ${user.token}`,
-                  },
-                };
-                try {
-                  await axios.post(
-                    API_BASE + "/seller/order_details",
-                    orderDetails,
-                    config
-                  );
-                  toast.success("Order details sent to seller");
-                } catch (error) {
-                  console.log("Error sending order details: " + error);
-                }
-              }
-            } catch (error) {
-              console.error("Error creating Razorpay order:", error);
-              setIsLoading(false);
             }
           },
           prefill: {

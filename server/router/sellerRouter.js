@@ -4,7 +4,7 @@ const app = require("express");
 const Seller = require("../models/sellerSchema.js");
 const Address = require("../models/addressSchema.js");
 const Product = require("../models/productDetailsSchema.js");
-const Order = require("../models/orderSchema.js")
+const Order = require("../models/orderSchema.js");
 // const OrderHistory = require("../models/order_historySchema.js");
 const bcrypt = require("bcryptjs");
 const dotenv = require("dotenv");
@@ -22,11 +22,11 @@ const JWT_Secret = process.env.JWT_Secret;
 const path = require("path");
 //mutler configuration
 
-
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-const absolutePath = path.join(__dirname, "../../client/public/uploads");
-cb(null, absolutePath);  },
+    const absolutePath = path.join(__dirname, "../../client/public/uploads");
+    cb(null, absolutePath);
+  },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     cb(null, file.fieldname + "-" + uniqueSuffix + ".jpg");
@@ -34,8 +34,6 @@ cb(null, absolutePath);  },
 });
 
 const upload = multer({ storage: storage });
-
-
 
 //signup for seller
 router.post("/sellersignup", async (req, res) => {
@@ -90,22 +88,22 @@ router.post("/sellerlogin", async (req, res) => {
       return res.status(400).json({ error: "Please fill all the details" });
     }
     const sellerLogin = await Seller.findOne({ email });
-    console.log("sellerLogin: "+ sellerLogin );
-   if (sellerLogin) {
-     const isMatch = await bcrypt.compare(password, sellerLogin.password);
-     if (!isMatch) {
-       res.json({ message: "Invalid Credential" });
-     } else {
-       const token = jwt.sign({ _id: sellerLogin._id }, JWT_Secret);
-       res.json({
-         token: token,
-         _id: sellerLogin._id,
-         message: "Login Success!!",
-       });
-     }
-   } else {
-     res.status(400).send("Invalid Credentials");
-   }
+    console.log("sellerLogin: " + sellerLogin);
+    if (sellerLogin) {
+      const isMatch = await bcrypt.compare(password, sellerLogin.password);
+      if (!isMatch) {
+        res.json({ message: "Invalid Credential" });
+      } else {
+        const token = jwt.sign({ _id: sellerLogin._id }, JWT_Secret);
+        res.json({
+          token: token,
+          _id: sellerLogin._id,
+          message: "Login Success!!",
+        });
+      }
+    } else {
+      res.status(400).send("Invalid Credentials");
+    }
   } catch (error) {
     console.log("error: " + error);
   }
@@ -116,7 +114,7 @@ router.get("/seller_details/:id", async (req, res) => {
   try {
     const sellerId = req.params.id;
     const seller = await Seller.findById(sellerId);
-    console.log('okok');
+    console.log("okok");
     if (!seller) {
       return res.status(404).json({ error: "Seller not found" });
     }
@@ -151,9 +149,8 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
     sellerId: sellerId,
   } = req.body;
   const productImages = req.files.map((file) => file.path);
-  console.log('OK');
+  console.log("OK");
   console.log(req.body);
-
 
   try {
     const product = await Product.create({
@@ -182,14 +179,13 @@ router.post("/product", upload.array("productImages", 5), async (req, res) => {
       res.status(400).json("Product unregistered");
     }
   } catch (error) {
-    res.status(422).json("Error: "+error);
+    res.status(422).json("Error: " + error);
   }
 });
 
 //get product details
 router.get("/products/:id", async (req, res) => {
   const productId = req.params.id;
-  console.log(productId);
   try {
     const product = await Product.findById(productId);
     if (!product) {
@@ -215,7 +211,6 @@ router.get("/products", async (req, res) => {
   }
 });
 
-
 // router.get("/products", async (req, res) => {
 //   try {
 //     const products = await Product.find(); // Fetch all products from the database
@@ -226,31 +221,9 @@ router.get("/products", async (req, res) => {
 // });
 
 // post order_details
-router.post("/order_details",async (req, res) => {
-  console.log(req.body);
-  const {
-    sellerId: sellerId,
-    customerId: customerId,
-    productId: productId,
-    count, 
-    amount,
-    date,
-    customer_name,
-    customer_address
-  } = req.body;
-  console.log(req.body);
-
+router.post("/order_details", async (req, res) => {
   try {
-    const order = await Order.create({
-      sellerId: sellerId,
-      customerId: customerId,
-      productId: productId,
-      count,
-      amount,
-      date,
-      customer_name,
-      customer_address,
-    });
+    const order = await Order.create(req.body);
 
     if (order) {
       res.status(200).json({
@@ -307,32 +280,33 @@ router.get("/order_status", async (req, res) => {
 });
 // get order status from userId
 router.get("/OrderStatus", async (req, res) => {
-const userId = req.query.id; 
-try {
-  const orders = await Order.find({ customerId: userId }); 
+  const userId = req.query.id;
+  try {
+    const orders = await Order.find({ customerId: userId });
 
-  if (!orders || orders.length === 0) {
-    return res.status(404).json({ message: "No orders found for this user" });
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found for this user" });
+    }
+
+    const orderStatuses = orders.map((order) => ({
+      orderId: order._id,
+      status: order.status,
+    }));
+
+    res.status(200).json(orderStatuses);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
-
-  const orderStatuses = orders.map((order) => ({
-    orderId: order._id,
-    status: order.status,
-  }));
-
-  res.status(200).json(orderStatuses);
-} catch (error) {
-  console.error(error);
-  res.status(500).json({ message: "Internal Server Error" });
-}
 });
 
 //get order_details
 router.get("/order_details/:id", async (req, res) => {
   const sellerId = req.params.id;
-  console.log(sellerId);
   try {
-    const order = await Order.find({ sellerId: sellerId });
+    const order = await Order.find({ sellerId: sellerId })
+      .populate("customerId", "name")
+      .populate("productId", "name brand model");
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
     }
