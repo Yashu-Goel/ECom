@@ -306,7 +306,7 @@ router.get("/order_details/:id", async (req, res) => {
   try {
     const order = await Order.find({ sellerId: sellerId })
       .populate("customerId", "name")
-      .populate("productId", "name brand model");
+      .populate("productId", "name brand model category price pics price");
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
     }

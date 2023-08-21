@@ -61,7 +61,6 @@ const SellerNav = () => {
           )}
         </div>
       )}
-      <ToastContainer position="top-center" autoClose={3000} theme="colored" />
     </div>
   );
 };

@@ -12,7 +12,7 @@ root.render(
   <Router>
     <UserProvider>
       <App />
-      <ToastContainer />
+      <ToastContainer position="top-center" autoClose={3000} theme="colored" /> 
     </UserProvider>
   </Router>
 );

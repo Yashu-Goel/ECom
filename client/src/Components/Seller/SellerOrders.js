@@ -5,12 +5,22 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SellerNav from "./SellerNav";
 import { API_BASE } from "../functions/functions";
+import Product from "./Modal/Product";
 import Loading from "./Loading";
 
 const SellerOrders = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [width, setWidth] = useState(window.innerWidth);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const openProductModal = (product) => {
+    setSelectedProduct(product);
+  };
+
+  const closeProductModal = () => {
+    setSelectedProduct(null);
+  };
 
   useEffect(() => {
     setWidth(window.innerWidth);
@@ -37,35 +47,39 @@ const SellerOrders = () => {
     fetchData();
   }, []);
 
-  const handleProductStatusChange = async (orderId, newStatus) => {
-    try {
-      const response = await axios.patch(API_BASE + `/seller/order_details`, {
-        id: orderId,
-        status: newStatus,
-      });
-      toast.success("Status updated");
-      if (response.status === 200) {
-        setOrderDetails((prevOrderDetails) =>
-          prevOrderDetails.map((order) =>
-            order.orderId === orderId
-              ? { ...order, productStatus: newStatus }
-              : order
-          )
-        );
-      } else {
-        toast.error("Updating Status Error");
-        console.log("Error updating order status");
-      }
-    } catch (error) {
-      console.error("Error updating order status:", error);
-    }
-  };
+ const handleProductStatusChange = async (orderId, newStatus) => {
+   try {
+     const response = await axios.patch(API_BASE + `/seller/order_details`, {
+       id: orderId,
+       status: newStatus,
+     });
+     if (response.status === 200) {
+       setOrderDetails((prevOrderDetails) =>
+         prevOrderDetails.map((order) =>
+           order._id === orderId ? { ...order, status: newStatus } : order
+         )
+       );
+       toast.success("Status updated");
+     } else {
+       toast.error("Updating Status Error");
+     }
+   } catch (error) {
+     console.error("Error updating order status:", error);
+   }
+ };
+
   return (
     <div>
       {loading ? (
         <Loading />
       ) : (
         <div className="SellerOrderOuterContainer">
+          {selectedProduct && (
+            <Product
+              product={selectedProduct}
+              onClose={closeProductModal}
+            />
+          )}
           <div className="SellerNavContainer" style={{ width: width }}>
             <SellerNav />
           </div>
@@ -86,18 +100,23 @@ const SellerOrders = () => {
                 const {
                   _id,
                   customer_address: { name, street, city, state, zip, phone },
-                  productId: { brand, model, name: productName },
+                  productId: { brand, model, name: productName, category, pics, price },
                   date,
                   count,
                   status,
                 } = order;
-
+                console.log('pokok');
+                console.log(pics);
                 return (
                   <tr key={_id}>
                     <td className="TableHead">{_id}</td>
                     <td className="TableHead">{name}</td>
                     <td className="TableHead">{`${street} ${city} ${state} ${city} ${phone}`}</td>
-                    <td className="TableHead">{`${brand} - ${model} ${productName}`}</td>
+                    <td className="TableHead">
+                      <button onClick={() => openProductModal(order.productId)}>
+                        View
+                      </button>
+                    </td>
                     <td className="TableHead">
                       {new Date(date).toLocaleDateString()}
                     </td>
@@ -109,9 +128,13 @@ const SellerOrders = () => {
                           handleProductStatusChange(_id, e.target.value)
                         }
                       >
-                        <option value="Pending">Pending</option>
-                        <option value="Shipped">Shipped</option>
-                        <option value="Delivered">Delivered</option>
+                        <option value="pending">Pending</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="out_for_delivery">
+                          Out of Delivery
+                        </option>
+                        <option value="delivered">Delivered</option>
                       </select>
                     </td>
                   </tr>
