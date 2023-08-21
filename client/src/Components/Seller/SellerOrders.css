@@ -1,5 +1,6 @@
-.demo2{
+.OuterTableContainer{
   overflow-x:auto;
+  height: 100vh;
 }
 
 .TableHeading{
@@ -20,6 +21,44 @@
 
 }
 @media (max-width: 768px) {
+  .SellerOrderOuterContainer {
+    align-items: center;
+  }
 
-  
+  .OuterTableContainer {
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .TableHeading {
+    font-size: 12px;
+  }
+
+  .TableHead {
+    font-size: 14px;
+    border: 1px solid black;
+  }
+
+  .TableBody {
+    font-size: 14px;
+  }
+
+  .customer-modal {
+    width: 90%;
+    max-width: 300px;
+    padding: 10px;
+  }
+
+  .modal-content h2 {
+    font-size: 1.2rem;
+  }
+
+  .modal-content p {
+    font-size: 14px;
+  }
+
+  .CustomerModalButton {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
 }

@@ -7,12 +7,14 @@ import SellerNav from "./SellerNav";
 import { API_BASE } from "../functions/functions";
 import Product from "./Modal/Product";
 import Loading from "./Loading";
+import Customer from "./Modal/Customer";
 
 const SellerOrders = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [width, setWidth] = useState(window.innerWidth);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
 
   const openProductModal = (product) => {
     setSelectedProduct(product);
@@ -20,6 +22,15 @@ const SellerOrders = () => {
 
   const closeProductModal = () => {
     setSelectedProduct(null);
+  };
+  const openCustomerModal = (customer_address) => {
+    setSelectedCustomer(customer_address);
+    console.log('okokkk');
+    console.log(customer_address);
+  };
+
+  const closeCustomerModal = () => {
+    setSelectedCustomer(null);
   };
 
   useEffect(() => {
@@ -75,20 +86,23 @@ const SellerOrders = () => {
       ) : (
         <div className="SellerOrderOuterContainer">
           {selectedProduct && (
-            <Product
-              product={selectedProduct}
-              onClose={closeProductModal}
+            <Product product={selectedProduct} onClose={closeProductModal} />
+          )}
+          {selectedCustomer && (
+            <Customer
+              customer_address={selectedCustomer}
+              onClose={closeCustomerModal}
             />
           )}
           <div className="SellerNavContainer" style={{ width: width }}>
             <SellerNav />
           </div>
+          <div className="OuterTableContainer">
           <table>
             <thead className="TableHeading">
               <tr>
                 <th className="TableHead">OrderID</th>
-                <th className="TableHead">Customer Name</th>
-                <th className="TableHead">Customer Address</th>
+                <th className="TableHead">Customer Details</th>
                 <th className="TableHead">Product Details</th>
                 <th className="TableHead">Date of Order</th>
                 <th className="TableHead">Quantity</th>
@@ -100,18 +114,30 @@ const SellerOrders = () => {
                 const {
                   _id,
                   customer_address: { name, street, city, state, zip, phone },
-                  productId: { brand, model, name: productName, category, pics, price },
+                  productId: {
+                    brand,
+                    model,
+                    name: productName,
+                    category,
+                    pics,
+                    price,
+                  },
                   date,
                   count,
                   status,
                 } = order;
-                console.log('pokok');
-                console.log(pics);
                 return (
                   <tr key={_id}>
                     <td className="TableHead">{_id}</td>
-                    <td className="TableHead">{name}</td>
-                    <td className="TableHead">{`${street} ${city} ${state} ${city} ${phone}`}</td>
+                    <td className="TableHead">
+                      <button
+                        onClick={() =>
+                          openCustomerModal(order.customer_address)
+                        }
+                      >
+                        View
+                      </button>
+                    </td>
                     <td className="TableHead">
                       <button onClick={() => openProductModal(order.productId)}>
                         View
@@ -142,6 +168,7 @@ const SellerOrders = () => {
               })}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </div>
