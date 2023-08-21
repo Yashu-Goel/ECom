@@ -89,12 +89,17 @@ button.active-btn {
 .order-id {
   font-size: 12px;
   margin-right: 10px;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .order-actions {
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 .view-button {
   border: none;
@@ -102,6 +107,8 @@ button.active-btn {
   text-decoration: underline;
   cursor: pointer;
   margin-top: 5px;
+  margin: 5px 5px;
+  white-space: nowrap;
 }
 .miscell-button {
   font-size: 14px;
@@ -187,8 +194,31 @@ button.active-btn {
   transform: translateY(-2px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-.order-status {
-  font-size: 20px;
-  color: #0c73c6;
-  margin-top: 5px;
+.ship-to-button {
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+.ship-to-button::before {
+  content: attr(data-address);
+  position: absolute;
+  top: calc(100% + 10px); /* Adjust the distance from the button */
+  left: 50%;
+  width: auto;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  font-size: 12px;
+  border-radius: 3px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  white-space: pre;
+  z-index: 1;
+}
+
+.ship-to-button:hover::before {
+  opacity: 1;
+  visibility: visible;
 }

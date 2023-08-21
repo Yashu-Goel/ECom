@@ -236,9 +236,11 @@ router.post("/order_details", async (req, res) => {
       res.status(400).json("order details unsuccess");
     }
   } catch (error) {
+    console.log(error);
     res.status(422).json("Error: " + error);
   }
 });
+
 //update status of order
 router.patch("/order_details", async (req, res) => {
   const newStatus = req.body.status;

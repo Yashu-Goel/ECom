@@ -4,6 +4,7 @@ import { API_BASE } from "../functions/functions";
 import "./OrderHistory.css";
 import { UserState } from "../Context/UserProvider";
 import BillModal from "../OrderConfirmationPage/BillModal";
+import TrackingModal from "./TrackingModal";
 import RateModal from "./RateModal";
 import { getFileNameFromPath } from "../IndividualProduct/function";
 import { Link } from "react-router-dom";
@@ -13,6 +14,7 @@ const OrderHistory = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedBill, setSelectedBill] = useState(null);
   const [isRateModalOpen, setIsRateModalOpen] = useState(false);
+  const [showTrackingModal, setShowTrackingModal] = useState(null);
 
   const { user } = UserState();
   useEffect(() => {
@@ -31,7 +33,6 @@ const OrderHistory = () => {
           const sortedOrders = response.data.sort(
             (a, b) => new Date(b.orderDate) - new Date(a.orderDate)
           );
-          console.log(sortedOrders);
           setOrders(sortedOrders);
         } catch (error) {
           console.log(error);
@@ -111,7 +112,9 @@ const OrderHistory = () => {
                 month: "short",
                 day: "numeric",
               });
-
+              const { name, street, city, state, zip, phone } =
+                order.customer_address;
+              console.log(order.customer_address);
               return (
                 <div className="order-history-item" key={order._id}>
                   <div className="order-history-summary">
@@ -123,32 +126,42 @@ const OrderHistory = () => {
 
                       <div className="order-total">
                         <p>Total:</p>
-                        <strong>₹{order.paymentDetails.amount / 100}</strong>
+                        <strong>₹{order.amount}</strong>
                       </div>
 
-                      <button className="ship-to-button">
+                      <button
+                        class="ship-to-button"
+                        data-address={`${name}, ${street}, ${city}, ${state}, ${zip}, ${phone}`}
+                      >
                         <p>Ship to:</p>
-                        <strong>{order.customer_address.name}</strong>
+                        <strong>{name}</strong>
                       </button>
                     </div>
 
                     <div className="order-id">
                       <p>
-                        <strong>
-                          Order #: {order.paymentDetails.order_id}
-                        </strong>
+                        <strong>ORDER #: {order.orderNumber}</strong>
                       </p>
+
                       <div className="order-actions">
                         <button
                           className="view-button"
                           onClick={() => {
-                            if (!selectedBill)
-                              setSelectedBill(order.paymentDetails);
+                            if (!selectedBill) {
+                              setSelectedBill(order);
+                            }
                           }}
                         >
                           View Invoice
                         </button>
-                        <button className="view-button">Track Product</button>
+                        <button
+                          className="view-button"
+                          onClick={() => {
+                            setShowTrackingModal(order);
+                          }}
+                        >
+                          Track Product
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -248,6 +261,12 @@ const OrderHistory = () => {
           <RateModal
             products={selectedProduct}
             onClose={() => setIsRateModalOpen(false)}
+          />
+        )}
+        {showTrackingModal && (
+          <TrackingModal
+            order={showTrackingModal}
+            onClose={() => setShowTrackingModal(false)}
           />
         )}
       </div>

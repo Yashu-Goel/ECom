@@ -187,7 +187,6 @@ const OrderConfirmationPage = () => {
                         orderDetails,
                         config
                       );
-                      toast.success("Order details sent to seller");
                     } catch (error) {
                       console.log("Error sending order details: " + error);
                     }

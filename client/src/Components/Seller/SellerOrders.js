@@ -25,7 +25,7 @@ const SellerOrders = () => {
   };
   const openCustomerModal = (customer_address) => {
     setSelectedCustomer(customer_address);
-    console.log('okokkk');
+    console.log("okokkk");
     console.log(customer_address);
   };
 
@@ -58,26 +58,26 @@ const SellerOrders = () => {
     fetchData();
   }, []);
 
- const handleProductStatusChange = async (orderId, newStatus) => {
-   try {
-     const response = await axios.patch(API_BASE + `/seller/order_details`, {
-       id: orderId,
-       status: newStatus,
-     });
-     if (response.status === 200) {
-       setOrderDetails((prevOrderDetails) =>
-         prevOrderDetails.map((order) =>
-           order._id === orderId ? { ...order, status: newStatus } : order
-         )
-       );
-       toast.success("Status updated");
-     } else {
-       toast.error("Updating Status Error");
-     }
-   } catch (error) {
-     console.error("Error updating order status:", error);
-   }
- };
+  const handleProductStatusChange = async (orderId, newStatus) => {
+    try {
+      const response = await axios.patch(API_BASE + `/seller/order_details`, {
+        id: orderId,
+        status: newStatus,
+      });
+      if (response.status === 200) {
+        setOrderDetails((prevOrderDetails) =>
+          prevOrderDetails.map((order) =>
+            order._id === orderId ? { ...order, status: newStatus } : order
+          )
+        );
+        toast.success("Status updated");
+      } else {
+        toast.error("Updating Status Error");
+      }
+    } catch (error) {
+      console.error("Error updating order status:", error);
+    }
+  };
 
   return (
     <div>
@@ -98,76 +98,79 @@ const SellerOrders = () => {
             <SellerNav />
           </div>
           <div className="OuterTableContainer">
-          <table>
-            <thead className="TableHeading">
-              <tr>
-                <th className="TableHead">OrderID</th>
-                <th className="TableHead">Customer Details</th>
-                <th className="TableHead">Product Details</th>
-                <th className="TableHead">Date of Order</th>
-                <th className="TableHead">Quantity</th>
-                <th className="TableHead">Product Status</th>
-              </tr>
-            </thead>
-            <tbody className="TableBody">
-              {orderDetails.map((order) => {
-                const {
-                  _id,
-                  customer_address: { name, street, city, state, zip, phone },
-                  productId: {
-                    brand,
-                    model,
-                    name: productName,
-                    category,
-                    pics,
-                    price,
-                  },
-                  date,
-                  count,
-                  status,
-                } = order;
-                return (
-                  <tr key={_id}>
-                    <td className="TableHead">{_id}</td>
-                    <td className="TableHead">
-                      <button
-                        onClick={() =>
-                          openCustomerModal(order.customer_address)
-                        }
-                      >
-                        View
-                      </button>
-                    </td>
-                    <td className="TableHead">
-                      <button onClick={() => openProductModal(order.productId)}>
-                        View
-                      </button>
-                    </td>
-                    <td className="TableHead">
-                      {new Date(date).toLocaleDateString()}
-                    </td>
-                    <td className="TableHead">{count}</td>
-                    <td className="TableHead">
-                      <select
-                        value={status}
-                        onChange={(e) =>
-                          handleProductStatusChange(_id, e.target.value)
-                        }
-                      >
-                        <option value="pending">Pending</option>
-                        <option value="cancelled">Cancelled</option>
-                        <option value="shipped">Shipped</option>
-                        <option value="out_for_delivery">
-                          Out of Delivery
-                        </option>
-                        <option value="delivered">Delivered</option>
-                      </select>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+            <table>
+              <thead className="TableHeading">
+                <tr>
+                  <th className="TableHead">OrderID</th>
+                  <th className="TableHead">Customer Details</th>
+                  <th className="TableHead">Product Details</th>
+                  <th className="TableHead">Date of Order</th>
+                  <th className="TableHead">Quantity</th>
+                  <th className="TableHead">Product Status</th>
+                </tr>
+              </thead>
+              <tbody className="TableBody">
+                {orderDetails.map((order) => {
+                  const {
+                    _id,
+                    orderNumber,
+                    customer_address: { name, street, city, state, zip, phone },
+                    productId: {
+                      brand,
+                      model,
+                      name: productName,
+                      category,
+                      pics,
+                      price,
+                    },
+                    date,
+                    count,
+                    status,
+                  } = order;
+                  return (
+                    <tr key={orderNumber}>
+                      <td className="TableHead">{orderNumber}</td>
+                      <td className="TableHead">
+                        <button
+                          onClick={() =>
+                            openCustomerModal(order.customer_address)
+                          }
+                        >
+                          View
+                        </button>
+                      </td>
+                      <td className="TableHead">
+                        <button
+                          onClick={() => openProductModal(order.productId)}
+                        >
+                          View
+                        </button>
+                      </td>
+                      <td className="TableHead">
+                        {new Date(date).toLocaleDateString()}
+                      </td>
+                      <td className="TableHead">{count}</td>
+                      <td className="TableHead">
+                        <select
+                          value={status}
+                          onChange={(e) =>
+                            handleProductStatusChange(_id, e.target.value)
+                          }
+                        >
+                          <option value="pending">Pending</option>
+                          <option value="cancelled">Cancelled</option>
+                          <option value="shipped">Shipped</option>
+                          <option value="out_for_delivery">
+                            Out of Delivery
+                          </option>
+                          <option value="delivered">Delivered</option>
+                        </select>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
       )}

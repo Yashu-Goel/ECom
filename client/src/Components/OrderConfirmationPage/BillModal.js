@@ -23,13 +23,19 @@ const BillModal = ({ bill, countDown = true, onClose = {} }) => {
     }
   }, [countdown, navigate]);
 
-  const { amount, order_id, id } = bill;
+  let amount, order_id, id, count;
 
+  if (countDown) {
+    ({ amount, order_id, id } = bill);
+  } else {
+    ({ amount, count } = bill);
+    const { paymentDetails } = bill;
+    ({ order_id, id } = paymentDetails);
+  }
   return (
     <>
       <div className="body-container">
         <div className="container-bill-modal">
-
           {!countDown && (
             <button className="container-span" onClick={onClose}>
               X
@@ -51,13 +57,17 @@ const BillModal = ({ bill, countDown = true, onClose = {} }) => {
                   the details of your purchase:
                   <div className="payment-details">
                     <p>
-                      <strong>Order Id:</strong> {order_id}
+                      <strong>Order Id:</strong> {order_id && order_id}
                     </p>
                     <p>
-                      <strong>Payment Amount:</strong> {amount / 100} INR
+                      <strong>Payment Amount:</strong>{" "}
+                      {amount && countDown
+                        ? amount / 100
+                        : count && amount * count}{" "}
+                      INR
                     </p>
                     <p>
-                      <strong>Payment ID:</strong> {id}
+                      <strong>Payment ID:</strong> {id && id}
                     </p>
                   </div>{" "}
                   <br />
