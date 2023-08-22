@@ -32,17 +32,12 @@ figure figcaption h2 {
   padding-top: 1.5rem;
   display: flex;
   flex-direction: column;
+  transition: all 0.3s height 0.3s;
+  transform-origin: top center;
 }
 .order-track-step {
   display: flex;
   height: 4rem;
-}
-.order-track-step:last-child {
-  overflow: hidden;
-  height: 4rem;
-}
-.order-track-step:last-child .order-track-status span:last-of-type {
-  display: none;
 }
 .order-track-status {
   margin-right: 1.5rem;
@@ -60,7 +55,7 @@ figure figcaption h2 {
   margin: 0 auto;
   width: 2px;
   height: 3rem;
-  background: #f05a00;
+  background: rgb(141, 230, 9);
 }
 .order-track-text-stat {
   font-size: 14px;
@@ -71,7 +66,9 @@ figure figcaption h2 {
   font-size: 14px;
   font-weight: 300;
 }
-.order-track {
-  transition: all 0.3s height 0.3s;
-  transform-origin: top center;
+.partial-line {
+  height: 1.5rem;
+}
+.active-dot {
+  background: rgb(141, 230, 9);
 }

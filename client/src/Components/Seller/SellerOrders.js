@@ -67,7 +67,9 @@ const SellerOrders = () => {
       if (response.status === 200) {
         setOrderDetails((prevOrderDetails) =>
           prevOrderDetails.map((order) =>
-            order._id === orderId ? { ...order, status: newStatus } : order
+            order._id === orderId
+              ? { ...order, currentStatus: newStatus }
+              : order
           )
         );
         toast.success("Status updated");
@@ -125,7 +127,7 @@ const SellerOrders = () => {
                     },
                     date,
                     count,
-                    status,
+                    currentStatus,
                   } = order;
                   return (
                     <tr key={orderNumber}>
@@ -152,7 +154,7 @@ const SellerOrders = () => {
                       <td className="TableHead">{count}</td>
                       <td className="TableHead">
                         <select
-                          value={status}
+                          value={currentStatus}
                           onChange={(e) =>
                             handleProductStatusChange(_id, e.target.value)
                           }

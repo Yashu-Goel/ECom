@@ -245,17 +245,40 @@ router.post("/order_details", async (req, res) => {
 router.patch("/order_details", async (req, res) => {
   const newStatus = req.body.status;
   const id = req.body.id;
-
   try {
-    const updatedOrder = await Order.findOneAndUpdate(
-      { _id: id },
-      { status: newStatus },
-      { new: true } // This returns the updated document
-    );
+    const updatedOrder = await Order.findOne({ _id: id });
 
     if (!updatedOrder) {
       return res.status(404).json("Order not found");
     }
+
+    if (updatedOrder) {
+      switch (newStatus) {
+        case "cancelled":
+          updatedOrder.currentStatus = "cancelled";
+          updatedOrder.cancelled = true;
+          updatedOrder.cancelledDate = new Date();
+          break;
+        case "shipped":
+          updatedOrder.currentStatus = "shipped";
+          updatedOrder.shipped = true;
+          updatedOrder.shippedDate = new Date();
+          break;
+        case "out_for_delivery":
+          updatedOrder.currentStatus = "out_for_delivery";
+          updatedOrder.outForDelivery = true;
+          updatedOrder.outForDeliveryDate = new Date();
+          break;
+        case "delivered":
+          updatedOrder.currentStatus = "delivered";
+          updatedOrder.delivered = true;
+          updatedOrder.deliveredDate = new Date();
+          break;
+        default:
+          console.log("It's something else.");
+      }
+    }
+    await updatedOrder.save();
 
     res.status(200).json(updatedOrder);
   } catch (error) {

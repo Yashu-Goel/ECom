@@ -75,13 +75,14 @@ button.active-btn {
   align-items: flex-start;
   justify-content: space-between;
   width: 90%;
+  align-items: center;
 }
 
 .product-order-history-details {
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 5px;
 }
 .first-second-part {
   display: flex;
@@ -141,12 +142,13 @@ button.active-btn {
 .product-image {
   display: flex;
   align-items: center;
+  padding: 1px;
 }
 .product-image img {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   object-fit: cover;
-  border-radius: 5px;
+  border-radius: 50%;
   margin-right: 10px;
 }
 
@@ -221,4 +223,28 @@ button.active-btn {
 .ship-to-button:hover::before {
   opacity: 1;
   visibility: visible;
+}
+.status-pending {
+  color: #f39c12; /* Orange color */
+  font-weight: bold;
+}
+
+.status-shipped {
+  color: #3498db; /* Blue color */
+  font-weight: bold;
+}
+
+.status-out-for-delivery {
+  color: #27ae60; /* Green color */
+  font-weight: bold;
+}
+
+.status-delivered {
+  color: #2ecc71; /* Another green color */
+  font-weight: bold;
+}
+
+.status-cancelled {
+  color: #e74c3c; /* Red color */
+  font-weight: bold;
 }

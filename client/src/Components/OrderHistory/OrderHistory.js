@@ -8,15 +8,30 @@ import TrackingModal from "./TrackingModal";
 import RateModal from "./RateModal";
 import { getFileNameFromPath } from "../IndividualProduct/function";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const OrderHistory = () => {
+  const navigate = useNavigate();
   const [orderData, setOrders] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedBill, setSelectedBill] = useState(null);
   const [isRateModalOpen, setIsRateModalOpen] = useState(false);
   const [showTrackingModal, setShowTrackingModal] = useState(null);
 
+  const formatDate = (date) => {
+    const orderDate = new Date(date);
+
+    const formattedDate = orderDate.toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+    return formattedDate;
+  };
+
   const { user } = UserState();
+
   useEffect(() => {
     if (user) {
       const getProductDetails = async () => {
@@ -31,7 +46,7 @@ const OrderHistory = () => {
             config
           );
           const sortedOrders = response.data.sort(
-            (a, b) => new Date(b.orderDate) - new Date(a.orderDate)
+            (a, b) => new Date(b.date) - new Date(a.date)
           );
           setOrders(sortedOrders);
         } catch (error) {
@@ -41,26 +56,11 @@ const OrderHistory = () => {
 
       getProductDetails();
     }
-  }, [user]);
+  }, [user, orderData]);
   const [selectedFilter, setSelectedFilter] = useState("all");
 
   const handleFilterClick = (filter) => {
     setSelectedFilter(filter);
-  };
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const today = new Date();
-
-    const diffInDays = Math.floor((today - date) / (1000 * 60 * 60 * 24));
-
-    if (diffInDays === 0) {
-      return "Today";
-    } else if (diffInDays === 1) {
-      return "Yesterday";
-    } else {
-      return `${diffInDays} days ago`;
-    }
   };
   const handleSortClick = () => {
     // Implement the sorting logic here
@@ -114,7 +114,6 @@ const OrderHistory = () => {
               });
               const { name, street, city, state, zip, phone } =
                 order.customer_address;
-              console.log(order.customer_address);
               return (
                 <div className="order-history-item" key={order._id}>
                   <div className="order-history-summary">
@@ -169,17 +168,30 @@ const OrderHistory = () => {
                   <div className="order-history-second">
                     <div className="product-order-history-details">
                       <div className="order-status">
-                        {order.status === "pending" && (
-                          <p>Order placed {formatDate(order.date)}</p>
+                        {order.currentStatus === "pending" && (
+                          <p className="status-pending">
+                            Order placed on {formatDate(order.date)}
+                          </p>
                         )}
-                        {order.status === "shipped" && (
-                          <p>Order shipped {formatDate(order.date)}</p>
+                        {order.currentStatus === "shipped" && (
+                          <p className="status-shipped">
+                            Order shipped on {formatDate(order.shippedDate)}
+                          </p>
                         )}
-                        {order.status === "out_for_delivery" && (
-                          <p>Out for delivery {formatDate(order.date)}</p>
+                        {order.currentStatus === "out_for_delivery" && (
+                          <p className="status-out-for-delivery">
+                            Arriving today.
+                          </p>
                         )}
-                        {order.status === "delivered" && (
-                          <p>Delivered {formatDate(order.date)}</p>
+                        {order.currentStatus === "delivered" && (
+                          <p className="status-delivered">
+                            Delivered on {formatDate(order.deliveredDate)}
+                          </p>
+                        )}
+                        {order.currentStatus === "cancelled" && (
+                          <p className="status-cancelled">
+                            Your order has been cancelled!
+                          </p>
                         )}
                       </div>
 
@@ -214,7 +226,7 @@ const OrderHistory = () => {
                     </div>
 
                     <div className="miscell-button">
-                      {order.status === "Delivered" ? (
+                      {order.currentStatus === "delivered" ? (
                         <button
                           className="rate-button"
                           onClick={() => {
@@ -227,13 +239,19 @@ const OrderHistory = () => {
                         </button>
                       ) : null}
 
-                      {order.status !== "Delivered" ? (
+                      {order.currentStatus !== "delivered" &&
+                      order.currentStatus !== "cancelled" ? (
                         <button className="cancel-button" onClick={() => {}}>
                           <span className="button-icon">❌</span> Cancel Order
                         </button>
                       ) : null}
 
-                      <button className="buy-again-button" onClick={() => {}}>
+                      <button
+                        className="buy-again-button"
+                        onClick={() => {
+                          navigate(`/product/${order.productId._id}`);
+                        }}
+                      >
                         <span className="button-icon">🛒</span> Buy Again
                       </button>
 

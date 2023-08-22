@@ -29,7 +29,7 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  status: {
+  currentStatus: {
     type: String,
     default: "pending",
   },
@@ -40,6 +40,34 @@ const orderSchema = new mongoose.Schema({
   paymentDetails: {
     type: Object,
     default: true,
+  },
+  outForDelivery: {
+    type: Boolean,
+    default: false,
+  },
+  shipped: {
+    type: Boolean,
+    default: false,
+  },
+  delivered: {
+    type: Boolean,
+    default: false,
+  },
+  cancelled: {
+    type: Boolean,
+    default: false,
+  },
+  deliveredDate: {
+    type: Date,
+  },
+  outForDeliveryDate: {
+    type: Date,
+  },
+  shippedDate: {
+    type: Date,
+  },
+  cancelledDate: {
+    type: Date,
   },
 });
 orderSchema.pre("save", async function (next) {
