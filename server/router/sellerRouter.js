@@ -15,6 +15,9 @@ const jwt = require("jsonwebtoken");
 dotenv.config();
 const router = express.Router();
 const multer = require("multer");
+const multerS3= require("multer-s3")
+var AWS=require("aws-sdk")
+require("aws-sdk/lib/maintenance_mode_message").suppress = true;
 router.use(express.json());
 router.use(cors());
 // router.use(cookieParser());
@@ -22,18 +25,35 @@ const JWT_Secret = process.env.JWT_Secret;
 const path = require("path");
 //mutler configuration
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const absolutePath = path.join(__dirname, "../../client/public/uploads");
-    cb(null, absolutePath);
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniqueSuffix + ".jpg");
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     const absolutePath = path.join(__dirname, "../../client/public/uploads");
+//     cb(null, absolutePath);
+//   },
+//   filename: function (req, file, cb) {
+//     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+//     cb(null, file.fieldname + "-" + uniqueSuffix + ".jpg");
+//   },
+// });
 
-const upload = multer({ storage: storage });
+AWS.config.update({
+  accessKeyId: "AKIAVT2OT2Q77SKTUINC",
+  secretAccessKey: "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",
+  region: "Asia Pacific (Mumbai) ap-south-1",
+});
+const s3= new AWS.S3();
+
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: "ecom.image.bucket", 
+    acl: "public-read", 
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    key: function (req, file, cb) {
+      cb(null, file.originalname);
+    },
+  }),
+});
 
 //signup for seller
 router.post("/sellersignup", async (req, res) => {
