@@ -37,9 +37,9 @@ const path = require("path");
 // });
 
 AWS.config.update({
-  accessKeyId: "AKIAVT2OT2Q77SKTUINC",
-  secretAccessKey: "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",
-  region: "Asia Pacific (Mumbai) ap-south-1",
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+  region: process.env.AWS_REGION,
 });
 const s3= new AWS.S3();
 
