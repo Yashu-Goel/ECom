@@ -11,12 +11,12 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 require("../db/conn.js");
 const jwt = require("jsonwebtoken");
+require("aws-sdk/lib/maintenance_mode_message").suppress = true;
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
 dotenv.config();
 const router = express.Router();
-const multer = require("multer");
-const multerS3= require("multer-s3")
-var AWS=require("aws-sdk")
+
 require("aws-sdk/lib/maintenance_mode_message").suppress = true;
 router.use(express.json());
 router.use(cors());
@@ -35,25 +35,6 @@ const path = require("path");
 //     cb(null, file.fieldname + "-" + uniqueSuffix + ".jpg");
 //   },
 // });
-
-AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_KEY,
-  region: process.env.AWS_REGION,
-});
-const s3= new AWS.S3();
-
-const upload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: "ecom.image.bucket", 
-    acl: "public-read", 
-    contentType: multerS3.AUTO_CONTENT_TYPE,
-    key: function (req, file, cb) {
-      cb(null, file.originalname);
-    },
-  }),
-});
 
 //signup for seller
 router.post("/sellersignup", async (req, res) => {
@@ -153,55 +134,55 @@ router.get("/seller_details/:id", async (req, res) => {
 
 //Product Details
 
-router.post("/product", upload.array("productImages", 5), async (req, res) => {
-  console.log(req.body);
-  const {
-    name,
-    category,
-    price,
-    MRP,
-    model,
-    description,
-    brand,
-    rating,
-    reviews,
-    quantity,
-    sellerId: sellerId,
-  } = req.body;
-  const productImages = req.files.map((file) => file.path);
-  console.log("OK");
-  console.log(req.body);
+// router.post("/product", upload.array("productImages", 5), async (req, res) => {
+//   console.log(req.body);
+//   const {
+//     name,
+//     category,
+//     price,
+//     MRP,
+//     model,
+//     description,
+//     brand,
+//     rating,
+//     reviews,
+//     quantity,
+//     sellerId: sellerId,
+//   } = req.body;
+//   const productImages = req.files.map((file) => file.path);
+//   console.log("OK");
+//   console.log(req.body);
 
-  try {
-    const product = await Product.create({
-      name,
-      category,
-      price,
-      MRP,
-      model,
-      description,
-      brand,
-      rating,
-      reviews,
-      pics: productImages, // Save the array of image paths in the database
-      quantity,
-      sellerId: sellerId,
-    });
+//   try {
+//     const product = await Product.create({
+//       name,
+//       category,
+//       price,
+//       MRP,
+//       model,
+//       description,
+//       brand,
+//       rating,
+//       reviews,
+//       pics: productImages, // Save the array of image paths in the database
+//       quantity,
+//       sellerId: sellerId,
+//     });
 
-    if (product) {
-      res.status(200).json({
-        _id: product._id,
-        type: product.type,
-        sellerId: product.sellerId,
-        message: "Product registered successfully",
-      });
-    } else {
-      res.status(400).json("Product unregistered");
-    }
-  } catch (error) {
-    res.status(422).json("Error: " + error);
-  }
-});
+//     if (product) {
+//       res.status(200).json({
+//         _id: product._id,
+//         type: product.type,
+//         sellerId: product.sellerId,
+//         message: "Product registered successfully",
+//       });
+//     } else {
+//       res.status(400).json("Product unregistered");
+//     }
+//   } catch (error) {
+//     res.status(422).json("Error: " + error);
+//   }
+// });
 
 //get product details
 router.get("/products/:id", async (req, res) => {
@@ -228,6 +209,38 @@ router.get("/products", async (req, res) => {
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+const {
+  S3Client,
+  GetObjectCommand,
+  PutObjectCommand,
+} = require("@aws-sdk/client-s3");
+const client = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+  },
+});
+async function putObject(key, contentType) {
+  const command = new PutObjectCommand({
+    Bucket: "demo-test-v1",
+    Key: `${key}`,
+    ContentType: contentType,
+  });
+  const url = await getSignedUrl(client, command);
+  return url;
+}
+
+router.post("/get-upload-url", async (req, res) => {
+  try {
+    const signedUrl = await putObject(`${Date.now()}`, "image/jpg/png");
+    res.status(200).json({ signedUrl });
+  } catch (error) {
+    console.error("Error generating signed URL:", error);
+    res.status(500).json({ error: "Unable to generate signed URL" });
   }
 });
 
