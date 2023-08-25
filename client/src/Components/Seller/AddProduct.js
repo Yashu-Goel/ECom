@@ -7,7 +7,7 @@ import axios from "axios";
 
 const AddProduct = () => {
   const API_BASE = "http://localhost:5000"; 
- const [selectedImage, setSelectedImage] = useState(null);
+ const [selectedImages, setSelectedImages] = useState([]);
 const [ProductData, setProductData] = useState({
   name: "",
   category: "",
@@ -21,28 +21,11 @@ const [ProductData, setProductData] = useState({
   // reviews: [],
 });
 
-const handleReviewChange = (index, field, value) => {
-  const updatedReviews = [...ProductData.reviews];
-  updatedReviews[index][field] = value;
-  setProductData({ ...ProductData, reviews: updatedReviews });
-};
-
-const handleRemoveReview = (index) => {
-  const updatedReviews = [...ProductData.reviews];
-  updatedReviews.splice(index, 1);
-  setProductData({ ...ProductData, reviews: updatedReviews });
-};
-
-const handleAddReview = () => {
-  const updatedReviews = [...ProductData.reviews];
-  updatedReviews.push({ name: "", rating: 0, message: "" });
-  setProductData({ ...ProductData, reviews: updatedReviews });
-};
 
 const handleImageChange = (e) => {
-  const files = e.target.files;
-  setSelectedImage(files);
-};
+    const files = Array.from(e.target.files);
+    setSelectedImages(files);
+  };
 
 const handleFormSubmit = async (e) => {
   e.preventDefault();
@@ -76,30 +59,30 @@ const handleFormSubmit = async (e) => {
     formData.append("description", description);
     formData.append("brand", brand);
     formData.append("quantity", quantity);
-    // formData.append("rating", rating);
-    // formData.append("reviews", JSON.stringify(reviews)); // Convert reviews array to JSON string
     formData.append("sellerId", sellerId);
-    if (selectedImage.length > 5) {
+    if (selectedImages.length > 5) {
       toast.error("Maximum Images Limit: 5");
       return;
     }
-    for (let i = 0; i < selectedImage.length; i++) {
-      formData.append("productImages", selectedImage[i]);
-    }
-
-    const config = {
-      headers: {
-        "Content-type": "multipart/form-data",
-      },
-    };
-
+  for (let i = 0; i < selectedImages.length; i++) {
+    const imageFormData = new FormData();
+    imageFormData.append("file", selectedImages[i]);
     const { data } = await axios.post(
-      API_BASE + "/seller/product",
-      formData,
-      config
+      API_BASE + "/seller/get-upload-url",
+      imageFormData
     );
-    console.log(data);
-    toast.success("Product added successfully");
+    const imageUrl = data.signedUrl;
+      console.log(imageUrl);
+    await axios.put(imageUrl, selectedImages[i], {
+      headers: {
+        "Content-Type": selectedImages[i].type,
+      },
+    });
+
+    formData.append("productImages", imageUrl);
+  }
+
+     toast.success("Product added successfully");
   } catch (error) {
     if (error.response && error.response.data) {
       toast.error(error.response.data);
@@ -241,39 +224,7 @@ const handleFormSubmit = async (e) => {
           />
         </div>
 
-        {/* <div className="seller-form-group">
-          <label>Product Reviews:</label>
-          {ProductData.reviews.map((review, index) => (
-            <div key={index}>
-              <input
-                type="text"
-                value={review.name}
-                onChange={(e) =>
-                  handleReviewChange(index, "name", e.target.value)
-                }
-                placeholder="Name"
-              />
-              <input
-                type="number"
-                value={review.rating}
-                onChange={(e) =>
-                  handleReviewChange(index, "rating", e.target.value)
-                }
-                placeholder="Rating"
-              />
-              <input
-                type="text"
-                value={review.message}
-                onChange={(e) =>
-                  handleReviewChange(index, "message", e.target.value)
-                }
-                placeholder="Message"
-              />
-              <button onClick={() => handleRemoveReview(index)}>Remove</button>
-            </div>
-          ))}
-          <button onClick={handleAddReview}>Add Review</button>
-        </div> */}
+        
 
         <div className="seller-form-group">
           <label>Product Image:</label>

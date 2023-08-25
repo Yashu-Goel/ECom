@@ -21,6 +21,28 @@ require("aws-sdk/lib/maintenance_mode_message").suppress = true;
 router.use(express.json());
 router.use(cors());
 // router.use(cookieParser());
+const {
+  S3Client,
+  GetObjectCommand,
+  PutObjectCommand,
+} = require("@aws-sdk/client-s3");
+const client = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+  },
+});
+async function putObject(key, contentType) {
+  const command = new PutObjectCommand({
+    Bucket: "demo-test-v1",
+    Key: `${key}`,
+    ContentType: contentType,
+  });
+  const url = await getSignedUrl(client, command);
+  return url;
+}
+
 const JWT_Secret = process.env.JWT_Secret;
 const path = require("path");
 //mutler configuration
@@ -134,55 +156,61 @@ router.get("/seller_details/:id", async (req, res) => {
 
 //Product Details
 
-// router.post("/product", upload.array("productImages", 5), async (req, res) => {
-//   console.log(req.body);
-//   const {
-//     name,
-//     category,
-//     price,
-//     MRP,
-//     model,
-//     description,
-//     brand,
-//     rating,
-//     reviews,
-//     quantity,
-//     sellerId: sellerId,
-//   } = req.body;
-//   const productImages = req.files.map((file) => file.path);
-//   console.log("OK");
-//   console.log(req.body);
+router.post("/product", async (req, res) => {
+  console.log(req.body);
+  const {
+    name,
+    category,
+    price,
+    MRP,
+    model,
+    description,
+    brand,
+    rating,
+    reviews,
+    quantity,
+    sellerId: sellerId,
+  } = req.body;
 
-//   try {
-//     const product = await Product.create({
-//       name,
-//       category,
-//       price,
-//       MRP,
-//       model,
-//       description,
-//       brand,
-//       rating,
-//       reviews,
-//       pics: productImages, // Save the array of image paths in the database
-//       quantity,
-//       sellerId: sellerId,
-//     });
+  try {
+    const productImages = req.files.map((file) => file.path);
 
-//     if (product) {
-//       res.status(200).json({
-//         _id: product._id,
-//         type: product.type,
-//         sellerId: product.sellerId,
-//         message: "Product registered successfully",
-//       });
-//     } else {
-//       res.status(400).json("Product unregistered");
-//     }
-//   } catch (error) {
-//     res.status(422).json("Error: " + error);
-//   }
-// });
+    // Generate signed URLs for the uploaded images
+    const signedUrls = [];
+    for (const imagePath of productImages) {
+      const signedUrl = await putObject(imagePath, "image/jpg/png");
+      signedUrls.push(signedUrl);
+    }
+
+    const product = await Product.create({
+      name,
+      category,
+      price,
+      MRP,
+      model,
+      description,
+      brand,
+      rating,
+      reviews,
+      pics: signedUrls, // Save the array of signed image URLs in the database
+      quantity,
+      sellerId: sellerId,
+    });
+
+    if (product) {
+      res.status(200).json({
+        _id: product._id,
+        type: product.type,
+        sellerId: product.sellerId,
+        message: "Product registered successfully",
+      });
+    } else {
+      res.status(400).json("Product unregistered");
+    }
+  } catch (error) {
+    res.status(422).json("Error: " + error);
+  }
+});
 
 //get product details
 router.get("/products/:id", async (req, res) => {
@@ -212,27 +240,6 @@ router.get("/products", async (req, res) => {
   }
 });
 
-const {
-  S3Client,
-  GetObjectCommand,
-  PutObjectCommand,
-} = require("@aws-sdk/client-s3");
-const client = new S3Client({
-  region: process.env.AWS_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_KEY,
-  },
-});
-async function putObject(key, contentType) {
-  const command = new PutObjectCommand({
-    Bucket: "demo-test-v1",
-    Key: `${key}`,
-    ContentType: contentType,
-  });
-  const url = await getSignedUrl(client, command);
-  return url;
-}
 
 router.post("/get-upload-url", async (req, res) => {
   try {
