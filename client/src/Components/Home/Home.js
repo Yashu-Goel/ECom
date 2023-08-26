@@ -5,6 +5,7 @@ import ImageSlider from "../TopSecHome/ImageSlider";
 import firstSlider from "../dummyDatas/firstSlider.json";
 import kitchenSlider from "../dummyDatas/kitchen.json";
 import fragranceSlider from "../dummyDatas/fragranceSlider.json";
+import Footer from "../Footer/Footer";
 import { Link } from "react-router-dom";
 import "./Home.css";
 const Home = () => {
@@ -33,8 +34,8 @@ const Home = () => {
         </div>
         <ImageSlider slider={fragranceSlider} loop={false} text={false} />
       </div>
+      <Footer />
     </div>
   );
 };
 export default Home;
-

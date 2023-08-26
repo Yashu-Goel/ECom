@@ -4,7 +4,7 @@ import "./Navbar.css";
 import ConfirmationModal from "./ConfirmationModal";
 import { UserState } from "../Context/UserProvider";
 import CartModal from "../Modal/CartModal";
-import Logo from "../Assets/Logo.png"
+import Logo from "../Assets/Logo.png";
 const Navbar = () => {
   const [isConfirmationOpen, setConfirmationOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -21,7 +21,7 @@ const Navbar = () => {
   const dropdownMenu = document.getElementById("dropdown-menu");
 
   function loadAccount() {
-    dropdownMenu.classList.toggle("show");
+    dropdownMenu.classList.add("show");
   }
 
   /* logout logic */

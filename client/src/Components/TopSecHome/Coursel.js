@@ -1,297 +1,92 @@
-// import React, { useState, useEffect } from "react";
-// import "./Coursel.css";
-// import { Carousel } from "react-responsive-carousel";
-// import "react-responsive-carousel/lib/styles/carousel.min.css";
-
-// const Coursel = () => {
-//   return (
-//     <div className="carousel-wrapper">
-//       <Carousel
-//         className="coursel"
-//         infiniteLoop
-//         useKeyboardArrows={true}
-//         autoPlay="true"
-//         interval="5000"
-//         showThumbs={false}
-//         showStatus={false}
-//       >
-//         <div>
-//           <img src={require("./img_1/Fasion.jpg")} alt="helo" />
-//           <p
-//             style={{
-//               position: "absolute",
-//               left: "50%",
-//               bottom: "50%",
-//               color: "white",
-//               transform: " translateX(-50%)",
-//               fontSize: "3rem",
-//               textTransform: "uppercase",
-//               fontWeight: "Bold",
-//               padding: " 0 10px",
-//               backgroundColor: "black",
-//               borderRadius: "10px",
-//               border: "2px solid #fff",
-//             }}
-//           >
-//             trending styleverse&#128090;
-//           </p>
-//         </div>
-
-//         <div>
-//           <img src={require("./img_1/Gadgets.jpg")} alt="eletronics" />
-//           <p
-//             style={{
-//               position: "absolute",
-//               left: "50%",
-//               bottom: "50%",
-//               color: "white",
-//               transform: " translateX(-50%)",
-//               fontSize: "3rem",
-//               textTransform: "uppercase",
-//               fontWeight: "Bold",
-//               padding: " 0 10px",
-//               backgroundColor: "black",
-//               borderRadius: "10px",
-//               border: "2px solid #fff",
-//             }}
-//           >
-//             Gadgets&#128241;
-//           </p>
-//         </div>
-//         <div>
-//           <img src={require("./img_1/Fitness.jpg")} alt="fitness" />
-//           <p
-//             style={{
-//               position: "absolute",
-//               left: "50%",
-//               bottom: "50%",
-//               color: "white",
-//               transform: " translateX(-50%)",
-//               fontSize: "3rem",
-//               textTransform: "uppercase",
-//               fontWeight: "Bold",
-//               padding: " 0 10px",
-//               backgroundColor: "black",
-//               borderRadius: "10px",
-//               border: "2px solid #fff",
-//             }}
-//           >
-//             Health and Fitness&#127947;
-//           </p>
-//         </div>
-//         <div>
-//           <img src={require("./img_1/HomeDecor.jpg")} alt="homeDecor" />
-//           <p
-//             style={{
-//               position: "absolute",
-//               left: "50%",
-//               bottom: "50%",
-//               color: "white",
-//               transform: " translateX(-50%)",
-//               fontSize: "3rem",
-//               textTransform: "uppercase",
-//               fontWeight: "Bold",
-//               padding: " 0 10px",
-//               backgroundColor: "black",
-//               borderRadius: "10px",
-//               border: "2px solid #fff",
-//             }}
-//           >
-//             Home Decor&#129716;
-//           </p>
-//         </div>
-//         <div>
-//           <img src={require("./img_1/Dogs.jpg")} alt="homeDecor" />
-//           <p
-//             style={{
-//               position: "absolute",
-//               left: "50%",
-//               bottom: "50%",
-//               color: "white",
-//               transform: " translateX(-50%)",
-//               fontSize: "3rem",
-//               textTransform: "uppercase",
-//               fontWeight: "Bold",
-//               padding: " 0 10px",
-//               backgroundColor: "black",
-//               borderRadius: "10px",
-//               border: "2px solid #fff",
-//             }}
-//           >
-//             Pet Supplies&#128062;
-//           </p>
-//         </div>
-//         <div>
-//           <img src={require("./img_1/Gifts.jpg")} alt="homeDecor" />
-//           <p
-//             style={{
-//               position: "absolute",
-//               left: "50%",
-//               bottom: "50%",
-//               color: "white",
-//               transform: " translateX(-50%)",
-//               fontSize: "3rem",
-//               textTransform: "uppercase",
-//               fontWeight: "Bold",
-//               padding: " 0 10px",
-//               backgroundColor: "black",
-//               borderRadius: "10px",
-//               border: "2px solid #fff",
-//             }}
-//           >
-//             Surprise Spheres &#127873;
-//           </p>
-//         </div>
-//       </Carousel>
-//     </div>
-//   );
-// };
-
-// export default Coursel;
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Coursel.css";
 
 const Coursel = () => {
+  const [current, setCurrent] = useState(0);
   const images = [
-    {
-      src: require("./img_1/Fasion.jpg"),
-      alt: "Fashion",
-      caption: "Trending Styleverse👑",
-    },
-    {
-      src: require("./img_1/Gadgets.jpg"),
-      alt: "Gadgets",
-      caption: "Gadgets📱",
-    },
-    {
-      src: require("./img_1/Fitness.jpg"),
-      alt: "Fitness",
-      caption: "Health and Fitness💪",
-    },
-    {
-      src: require("./img_1/HomeDecor.jpg"),
-      alt: "Home Decor",
-      caption: "Home Decor🏠",
-    },
-    {
-      src: require("./img_1/Dogs.jpg"),
-      alt: "Pet Supplies",
-      caption: "Pet Supplies🐶",
-    },
-    {
-      src: require("./img_1/Gifts.jpg"),
-      alt: "Surprise Spheres",
-      caption: "Surprise Spheres🎁",
-    },
+    "https://images.pexels.com/photos/1287145/pexels-photo-1287145.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "https://images.pexels.com/photos/933054/pexels-photo-933054.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "https://images.pexels.com/photos/4091975/pexels-photo-4091975.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   ];
-  const [curSlide, setCurSlide] = useState(0);
-  const slides = document.querySelectorAll(".image-coursel");
-  const maxSlide = slides.length;
-
-  useEffect(() => {
-    goToSlide(0);
-    setCurSlide(0); // Using setState to update the current slide
+  const imageSlides = document.getElementsByClassName("slide-image");
+  const bubbles = document.getElementsByClassName("bubble-outer");
+  const nextImage = () => {
+    let newIndex = current === images.length - 1 ? 0 : current + 1;
+    imageSlides[current].className = "slide-image leftOut";
+    imageSlides[newIndex].className = "slide-image leftIn";
+    updateBubbles(newIndex);
+    setCurrent(newIndex);
+  };
+  const prevImage = () => {
+    let newIndex = current === 0 ? images.length - 1 : current - 1;
+    imageSlides[current].className = "slide-image rightOut";
+    imageSlides[newIndex].className = "slide-image rightIn";
+    updateBubbles(newIndex);
+    setCurrent(newIndex);
+  };
+  const jumpImage = (e) => {
+    let jumpIndex = parseInt(e.target.id);
+    if (jumpIndex === current) return;
+    if (jumpIndex - current >= 0) {
+      imageSlides[current].className = "slide-image leftOut";
+      imageSlides[jumpIndex].className = "slide-image leftIn";
+    } else {
+      imageSlides[current].className = "slide-image rightOut";
+      imageSlides[jumpIndex].className = "slide-image rightIn";
+    }
+    updateBubbles(jumpIndex);
+    setCurrent(jumpIndex);
+  };
+  const updateBubbles = (highlight) => {
+    bubbles[current].style.borderColor = "black";
+    bubbles[highlight].style.borderColor = "white";
+  };
+  React.useEffect(() => {
+    bubbles[current].style.borderColor = "white";
   }, []);
-
-  function goToSlide(slide) {
-    slides.forEach((s, i) => {
-      const translateXNum = 80 * (i - slide);
-      let translateYNum, rotateDeg, grayscaleNum, zIndexNum, opacityNum;
-      if (translateXNum === 0) {
-        translateYNum = 0;
-        rotateDeg = 0;
-        grayscaleNum = 0;
-        zIndexNum = 1;
-        opacityNum = 100;
-      } else if (translateXNum < 0) {
-        translateYNum = 5;
-        rotateDeg = -5;
-        grayscaleNum = 1;
-        zIndexNum = 0;
-        opacityNum = 20;
-      } else {
-        translateYNum = 5;
-        rotateDeg = 5;
-        grayscaleNum = 1;
-        zIndexNum = 0;
-        opacityNum = 20;
-      }
-      s.style.transform = `translate(${translateXNum}%, ${translateYNum}%) rotate(${rotateDeg}deg)`;
-      s.style.filter = `grayscale(${grayscaleNum})`;
-      s.style.zIndex = zIndexNum;
-      s.style.opacity = `${opacityNum}%`;
-    });
-  }
-
-  const nextSlide = () => {
-    if (curSlide === maxSlide - 1) {
-      setCurSlide(0);
-    } else {
-      setCurSlide(curSlide + 1);
-    }
-    goToSlide(curSlide);
-  };
-
-  const prevSlide = () => {
-    if (curSlide === 0) {
-      setCurSlide(maxSlide - 1);
-    } else {
-      setCurSlide(curSlide - 1);
-    }
-    goToSlide(curSlide);
-  };
-
   return (
     <>
-      <div class="pic-outer-container">
-        <div class="pic-container">
-          <div class="image-coursel pic-1">
-            <img
-              class="pic__img"
-              src="https://images.unsplash.com/photo-1681066471074-d45c49154f44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2ODE0OTcxOTQ&ixlib=rb-4.0.3&q=80&w=400"
-              alt=""
-            />
-          </div>
-          <div class="image-coursel pic-2">
-            <img
-              class="pic__img"
-              src="https://images.unsplash.com/photo-1680631757284-617846a5ef29?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2ODE0OTcxNTU&ixlib=rb-4.0.3&q=80&w=400"
-              alt=""
-            />
-          </div>
-          <div class="image-coursel pic-3">
-            <img
-              class="pic__img"
-              src="https://plus.unsplash.com/premium_photo-1669951581968-73b5b71face3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2ODE0OTcyNjE&ixlib=rb-4.0.3&q=80&w=400"
-              alt=""
-            />
-          </div>
-          <div class="image-coursel pic-4">
-            <img
-              class="pic__img"
-              src="https://plus.unsplash.com/premium_photo-1676734032797-21789f57978a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2ODE0OTcxOTQ&ixlib=rb-4.0.3&q=80&w=400"
-              alt=""
-            />
-          </div>
-          <div class="image-coursel pic-5">
-            <img
-              class="pic__img"
-              src="https://images.unsplash.com/photo-1678789604985-18d290d56fe0?crop=entropy&cs=srgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2ODE0OTcyNjE&ixlib=rb-4.0.3&q=85&w=400"
-              alt=""
-            />
-          </div>
-        </div>
-      </div>
-      <div class="slider-btns">
-        <button class="btn-left" onClick={nextSlide}>
+      <div className="outer-coursel">
+        <button className="button-prev" onClick={prevImage}>
           {"<"}
         </button>
-        <button class="btn-right" onClick={prevSlide}>
+
+        <div className="gallery-container">
+          <div className="gallery-track">
+            {images.map((image, index) => {
+              return (
+                <div
+                  className="slide-image"
+                  style={
+                    index === 0
+                      ? {
+                          backgroundImage: `url(${image})`,
+                          transform: "translateX(0%)",
+                        }
+                      : {
+                          backgroundImage: `url(${image})`,
+                          transform: "translateX(100%)",
+                        }
+                  }
+                ></div>
+              );
+            })}
+          </div>
+        </div>
+        <div className="gallery-footer">
+          {images.map((_, index) => {
+            return (
+              <div className="bubble-outer" onClick={jumpImage} id={index}>
+                <div className="bubble-inner" id={index}></div>
+              </div>
+            );
+          })}
+        </div>
+        <button className="button-next" onClick={nextImage}>
           {">"}
         </button>
       </div>
     </>
   );
 };
-
 export default Coursel;

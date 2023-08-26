@@ -37,8 +37,10 @@
   }
 }
 
-
 body {
   /* background-color: rgb(255, 241, 214); */
   background-color: white;
+}
+body::-webkit-scrollbar {
+  display: none;
 }

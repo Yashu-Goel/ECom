@@ -165,11 +165,8 @@
   background-color: #f9f9f9;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 100;
   padding: 15px 12px;
-  z-index: 1;
-}
-.dropdown-menu {
-  z-index: 0;
 }
 .dropdown-menu a,
 .dropdown-menu button {
