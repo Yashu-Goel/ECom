@@ -36,13 +36,9 @@
     transform: rotate(360deg);
   }
 }
-.dropdown-menu {
-  z-index: 0;
-}
-.carousel {
-  z-index: -1;
-}
-body{
+
+
+body {
   /* background-color: rgb(255, 241, 214); */
   background-color: white;
 }
