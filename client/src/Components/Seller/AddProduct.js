@@ -16,9 +16,7 @@ const [ProductData, setProductData] = useState({
   model: "",
   description: "",
   brand: "",
-  //rating: "",
   quantity: "",
-  // reviews: [],
 });
 
 
@@ -39,8 +37,6 @@ const handleFormSubmit = async (e) => {
     description,
     brand,
     quantity,
-    // rating,
-    // reviews,
   } = ProductData;
 
   if (!name || !category || !price || !MRP || !model || !description || !brand || !quantity) {
@@ -64,23 +60,21 @@ const handleFormSubmit = async (e) => {
       toast.error("Maximum Images Limit: 5");
       return;
     }
-  for (let i = 0; i < selectedImages.length; i++) {
-    const imageFormData = new FormData();
-    imageFormData.append("file", selectedImages[i]);
-    const { data } = await axios.post(
-      API_BASE + "/seller/get-upload-url",
-      imageFormData
-    );
-    const imageUrl = data.signedUrl;
-      console.log(imageUrl);
-    await axios.put(imageUrl, selectedImages[i], {
-      headers: {
-        "Content-Type": selectedImages[i].type,
-      },
-    });
-
-    formData.append("productImages", imageUrl);
-  }
+   for (let i = 0; i < selectedImages.length; i++) {
+     const imageFormData = new FormData();
+     imageFormData.append("file", selectedImages[i]);
+     const { data } = await axios.post(
+       API_BASE + "/seller/get-upload-url",
+       imageFormData
+     );
+     const imageUrl = data.signedUrl;
+     const response=await axios.put(imageUrl, selectedImages[i], {
+       headers: {
+         "Content-Type": selectedImages[i].type,
+       },
+     });
+     formData.append("productImages", imageUrl);
+   }
 
      toast.success("Product added successfully");
   } catch (error) {

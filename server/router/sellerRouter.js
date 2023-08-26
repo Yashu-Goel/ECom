@@ -17,7 +17,6 @@ const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 dotenv.config();
 const router = express.Router();
 
-require("aws-sdk/lib/maintenance_mode_message").suppress = true;
 router.use(express.json());
 router.use(cors());
 // router.use(cookieParser());
@@ -33,15 +32,7 @@ const client = new S3Client({
     secretAccessKey: process.env.AWS_SECRET_KEY,
   },
 });
-async function putObject(key, contentType) {
-  const command = new PutObjectCommand({
-    Bucket: "demo-test-v1",
-    Key: `${key}`,
-    ContentType: contentType,
-  });
-  const url = await getSignedUrl(client, command);
-  return url;
-}
+
 
 const JWT_Secret = process.env.JWT_Secret;
 const path = require("path");
@@ -157,7 +148,7 @@ router.get("/seller_details/:id", async (req, res) => {
 //Product Details
 
 router.post("/product", async (req, res) => {
-  console.log(req.body);
+  console.log('OKOK');
   const {
     name,
     category,
@@ -166,20 +157,21 @@ router.post("/product", async (req, res) => {
     model,
     description,
     brand,
-    rating,
-    reviews,
     quantity,
-    sellerId: sellerId,
+    sellerId,
   } = req.body;
 
   try {
     const productImages = req.files.map((file) => file.path);
 
-    // Generate signed URLs for the uploaded images
-    const signedUrls = [];
+    const uniqueImageNames = [];
     for (const imagePath of productImages) {
-      const signedUrl = await putObject(imagePath, "image/jpg/png");
-      signedUrls.push(signedUrl);
+      const uniqueImageName = `${Date.now()}-${file.originalname}`;
+      uniqueImageNames.push(uniqueImageName);
+
+      const signedUrl = await putObject(uniqueImageName, "image/jpg/png");
+      console.log('OKOK');
+      // Save the uniqueImageName and signedUrl in your database if needed
     }
 
     const product = await Product.create({
@@ -190,11 +182,9 @@ router.post("/product", async (req, res) => {
       model,
       description,
       brand,
-      rating,
-      reviews,
-      pics: signedUrls, // Save the array of signed image URLs in the database
       quantity,
-      sellerId: sellerId,
+      sellerId,
+      pics: uniqueImageNames,
     });
 
     if (product) {
@@ -211,6 +201,26 @@ router.post("/product", async (req, res) => {
     res.status(422).json("Error: " + error);
   }
 });
+
+async function putObject(key, contentType) {
+  console.log("Generating signed URL for key:", key);
+
+  const command = new PutObjectCommand({
+    Bucket: "demo-test-v1",
+    Key: key,
+    ContentType: contentType,
+  });
+
+  try {
+    const url = await getSignedUrl(client, command);
+    console.log("Generated signed URL:", url);
+    return url;
+  } catch (error) {
+    console.error("Error generating signed URL:", error);
+    throw error;
+  }
+}
+
 
 //get product details
 router.get("/products/:id", async (req, res) => {
@@ -243,8 +253,9 @@ router.get("/products", async (req, res) => {
 
 router.post("/get-upload-url", async (req, res) => {
   try {
-    const signedUrl = await putObject(`${Date.now()}`, "image/jpg/png");
-    res.status(200).json({ signedUrl });
+    const signedUrl = await putObject( `${Date.now()}`, "image/jpg/png");
+    res.status(200).json({ signedUrl});
+    console.log(signedUrl);
   } catch (error) {
     console.error("Error generating signed URL:", error);
     res.status(500).json({ error: "Unable to generate signed URL" });
