@@ -6,102 +6,111 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 const AddProduct = () => {
-  const API_BASE = "http://localhost:5000"; 
- const [selectedImages, setSelectedImages] = useState([]);
-const [ProductData, setProductData] = useState({
-  name: "",
-  category: "",
-  price: "",
-  MRP: "",
-  model: "",
-  description: "",
-  brand: "",
-  quantity: "",
-});
+  const API_BASE = "http://localhost:5000";
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [ProductData, setProductData] = useState({
+    name: "",
+    category: "",
+    price: "",
+    MRP: "",
+    model: "",
+    description: "",
+    brand: "",
+    quantity: "",
+  });
 
-
-const handleImageChange = (e) => {
+  const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     setSelectedImages(files);
   };
 
-const handleFormSubmit = async (e) => {
-  e.preventDefault();
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
 
-  const {
-    name,
-    category,
-    price,
-    MRP,
-    model,
-    description,
-    brand,
-    quantity,
-  } = ProductData;
+    const { name, category, price, MRP, model, description, brand, quantity } =
+      ProductData;
 
-  if (!name || !category || !price || !MRP || !model || !description || !brand || !quantity) {
-    toast.error("Fill All Details");
-    return;
-  }
-
-  try {
-    const sellerId = localStorage.getItem("_id");
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("category", category);
-    formData.append("price", price);
-    formData.append("MRP", MRP);
-    formData.append("model", model);
-    formData.append("description", description);
-    formData.append("brand", brand);
-    formData.append("quantity", quantity);
-    formData.append("sellerId", sellerId);
-    if (selectedImages.length > 5) {
-      toast.error("Maximum Images Limit: 5");
+    if (
+      !name ||
+      !category ||
+      !price ||
+      !MRP ||
+      !model ||
+      !description ||
+      !brand ||
+      !quantity
+    ) {
+      toast.error("Fill All Details");
       return;
     }
-   for (let i = 0; i < selectedImages.length; i++) {
-     const imageFormData = new FormData();
-     imageFormData.append("file", selectedImages[i]);
-     const { data } = await axios.post(
-       API_BASE + "/seller/get-upload-url",
-       imageFormData
-     );
-     const imageUrl = data.signedUrl;
-     const response=await axios.put(imageUrl, selectedImages[i], {
-       headers: {
-         "Content-Type": selectedImages[i].type,
-       },
-     });
-     formData.append("productImages", imageUrl);
-   }
 
-     toast.success("Product added successfully");
-  } catch (error) {
-    if (error.response && error.response.data) {
-      toast.error(error.response.data);
-    } else {
-      toast.error("Error occurred while adding the product");
+    try {
+      const sellerId = localStorage.getItem("_id");
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("category", category);
+      formData.append("price", price);
+      formData.append("MRP", MRP);
+      formData.append("model", model);
+      formData.append("description", description);
+      formData.append("brand", brand);
+      formData.append("quantity", quantity);
+      formData.append("sellerId", sellerId);
+
+      if (selectedImages.length > 5) {
+        toast.error("Maximum Images Limit: 5");
+        return;
+      }
+
+      const imageUploadPromises = selectedImages.map(async (image) => {
+        const imageFormData = new FormData();
+        imageFormData.append("file", image);
+        const { data } = await axios.post(
+          API_BASE + "/seller/get-upload-url",
+          imageFormData
+        );
+
+        const imageUrl = data.signedUrl;
+        await axios.put(imageUrl, image, {
+          headers: {
+            "Content-Type": image.type,
+          },
+        });
+
+        return data.uniqueFilename;
+      });
+
+      const uploadedImageNames = await Promise.all(imageUploadPromises);
+      const imageNamesArray = uploadedImageNames.map((imageName) => ({
+        type: imageName,
+      }));
+
+      formData.append("imageName", JSON.stringify(imageNamesArray));
+
+      console.log(JSON.stringify(imageNamesArray));
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+
+      const { product_data } = await axios.post(
+        API_BASE + "/seller/product",
+        formData,
+        config
+      );
+      console.log(product_data);
+
+      toast.success("Product added successfully");
+    } catch (error) {
+      if (error.response && error.response.data) {
+        toast.error(error.response.data);
+      } else {
+        toast.error("Error occurred while adding the product");
+      }
+      console.log("Error: " + error);
     }
-    console.log("Error: " + error);
-  }
-
-  // Clear form fields after submission
-  // setProductData({
-  //   name: "",
-  //   category: "",
-  //   price: "",
-  //   MRP: "",
-  //   model: "",
-  //   description: "",
-  //   brand: "",
-  //   quantity: "",
-  //   rating: "",
-  //   reviews: [], // Reset reviews after submission
-  // });
-};
-
-
+  };
 
   return (
     <div className="ProductDetailOuterContainer">
@@ -217,8 +226,6 @@ const handleFormSubmit = async (e) => {
             }
           />
         </div>
-
-        
 
         <div className="seller-form-group">
           <label>Product Image:</label>

@@ -4,6 +4,7 @@ const app = require("express");
 const Seller = require("../models/sellerSchema.js");
 const Address = require("../models/addressSchema.js");
 const Product = require("../models/productDetailsSchema.js");
+const uniqueFilename = require("unique-filename");
 const Order = require("../models/orderSchema.js");
 // const OrderHistory = require("../models/order_historySchema.js");
 const bcrypt = require("bcryptjs");
@@ -158,21 +159,31 @@ router.post("/product", async (req, res) => {
     description,
     brand,
     quantity,
-    sellerId,
+    imageName,
+    sellerId    
   } = req.body;
-
+console.log(req.body);
+res.status(200);
   try {
-    const productImages = req.files.map((file) => file.path);
+    // const productImages = req.files.map((file) => file.path);
 
-    const uniqueImageNames = [];
-    for (const imagePath of productImages) {
-      const uniqueImageName = `${Date.now()}-${file.originalname}`;
-      uniqueImageNames.push(uniqueImageName);
+    // const uniqueImageNames = [];
+    // for (const imagePath of productImages) {
+    //   const uniqueImageName = `${Date.now()}-${file.originalname}`;
+    //   uniqueImageNames.push(uniqueImageName);
 
-      const signedUrl = await putObject(uniqueImageName, "image/jpg/png");
-      console.log('OKOK');
-      // Save the uniqueImageName and signedUrl in your database if needed
-    }
+    //   const signedUrl = await putObject(uniqueImageName, "image/jpg/png");
+    //   console.log('OKOK');
+    //   // Save the uniqueImageName and signedUrl in your database if needed
+    // }
+    //     const imageName = JSON.parse(req.body.imageName);
+    // console.log(imageName);
+    const imageNamesArray = JSON.parse(req.body.imageName);
+    const imageName = imageNamesArray.map(
+      (imageObject) => imageObject.type
+    );
+
+    console.log(imageName); // This will log an array of image names
 
     const product = await Product.create({
       name,
@@ -183,9 +194,10 @@ router.post("/product", async (req, res) => {
       description,
       brand,
       quantity,
+      imageName,
       sellerId,
-      pics: uniqueImageNames,
     });
+    console.log(product);
 
     if (product) {
       res.status(200).json({
@@ -203,8 +215,6 @@ router.post("/product", async (req, res) => {
 });
 
 async function putObject(key, contentType) {
-  console.log("Generating signed URL for key:", key);
-
   const command = new PutObjectCommand({
     Bucket: "demo-test-v1",
     Key: key,
@@ -213,7 +223,6 @@ async function putObject(key, contentType) {
 
   try {
     const url = await getSignedUrl(client, command);
-    console.log("Generated signed URL:", url);
     return url;
   } catch (error) {
     console.error("Error generating signed URL:", error);
@@ -251,11 +260,14 @@ router.get("/products", async (req, res) => {
 });
 
 
+
 router.post("/get-upload-url", async (req, res) => {
   try {
-    const signedUrl = await putObject( `${Date.now()}`, "image/jpg/png");
-    res.status(200).json({ signedUrl});
-    console.log(signedUrl);
+    const uniqueImageName = uniqueFilename("", "image");
+    const signedUrl = await putObject(uniqueImageName, "image/jpg/png");
+    console.log("Generated unique image name:", uniqueImageName); // Log the unique image name
+    // console.log("Generated signed URL:", signedUrl); // Log the signed URL
+    res.status(200).json({ signedUrl, uniqueFilename: uniqueImageName });
   } catch (error) {
     console.error("Error generating signed URL:", error);
     res.status(500).json({ error: "Unable to generate signed URL" });

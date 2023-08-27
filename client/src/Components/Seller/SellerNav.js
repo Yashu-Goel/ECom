@@ -15,7 +15,6 @@ const SellerNav = () => {
   const handleUserClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-  console.log(isLoggedIn);
   const handleLogout = () => {
     logout();
     setIsDropdownOpen(false);
@@ -27,7 +26,6 @@ const SellerNav = () => {
       return
     }
     setIsMenuOpen(!isMenuOpen);
-    console.log('okok');
   }
   return (
     <div className="SellerMainNav">

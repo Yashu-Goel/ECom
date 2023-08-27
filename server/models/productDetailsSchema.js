@@ -30,21 +30,27 @@ const productDetailsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  ratings: {
-    type: String,
-    default: null,
-  },
-  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
-  pics: [
-    {
-      type: String,
-      required: true,
-    },
-  ],
+  // ratings: {
+  //   type: String,
+  //   default: null,
+  // },
+  // reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
+  // pics: [
+  //   {
+  //     type: String,
+  //     required: true,
+  //   },
+  // ],
   quantity: {
     type: Number,
     required: true,
   },
+  imageName: [
+    {
+    type: String,
+    required: true,
+  }
+],
   sellerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Seller",
