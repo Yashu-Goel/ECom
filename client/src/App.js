@@ -16,6 +16,7 @@ import Profile from "./Components/Seller/Profile";
 import DealsPage from "./Components/Deals/DealsPage";
 import SellerDashboard from "./Components/Seller/SellerDashboard";
 import ShippingDetails from "./Components/ProceedToCheckOut/ShippingDetails";
+import CategoryPage from "./Components/Deals/CategoryPage";
 import RazorpayPaymentPage from "./Components/PaymentPage/RazorPay";
 import BillModal from "./Components/OrderConfirmationPage/BillModal";
 function App() {
@@ -51,8 +52,15 @@ function App() {
         }
       />
       <Route exact path="/success" element={<BillModal />} />
-      <Route exact path="/seller" element={          <SellerProvider>
-<SellerHome /> </SellerProvider>} />
+      <Route
+        exact
+        path="/seller"
+        element={
+          <SellerProvider>
+            <SellerHome />{" "}
+          </SellerProvider>
+        }
+      />
       <Route
         exact
         path="/seller_dashboard"
@@ -82,6 +90,7 @@ function App() {
         }
       />
       <Route exact path="/user-profile" element={<UserProfile />} />
+      <Route exact path="/category/:id" element={<CategoryPage />} />
       <Route
         exact
         path="/seller_auth"

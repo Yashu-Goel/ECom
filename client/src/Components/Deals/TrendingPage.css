@@ -1,0 +1,119 @@
+.outer-trending-grid {
+  /* background-color: gold; */
+  margin: 2px 30px;
+  display: flex;
+  justify-content: space-between;
+}
+.trending-card {
+  position: relative;
+  width: 300px;
+  height: 400px;
+  background: #122936;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.trending-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  width: 100%;
+  height: 100%;
+  background: #b6dbf9;
+  transform: skewY(345deg);
+  transition: 0.5s;
+}
+
+.trending-card:hover::before {
+  top: -60%;
+  transform: skewY(390deg);
+}
+
+.trending-card::after {
+  content: "Urban";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-weight: 600;
+  font-size: 8em;
+  color: rgba(255, 255, 255, 0);
+}
+
+.trending-card .imgBx {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  z-index: 1;
+}
+
+.trending-card .imgBx img {
+  max-width: 80%;
+  transition: 0.5s;
+}
+
+.trending-card:hover .imgBx img {
+  max-width: 70%;
+}
+
+.trending-card .contextBx {
+  position: relative;
+  /* padding: 20px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  z-index: 1;
+}
+
+.trending-card .contextBx h3 {
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.trending-card .contextBx .price {
+  font-size: 24px;
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.trending-card .contextBx .buy {
+  position: relative;
+  top: 200px;
+  opacity: 0;
+  padding: 10px 30px;
+  margin-top: 15px;
+  color: #fff;
+  text-decoration: none;
+  background: #2196f3;
+  border-radius: 30px;
+  text-decoration: uppercase;
+  letter-spacing: 1px;
+  transition: 0.5s;
+}
+
+.trending-card .contextBx .buy {
+  top: 0;
+  opacity: 1;
+}
+.trending-header {
+  font-weight: bold;
+  font-size: 1.5rem;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  margin: 10px;
+  margin-left: 20px;
+  color: black;
+}
+.trending-ele {
+  background-color: #fff;
+  margin: 20px 20px;
+  padding: 5px 20px;
+  border-radius: 2px;
+}

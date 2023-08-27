@@ -8,6 +8,8 @@ import fragranceSlider from "../dummyDatas/fragranceSlider.json";
 import Footer from "../Footer/Footer";
 import { Link } from "react-router-dom";
 import "./Home.css";
+import TrendingPage from "../Deals/TrendingPage";
+import Categories from "../Deals/Categories";
 const Home = () => {
   return (
     <div>
@@ -27,6 +29,7 @@ const Home = () => {
         </div>
         <ImageSlider slider={kitchenSlider} loop={false} text={true} />
       </div>
+      <TrendingPage />
       <div className="first-coursel">
         <div className="deal-header">
           <h1>Beauty Product and Fragrances</h1>
@@ -34,6 +37,7 @@ const Home = () => {
         </div>
         <ImageSlider slider={fragranceSlider} loop={false} text={false} />
       </div>
+      <Categories />
       <Footer />
     </div>
   );
