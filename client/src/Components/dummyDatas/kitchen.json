@@ -14,5 +14,53 @@
     "offerTag": "Only for Today",
     "dealDetails": "Ends in 12:10",
     "itemName": "Mosquito Nets"
+  },
+  {
+    "_id": "64ccb7d93620b4172336401f",
+    "pic": "slider12.webp",
+    "alt": "slider12",
+    "offerTag": "Best Selling",
+    "dealDetails": "From @199",
+    "itemName": "Live Plants, Durable pots"
+  },
+  {
+    "_id": "64c4e36b04b3f6347f11d792",
+    "pic": "slider13.webp",
+    "alt": "slider13",
+    "offerTag": "Starting from 199",
+    "dealDetails": "Deal Of the Day",
+    "itemName": "Measuring Tapes and levels"
+  },
+  {
+    "_id": "64c4e051c95f75c3aa8989ef",
+    "pic": "slider14.webp",
+    "alt": "slider14",
+    "offerTag": "Up to 80% off",
+    "dealDetails": "Big Discounts!!",
+    "itemName": "Showpieces"
+  },
+  {
+    "_id": "64c4e36b04b3f6347f11d795",
+    "pic": "slider11.webp",
+    "alt": "slider11",
+    "offerTag": "Only for Today",
+    "dealDetails": "Ends in 12:10",
+    "itemName": "Mosquito Nets"
+  },
+  {
+    "_id": "64c4e36b04b3f6347f11d795",
+    "pic": "slider10.webp",
+    "alt": "slider10",
+    "offerTag": "Up to 18% off",
+    "dealDetails": "Best Offer",
+    "itemName": "Mattress Protector"
+  },
+  {
+    "_id": "64c4e36b04b3f6347f11d795",
+    "pic": "slider14.webp",
+    "alt": "slider14",
+    "offerTag": "Up to 80% off",
+    "dealDetails": "Big Discounts!!",
+    "itemName": "Showpieces"
   }
 ]
