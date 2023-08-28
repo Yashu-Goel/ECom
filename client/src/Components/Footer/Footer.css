@@ -14,7 +14,7 @@ footer .content {
   justify-content: space-between;
 }
 footer .content p,
-a {
+footer a {
   color: #fff;
 }
 footer .content .part {
