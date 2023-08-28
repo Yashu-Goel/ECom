@@ -15,7 +15,6 @@ const CatalogueItems = ({
   pics, // Save
   quantity,
 }) => {
-  console.log("pics: " + pics);
   const settings = {
     dots: false,
     infinite: true,
@@ -26,7 +25,8 @@ const CatalogueItems = ({
     accessibility: true, 
     arrow: true
   };
-
+  console.log('OKOK');
+  console.log(pics);
   return (
     <>
       <div className="CatalogueOuter">
@@ -36,7 +36,7 @@ const CatalogueItems = ({
               {pics.map((pic, index) => (
                 <div key={index}>
                   <img
-                    src={process.env.PUBLIC_URL + "/uploads/" + pic}
+                    src={`https://demo-test-v1.s3.ap-south-1.amazonaws.com/${pic}`}
                     alt={name}
                   />
                 </div>

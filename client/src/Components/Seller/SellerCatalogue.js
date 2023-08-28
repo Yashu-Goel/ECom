@@ -21,7 +21,7 @@ const SellerCatalogue = () => {
         const response = await axios.get(
           API_BASE + `/seller/products?sellerId=${sellerId}`
         );
-        setProducts(response.data); // Set the retrieved product details to the state
+        setProducts(response.data); 
         if (response.data.length > 0) {
           setFlag(1); // Set the flag to 1 if there are products
         }
@@ -33,7 +33,7 @@ const SellerCatalogue = () => {
       }
     })();
   }, []);
-
+console.log(products);
   return (
     <div>
       {loading ? (
@@ -55,7 +55,7 @@ const SellerCatalogue = () => {
                 description={product.description}
                 brand={product.brand}
                 quantity={product.quantity}
-                pics={product.pics.map((pic) => getFileNameFromPath(pic))}
+                pics={product.imageName}
               />
             ))}
         </div>
@@ -65,7 +65,4 @@ const SellerCatalogue = () => {
 };
 
 export default SellerCatalogue;
-function getFileNameFromPath(path) {
-  const parts = path.split("\\");
-  return parts[parts.length - 1];
-}
+
