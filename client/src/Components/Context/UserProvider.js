@@ -16,8 +16,6 @@ const UserProvider = ({ children }) => {
         if (userInfo !== null) {
           setUser(userInfo);
           setCart(userInfo.cart);
-          console.log(userInfo)
-          console.log("Use effect is running");
         }
       } catch (error) {
         console.error(error);

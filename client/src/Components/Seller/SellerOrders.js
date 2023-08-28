@@ -12,7 +12,6 @@ import Customer from "./Modal/Customer";
 const SellerOrders = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [width, setWidth] = useState(window.innerWidth);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
 
@@ -25,8 +24,6 @@ const SellerOrders = () => {
   };
   const openCustomerModal = (customer_address) => {
     setSelectedCustomer(customer_address);
-    console.log("okokkk");
-    console.log(customer_address);
   };
 
   const closeCustomerModal = () => {
@@ -34,7 +31,6 @@ const SellerOrders = () => {
   };
 
   useEffect(() => {
-    setWidth(window.innerWidth);
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -96,7 +92,7 @@ const SellerOrders = () => {
               onClose={closeCustomerModal}
             />
           )}
-          <div className="SellerNavContainer" style={{ width: width }}>
+          <div className="SellerNavContainer" >
             <SellerNav />
           </div>
           <div className="OuterTableContainer">

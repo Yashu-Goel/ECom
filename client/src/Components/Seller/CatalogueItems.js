@@ -35,10 +35,7 @@ const CatalogueItems = ({
             <Slider {...settings}>
               {pics.map((pic, index) => (
                 <div key={index}>
-                  <img
-                    src={`https://demo-test-v1.s3.ap-south-1.amazonaws.com/${pic}`}
-                    alt={name}
-                  />
+                  <img src={`${process.env.AWS_LINK}${pic}`} alt={name} />
                 </div>
               ))}
             </Slider>

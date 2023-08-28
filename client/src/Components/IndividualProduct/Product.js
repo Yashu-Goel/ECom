@@ -10,7 +10,7 @@ import { UserState } from "../Context/UserProvider";
 import CartModal from "../Modal/CartModal";
 import { addedToCart } from "../functions/functions";
 import { API_BASE } from "../functions/functions";
-import { getFileNameFromPath, calculateDiscount, addImage } from "./function";
+import { calculateDiscount, addImage } from "./function";
 import { formatDistanceToNow } from "date-fns";
 
 export const Product = () => {
@@ -25,6 +25,8 @@ export const Product = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
+    console.log('okok');
+    console.log(process.env.AWS_LINK);
     const fetchReviews = async () => {
       try {
         const response = await axios.get(`${API_BASE}/api/review/${id}`);
@@ -45,7 +47,8 @@ export const Product = () => {
           API_BASE + `/get/getProductDetails/${id}`
         );
         setProductDetails(response.data);
-        setPic(response.data.pics);
+        console.log(response.data);
+        setPic(response.data.imageName);
       } catch (error) {
         console.log(error);
       }
@@ -75,7 +78,6 @@ export const Product = () => {
       setCount(count - 1);
     }
   };
-  console.log(productDetails);
   return (
     <>
       {showModal && <CartModal closeModal={() => setShowModal(false)} />}
@@ -91,17 +93,13 @@ export const Product = () => {
             <div className="product-page">
               <div className="product-pics outer-divs">
                 <div className="image-thums">
-                  {productDetails.pics &&
-                    productDetails.pics.map((pic, index) => {
+                  {productDetails.imageName &&
+                    productDetails.imageName.map((pic, index) => {
                       return (
                         <div className="inner-thumb-pics" key={index}>
                           {
                             <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                "/uploads/" +
-                                getFileNameFromPath(pic)
-                              }
+                              src={`https://demo-test-v1.s3.ap-south-1.amazonaws.com/${pic}`}
                               alt="pic"
                               onMouseOver={() => setClassName(index, pic)}
                               className="current"
@@ -112,16 +110,13 @@ export const Product = () => {
                     })}
                 </div>
                 <div className="main-image">
-                  <img
-                    src={
-                      !imageSrc
-                        ? process.env.PUBLIC_URL +
-                          "/uploads/" +
-                          getFileNameFromPath(pic[0])
-                        : imageSrc
-                    }
-                    alt="first"
-                  />
+                  {productDetails.imageName &&
+                    productDetails.imageName.length > 0 && (
+                      <img
+                        src={`https://demo-test-v1.s3.ap-south-1.amazonaws.com/${productDetails.imageName[0]}`}
+                        alt="main-pic"
+                      />
+                    )}
                 </div>
               </div>
               <div className="product-desc outer-divs">
