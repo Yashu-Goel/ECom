@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { API_BASE } from "../functions/functions";
-import { getFileNameFromPath } from "../IndividualProduct/function";
+import { AWS_LINK } from "../IndividualProduct/function";
 
 const RateModal = ({ products, onClose }) => {
   const { user } = UserState();
@@ -72,11 +72,7 @@ const RateModal = ({ products, onClose }) => {
           <h3>Rate the product:</h3>
           <div className="product-info">
             <img
-              src={
-                process.env.PUBLIC_URL +
-                "/uploads/" +
-                getFileNameFromPath(products.pics[0])
-              }
+              src={`${AWS_LINK}/${products.imageName[0]}`}
               alt={`${products.name}`}
             />
             <p className="selected-product-name">{products.name}</p>

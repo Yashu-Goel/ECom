@@ -7,7 +7,4 @@ export function calculateDiscount(mrp, sellingPrice) {
   const discountPercentage = (discountAmount / mrp) * 100;
   return Math.floor(discountPercentage);
 }
-
-export const addImage = (pic) => {
-  return process.env.PUBLIC_URL + "/uploads/" + getFileNameFromPath(pic);
-};
+export const AWS_LINK = "https://demo-test-v1.s3.ap-south-1.amazonaws.com";

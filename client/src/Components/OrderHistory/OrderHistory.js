@@ -6,7 +6,7 @@ import { UserState } from "../Context/UserProvider";
 import BillModal from "../OrderConfirmationPage/BillModal";
 import TrackingModal from "./TrackingModal";
 import RateModal from "./RateModal";
-import { getFileNameFromPath } from "../IndividualProduct/function";
+import { AWS_LINK } from "../IndividualProduct/function";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -202,11 +202,7 @@ const OrderHistory = () => {
                             className="product-link"
                           >
                             <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                "/uploads/" +
-                                getFileNameFromPath(order.productId.pics[0])
-                              }
+                              src={`${AWS_LINK}/${order.productId.imageName[0]}`}
                               alt={`${order.productId.name}`}
                             />
                           </Link>

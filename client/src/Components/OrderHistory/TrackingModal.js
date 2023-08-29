@@ -1,6 +1,6 @@
 import React from "react";
 import "./TrackingModal.css";
-import { getFileNameFromPath } from "../IndividualProduct/function";
+import { AWS_LINK } from "../IndividualProduct/function";
 
 const TrackingModal = ({ order, onClose }) => {
   const formatDate = (date) => {
@@ -20,11 +20,7 @@ const TrackingModal = ({ order, onClose }) => {
       <div className="rate-modal">
         <figure>
           <img
-            src={
-              process.env.PUBLIC_URL +
-              "/uploads/" +
-              getFileNameFromPath(order.productId.pics[0])
-            }
+            src={`${AWS_LINK}/${order.productId.imageName[0]}`}
             alt={`${order.productId.name}`}
           />
           <figcaption>

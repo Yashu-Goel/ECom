@@ -10,8 +10,9 @@ import { UserState } from "../Context/UserProvider";
 import CartModal from "../Modal/CartModal";
 import { addedToCart } from "../functions/functions";
 import { API_BASE } from "../functions/functions";
-import { calculateDiscount, addImage } from "./function";
+import { calculateDiscount } from "./function";
 import { formatDistanceToNow } from "date-fns";
+import { AWS_LINK } from "./function";
 
 export const Product = () => {
   const { id } = useParams();
@@ -20,13 +21,10 @@ export const Product = () => {
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(1);
   const [productDetails, setProductDetails] = useState(null);
-  const [pic, setPic] = useState([]);
-  const [imageSrc, setImageSrc] = useState(null);
+  const [imageSrc, setImageSrc] = useState("");
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    console.log('okok');
-    console.log(process.env.AWS_LINK);
     const fetchReviews = async () => {
       try {
         const response = await axios.get(`${API_BASE}/api/review/${id}`);
@@ -47,8 +45,7 @@ export const Product = () => {
           API_BASE + `/get/getProductDetails/${id}`
         );
         setProductDetails(response.data);
-        console.log(response.data);
-        setPic(response.data.imageName);
+        setImageSrc(response.data && response.data.imageName[0]);
       } catch (error) {
         console.log(error);
       }
@@ -64,7 +61,7 @@ export const Product = () => {
     });
 
     Img[index].classList.add("active");
-    setImageSrc(() => addImage(pic));
+    setImageSrc(pic);
   }
 
   const increment = () => {
@@ -99,7 +96,7 @@ export const Product = () => {
                         <div className="inner-thumb-pics" key={index}>
                           {
                             <img
-                              src={`https://demo-test-v1.s3.ap-south-1.amazonaws.com/${pic}`}
+                              src={`${AWS_LINK}/${pic}`}
                               alt="pic"
                               onMouseOver={() => setClassName(index, pic)}
                               className="current"
@@ -112,10 +109,7 @@ export const Product = () => {
                 <div className="main-image">
                   {productDetails.imageName &&
                     productDetails.imageName.length > 0 && (
-                      <img
-                        src={`https://demo-test-v1.s3.ap-south-1.amazonaws.com/${productDetails.imageName[0]}`}
-                        alt="main-pic"
-                      />
+                      <img src={`${AWS_LINK}/${imageSrc}`} alt="main-pic" />
                     )}
                 </div>
               </div>

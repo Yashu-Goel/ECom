@@ -5,11 +5,11 @@ import axios from "axios";
 import { API_BASE } from "../functions/functions";
 import "./OrderConfirmationPage.css";
 import { truncateName, calculateTotal } from "./function";
-import { getFileNameFromPath } from "../IndividualProduct/function";
 import Error from "./Error";
 import ProgressBar from "../ProceedToCheckOut/ProgressBar";
 import Loading from "../Loaders/Loading";
 import BillModal from "./BillModal";
+import { AWS_LINK } from "../IndividualProduct/function";
 
 const OrderConfirmationPage = () => {
   const [promoCode, setPromoCode] = useState("");
@@ -260,11 +260,7 @@ const OrderConfirmationPage = () => {
                           <td>
                             <div className="product-info">
                               <img
-                                src={
-                                  process.env.PUBLIC_URL +
-                                  "/uploads/" +
-                                  getFileNameFromPath(item.product.pics[0])
-                                }
+                                src={`${AWS_LINK}/${item.product.imageName[0]}`}
                                 alt={`${item.product.name}`}
                               />
                               <p>{truncateName(item.product.name)}</p>

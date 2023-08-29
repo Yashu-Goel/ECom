@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { UserState } from "../Context/UserProvider";
 import { removeItem } from "../functions/functions";
 import { API_BASE } from "../functions/functions";
-import { getFileNameFromPath } from "../IndividualProduct/function";
+import { AWS_LINK } from "../IndividualProduct/function";
 import {
   calculateTotal,
   truncateName,
@@ -45,7 +45,7 @@ const CartModal = ({ closeModal }) => {
     getProductDetails();
     setIsLoading(false);
   }, [cart, user.token]);
-
+  console.log(products);
   return (
     <>
       {isLoading && (
@@ -71,11 +71,7 @@ const CartModal = ({ closeModal }) => {
                     <div className="item-info">
                       <div className="item-image">
                         <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/uploads/" +
-                            getFileNameFromPath(item.product.pics[0])
-                          }
+                          src={`${AWS_LINK}/${item.product.imageName[0]}`}
                           alt={`${item.product.name}`}
                         />
                       </div>
