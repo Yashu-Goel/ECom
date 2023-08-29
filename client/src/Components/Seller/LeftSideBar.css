@@ -2,14 +2,28 @@
     margin: 0;
     padding: 0;
 }
+
+.DimBackground{
+    position: fixed;
+    width: 100%;
+    left: 0;
+    height: calc(100vh - 7vh); 
+    top: 7vh; 
+    background-color: azure;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2.5px);
+    height: 100vh;
+}
 .SellerLeftSideBarMain{
-box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;    width: 16rem;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;    
+    width: 16rem;
     position: absolute;
-    z-index: 3;
+    z-index: 5;
     left: 0;
     top: 7vh;
     background-color: white;
     border-bottom-right-radius: 5px;
+    height: 120vh;
 }
 .DataItems{
     padding-top: 1rem;
@@ -18,12 +32,15 @@ box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;    width: 16rem;
     display: flex;
     justify-content: space-between;
     font-size: 1.2rem;
-    padding: 0 0.4rem;
-
+    padding: 0.6rem 0.4rem;
+    border-bottom: 1px solid black;
+    transition: background-color 0.2s ease-out, transform 0.2s ease-out;
 }
 .DataItem:hover{
     scale: 1.01;
     cursor: pointer;
+    background-color: aliceblue;
+    
 }
 .DataItems p{
     display: flex;
@@ -33,4 +50,9 @@ box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;    width: 16rem;
 .DataItems span{
     font-size: 2rem;
 }
-
+@media (max-width: 768px) {
+  .SellerLeftSideBarMain
+  {
+    height: auto;
+  }
+}

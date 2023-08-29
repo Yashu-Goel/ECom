@@ -8,6 +8,8 @@
   display: flex;
   position: relative;
   z-index: 1;
+  margin-top: 8vh;
+
 }
 #WhyUsHeading{
   margin: 2rem 0;

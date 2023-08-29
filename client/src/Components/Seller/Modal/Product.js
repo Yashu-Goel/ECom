@@ -5,13 +5,13 @@ import "slick-carousel/slick/slick-theme.css";
 import "./Product.css";
 
 const Product = ({ product, onClose }) => {
-  const { name, model, brand, category, pics, price} = product;
+  const { name, model, brand, category, imageName, price} = product;
   const [images, setImages] = useState([]);
+  console.log(imageName);
 console.log(product);
   useEffect(() => {
-    const imageNames = pics.map(getFileNameFromPath);
-    setImages(imageNames);
-  }, [pics]);
+    setImages(imageName);
+  }, [imageName]);
 
   const sliderSettings = {
     dots: true,
@@ -36,18 +36,7 @@ console.log(images);
         <div className="modal-content">
           <h2>Product Details</h2>
 
-          <div className="product-images">
-            <Slider {...sliderSettings}>
-              {images.map((imageName, index) => (
-                <div key={index}>
-                  <img
-                    src={process.env.PUBLIC_URL + `/uploads/${imageName}`}
-                    alt={`Product Image ${index}`}
-                  />
-                </div>
-              ))}
-            </Slider>
-          </div>
+          
           <p>
             <span>Product Name:</span> {name}
           </p>

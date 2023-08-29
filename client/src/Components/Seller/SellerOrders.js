@@ -46,7 +46,7 @@ const SellerOrders = () => {
         setOrderDetails(response.data);
         setTimeout(() => {
           setLoading(false);
-        }, 2000);
+        }, 1000);
       } catch (error) {
         console.log("Error: " + error);
       }
@@ -96,7 +96,7 @@ const SellerOrders = () => {
             <SellerNav />
           </div>
           <div className="OuterTableContainer">
-            <table>
+            <table className="OrderTable">
               <thead className="TableHeading">
                 <tr>
                   <th className="TableHead">OrderID</th>
@@ -118,7 +118,7 @@ const SellerOrders = () => {
                       model,
                       name: productName,
                       category,
-                      pics,
+                      imageName,
                       price,
                     },
                     date,
@@ -149,20 +149,24 @@ const SellerOrders = () => {
                       </td>
                       <td className="TableHead">{count}</td>
                       <td className="TableHead">
-                        <select
-                          value={currentStatus}
-                          onChange={(e) =>
-                            handleProductStatusChange(_id, e.target.value)
-                          }
-                        >
-                          <option value="pending">Pending</option>
-                          <option value="cancelled">Cancelled</option>
-                          <option value="shipped">Shipped</option>
-                          <option value="out_for_delivery">
-                            Out of Delivery
-                          </option>
-                          <option value="delivered">Delivered</option>
-                        </select>
+                        {currentStatus === "cancelled" ? (
+                          <span>Cancelled</span>
+                        ) : (
+                          <select
+                            value={currentStatus}
+                            onChange={(e) =>
+                              handleProductStatusChange(_id, e.target.value)
+                            }
+                          >
+                            <option value="pending">Pending</option>
+                            <option value="cancelled">Cancelled</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="out_for_delivery">
+                              Out for Delivery
+                            </option>
+                            <option value="delivered">Delivered</option>
+                          </select>
+                        )}
                       </td>
                     </tr>
                   );

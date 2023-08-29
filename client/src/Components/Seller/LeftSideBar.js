@@ -26,20 +26,23 @@ const LeftSideBar = () => {
       link_to: "/orders",
     },
   ];
-  return (
-    <div className="SellerLeftSideBarMain">
-      <div className="DataItems">
-        {data.map((item, index) => (
-          <Link to={item.link_to} key={index}>
-            <div className="DataItem">
-              <p>{item.data_item}</p>
-              <span>&gt;</span>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </div>
-  );
+ return (
+   <div className="LeftSideBarContainer">
+     <div className="DimBackground"></div>
+     <div className="SellerLeftSideBarMain">
+       <div className="DataItems">
+         {data.map((item, index) => (
+           <Link to={item.link_to} key={index}>
+             <div className="DataItem">
+               <p>{item.data_item}</p>
+               <span>&gt;</span>
+             </div>
+           </Link>
+         ))}
+       </div>
+     </div>
+   </div>
+ );
 };
 
 export default LeftSideBar;

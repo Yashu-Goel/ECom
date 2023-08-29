@@ -25,8 +25,6 @@ const CatalogueItems = ({
     accessibility: true, 
     arrow: true
   };
-  console.log('OKOK');
-  console.log(pics);
   return (
     <>
       <div className="CatalogueOuter">
@@ -35,7 +33,10 @@ const CatalogueItems = ({
             <Slider {...settings}>
               {pics.map((pic, index) => (
                 <div key={index}>
-                  <img src={`${process.env.AWS_LINK}${pic}`} alt={name} />
+                  <img
+                    src={`${process.env.REACT_APP_AWS_LINK}${pic}`}
+                    alt={name}
+                  />
                 </div>
               ))}
             </Slider>
