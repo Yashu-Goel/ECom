@@ -25,9 +25,7 @@
     border-bottom-right-radius: 5px;
     height: 120vh;
 }
-.DataItems{
-    padding-top: 1rem;
-}
+
 .DataItem{
     display: flex;
     justify-content: space-between;

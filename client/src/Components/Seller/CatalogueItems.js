@@ -3,7 +3,7 @@ import "./CatalogueItems.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import ProductDetail from "./Modal/ProductDetail";
 const CatalogueItems = ({
   name,
   category,
@@ -15,6 +15,14 @@ const CatalogueItems = ({
   pics, // Save
   quantity,
 }) => {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const openProductDetailModal = (product) => {
+    setSelectedProduct(product);
+  };
+  const closeProductDetailModal = () => {
+    setSelectedProduct(null);
+  };
   const settings = {
     dots: false,
     infinite: true,
@@ -58,31 +66,33 @@ const CatalogueItems = ({
           </div>
           <div className="CatalogueItemProductDetails">
             <p>
-              Price: <span>{price} </span>
-            </p>
-          </div>
-          <div className="CatalogueItemProductDetails">
-            <p>
-              MRP: <span>{MRP} </span>
-            </p>
-          </div>
-          <div className="CatalogueItemProductDetails">
-            <p>
-              Model:<span> {model} </span>
-            </p>
-          </div>
-          <div className="CatalogueItemProductDetails">
-            <p>
-              Quantity:<span> {quantity} </span>
-            </p>
-          </div>
-          <div className="CatalogueItemProductDetails">
-            <p>
-              Description: <span>{description}</span>
+              <button
+                onClick={() =>
+                  openProductDetailModal({
+                    name,
+                    category,
+                    price,
+                    MRP,
+                    model,
+                    description,
+                    brand,
+                    pics,
+                    quantity,
+                  })
+                }
+              >
+                <span>view more</span>
+              </button>
             </p>
           </div>
         </div>
       </div>
+      {selectedProduct && (
+        <ProductDetail
+          {...selectedProduct}
+          onClose={closeProductDetailModal}
+        />
+      )}
     </>
   );
 };
