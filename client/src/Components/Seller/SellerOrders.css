@@ -9,6 +9,8 @@
   width: 80%;
   margin-top: 5%;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  text-align: center;
+
 }
 .TableHeading{
   background-color: #b2dbfa;
@@ -18,7 +20,9 @@
 .TableHead{
   border: 1.6px solid black;
 }
-
+.TableHead button:hover{
+  text-decoration: underline;
+}
 .TableBody{
   font-weight: bold;
 }
@@ -35,7 +39,7 @@
   }
   .OrderTable{
     width: 100%;
-    margin: 0;
+    margin-top: 7vh;
   }
   .OuterTableContainer {
     overflow-x: auto;

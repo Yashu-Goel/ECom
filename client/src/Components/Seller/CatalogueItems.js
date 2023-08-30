@@ -81,7 +81,7 @@ const CatalogueItems = ({
                   })
                 }
               >
-                <span>view more</span>
+                <span>view full details</span>
               </button>
             </p>
           </div>

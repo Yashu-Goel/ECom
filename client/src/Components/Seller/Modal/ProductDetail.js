@@ -32,7 +32,11 @@ const ProductDetail = ({
   return (
     <>
       <div className="ProductDetailDimBackground"></div>
-      <div className="ProductDetailModalOuter">
+      <div
+        className={`ProductDetailModalOuter ${
+          pics ? "ProductDetailModalOpen" : ""
+        }`}
+      >
         <div className="ProductDetailModalMainContainer">
           <div className="ProductImage">
             <Slider {...settings}>

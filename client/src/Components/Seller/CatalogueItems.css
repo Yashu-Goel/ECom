@@ -56,9 +56,14 @@
   background-color: #efefef;
   color: #0c0c0c;
   border: 2px solid #767676;
-  padding: 8px 16px;
+  padding: 4px 8px;
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s;
   margin-top: 1rem;
+  width: 100%;
+}
+.CatalogueItemProductDetails button:hover{
+  color: #efefef ;
+  background-color: #0c0c0c;
 }

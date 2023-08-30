@@ -77,6 +77,23 @@
 .ProductDataItems button:hover {
   background-color: #0056b3;
 }
+/* Define the fadeInModal animation */
+@keyframes fadeInModal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply the fadeInModal animation to the open modal */
+.ProductDetailModalOpen {
+  animation: fadeInModal 0.5s ease-in forwards;
+}
+
 @media (max-width: 768px) {
   .ProductDetailModalMainContainer {
     max-width: 80%;
