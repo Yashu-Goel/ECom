@@ -9,7 +9,7 @@
   z-index: 1;
 }
 .ProductDetailModalOuter {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -21,7 +21,8 @@
 }
 
 .ProductDetailModalMainContainer {
-  background-color: aliceblue;
+  background-color: white;
+  border: 20px solid rgb(217, 235, 251);
   padding: 20px;
   border-radius: 8px;
   max-height: 35rem;
@@ -30,33 +31,109 @@
   position: relative;
   display: flex;
   justify-content: space-around;
-  border: 2px solid red;
 }
-.ProductImage{
-    width: 30%;
-    max-height: 100%;
+.ProductImage {
+  width: 30%;
+  max-height: 100%;
 }
-.ProductImage div
-{
-    display: flex;
+.ProductImage div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ProductImage img {
+  height: 100%;
+  width: 100%;
+}
+.ProductDataItems {
+  position: relative;
+}
+.ProductDetails {
+  font-size: 1.4rem;
+  width: auto;
+  margin-top: 2rem;
+}
+.ProductDetails p {
+  display: flex;
+  justify-content: space-between;
+}
+.ProductDetails span {
+  font-weight: 400;
+  margin-left: 2rem;
+}
+.ProductDataItems button {
+  position: absolute;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  margin-top: 1rem;
+  bottom: 1rem;
+  width: 100%;
+}
+.ProductDataItems button:hover {
+  background-color: #0056b3;
+}
+@media (max-width: 768px) {
+  .ProductDetailModalMainContainer {
+    max-width: 80%;
+  }
+
+  .ProductImage {
+    width: 40%;
+  }
+
+  .ProductDataItems {
+    padding: 20px;
+  }
+
+  .ProductDetails {
+    font-size: 1.2rem;
+  }
+
+  .ProductDataItems button {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+  .ProductDetailModalMainContainer {
+    max-width: 90%;
+    min-height: 75%;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-.ProductImage img{
-    height: 100%;
+    position: relative;
+  }
+
+  .ProductImage {
+    width: 50%;
+  }
+ 
+
+  .ProductDetails {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    margin-top: auto;
     width: 100%;
+  }
+   .ProductDataItems {
+  position: inherit;
+  width: 100%;
+  margin-top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
-
-.ProductDetails{
-    font-size: 1.4rem;
-    border: 2px solid red;
-    width: 22rem;
-
-}
-.ProductDetails p{
-    font-weight: bold;
-}
-.ProductDetails span{
-    font-weight: 400;
-        margin-left: 2rem;
+  .ProductDataItems button {
+    bottom: 0;
+    width: 100%;
+    margin-top: 1rem;
+    position: relative;
+  }
 }

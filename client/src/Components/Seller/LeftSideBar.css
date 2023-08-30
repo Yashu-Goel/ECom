@@ -9,7 +9,6 @@
     left: 0;
     height: calc(100vh - 7vh); 
     top: 7vh; 
-    background-color: azure;
     background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(2.5px);
     height: 100vh;

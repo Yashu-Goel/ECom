@@ -1,9 +1,10 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./CatalogueItems.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ProductDetail from "./Modal/ProductDetail";
+
 const CatalogueItems = ({
   name,
   category,
@@ -12,7 +13,7 @@ const CatalogueItems = ({
   model,
   description,
   brand,
-  pics, // Save
+  pics,
   quantity,
 }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -23,16 +24,20 @@ const CatalogueItems = ({
   const closeProductDetailModal = () => {
     setSelectedProduct(null);
   };
+
   const settings = {
     dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    swipeToSlide: true, 
-    accessibility: true, 
-    arrow: true
+    swipeToSlide: true,
+    accessibility: true,
+    arrow: true,
+    autoplay: true, 
+    autoplaySpeed: 2000, 
   };
+
   return (
     <>
       <div className="CatalogueOuter">
@@ -52,11 +57,6 @@ const CatalogueItems = ({
           <div className="CatalogueItemProductDetails">
             <p>
               Name: <span> {name} </span>
-            </p>
-          </div>
-          <div className="CatalogueItemProductDetails">
-            <p>
-              Brand: <span> {brand} </span>
             </p>
           </div>
           <div className="CatalogueItemProductDetails">
@@ -88,10 +88,7 @@ const CatalogueItems = ({
         </div>
       </div>
       {selectedProduct && (
-        <ProductDetail
-          {...selectedProduct}
-          onClose={closeProductDetailModal}
-        />
+        <ProductDetail {...selectedProduct} onClose={closeProductDetailModal} />
       )}
     </>
   );

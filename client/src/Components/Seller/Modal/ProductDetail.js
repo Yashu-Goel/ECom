@@ -25,6 +25,8 @@ const ProductDetail = ({
     swipeToSlide: true,
     accessibility: true,
     arrow: true,
+    autoplay: true,
+    autoplaySpeed: 2000,
   };
 
   return (
@@ -47,22 +49,27 @@ const ProductDetail = ({
           <div className="ProductDataItems">
             <div className="ProductDetails">
               <p>
-                Name: <span>{name}</span>
+                <b> Name: </b>
+                <span>{name}</span>
               </p>
               <p>
-                Category: <span>{category}</span>
+                <b>Category: </b>
+                <span>{category}</span>
               </p>
               <p>
-                Brand:<span> {brand}</span>
+                <b>Brand:</b>
+                <span> {brand}</span>
               </p>
               <p>
-                Model: <span>{model}</span>
+                <b>Model:</b> <span>{model}</span>
               </p>
               <p>
-                MRP: <span>₹ {MRP}</span>
+                <b>MRP: </b>
+                <span>₹ {MRP}</span>
               </p>
               <p>
-                Price:<span> ₹ {price}</span>
+                <b>Price:</b>
+                <span> ₹ {price}</span>
               </p>
             </div>
             <button onClick={onClose}>Close</button>
