@@ -15,9 +15,24 @@ router.get("/getProductDetails/:_id", async (req, res) => {
       "sellerId",
       "name"
     );
-    console.log(response);
     return res.status(200).json(response);
   } catch (err) {
+    return res.status(403).send("FORBIDDEN");
+  }
+});
+router.post("/getCategoryDetails", async (req, res) => {
+  try {
+    const { tags } = req.body;
+    const tagsArray = tags && tags.map((tag) => tag.toLowerCase());
+    const filteredData = await Product.find({
+      $or: [
+        { tags: { $in: tagsArray } },
+        { categories: { $elemMatch: { $in: tagsArray } } },
+      ],
+    });
+    res.json(filteredData);
+  } catch (err) {
+    console.log(err);
     return res.status(403).send("FORBIDDEN");
   }
 });

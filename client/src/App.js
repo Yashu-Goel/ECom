@@ -90,7 +90,6 @@ function App() {
         }
       />
       <Route exact path="/user-profile" element={<UserProfile />} />
-      <Route exact path="/category/:id" element={<CategoryPage />} />
       <Route
         exact
         path="/seller_auth"
@@ -100,7 +99,7 @@ function App() {
           </SellerProvider>
         }
       />
-      {/* <Route exact path="/payment-page" element={<RazorpayPaymentPage />} /> */}
+      <Route path="/category/:categoryName/:tags" element={<CategoryPage />} />
     </Routes>
   );
 }

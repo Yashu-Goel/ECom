@@ -5,10 +5,6 @@ const productDetailsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  category: {
-    type: String,
-    required: true,
-  },
   price: {
     type: String,
     required: true,
@@ -25,32 +21,31 @@ const productDetailsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  categories: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
   brand: {
-    // link
     type: String,
     required: true,
   },
-  // ratings: {
-  //   type: String,
-  //   default: null,
-  // },
-  // reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
-  // pics: [
-  //   {
-  //     type: String,
-  //     required: true,
-  //   },
-  // ],
+  ratings: {
+    type: String,
+    default: null,
+  },
+  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
   quantity: {
     type: Number,
     required: true,
   },
   imageName: [
     {
-    type: String,
-    required: true,
-  }
-],
+      type: String,
+      required: true,
+    },
+  ],
   sellerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Seller",

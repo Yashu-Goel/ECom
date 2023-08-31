@@ -10,6 +10,7 @@ import {
   calculateTotal,
   truncateName,
 } from "../OrderConfirmationPage/function";
+import { toast } from "react-toastify";
 
 const CartModal = ({ closeModal }) => {
   const { cart, setCart, user } = UserState();
@@ -39,13 +40,15 @@ const CartModal = ({ closeModal }) => {
           })
         );
         setProducts(cartDetails);
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+        toast.error("Oops! Something went wrong.");
+      }
     };
 
     getProductDetails();
     setIsLoading(false);
   }, [cart, user.token]);
-  console.log(products);
   return (
     <>
       {isLoading && (

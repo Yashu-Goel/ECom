@@ -75,6 +75,7 @@ export const Product = () => {
       setCount(count - 1);
     }
   };
+  console.log(productDetails);
   return (
     <>
       {showModal && <CartModal closeModal={() => setShowModal(false)} />}
@@ -179,24 +180,30 @@ export const Product = () => {
                     <h3 className="about-this">About this item</h3>
                     <ul className="product-details">
                       <li>
-                        <strong>Name:-</strong> {productDetails.name}
+                        <strong>Name:-</strong>{" "}
+                        {productDetails && productDetails.name}
                       </li>
                       <li>
-                        <strong>Model:-</strong> {productDetails.model}
+                        <strong>Model:-</strong>{" "}
+                        {productDetails && productDetails.model}
                       </li>
                       <li>
-                        <strong>Brand:-</strong> {productDetails.brand}
+                        <strong>Brand:-</strong>{" "}
+                        {productDetails && productDetails.brand}
                       </li>
                       <li>
-                        <strong>Category:-</strong> {productDetails.category}
+                        <strong>Category:-</strong>{" "}
+                        {productDetails && productDetails.category}
                       </li>
                       <li>
                         <strong>Seller Name:-</strong>{" "}
-                        {productDetails.sellerId.name}
+                        {productDetails &&
+                          productDetails.sellerId &&
+                          productDetails.sellerId.name}
                       </li>
                       <li>
                         <strong>Description:-</strong>{" "}
-                        {productDetails.description}
+                        {productDetails && productDetails.description}
                       </li>
                     </ul>
                   </div>

@@ -63,3 +63,9 @@
   color: #3498db;
   font-weight: bold;
 }
+.category-symbol {
+  display: flex;
+}
+.category-symbol p {
+  margin: 0px 5px;
+}
