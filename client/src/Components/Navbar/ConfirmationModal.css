@@ -1,5 +1,5 @@
 /* Add your custom styles for the confirmation modal here */
-.modal-overlay {
+.modal-overlay-logout {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,41 +8,42 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 3;
 }
 
 .modal-content-logout {
   background-color: #fff;
   padding: 20px;
+  border-radius: 5px;
   text-align: center;
-  border-radius: 10px;
 }
 
-.modal-buttons {
+.modal-buttons-logout {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
 }
 
-.confirm-button,
-.cancel-button {
+.confirm-button-logout,
+.cancel-button-logout {
   padding: 8px 16px;
   border: none;
   cursor: pointer;
   border-radius: 4px;
 }
 
-.confirm-button {
+.confirm-button-logout {
   background-color: #007bff;
   color: #fff;
 }
 
-.cancel-button {
+.cancel-button-logout {
   background-color: #ccc;
   color: #000;
 }
 
-.confirm-button:hover,
-.cancel-button:hover {
+.confirm-button-logout:hover,
+.cancel-button-logout:hover {
   opacity: 0.8;
 }

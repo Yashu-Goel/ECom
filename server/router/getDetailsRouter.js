@@ -22,18 +22,28 @@ router.get("/getProductDetails/:_id", async (req, res) => {
 });
 router.post("/getCategoryDetails", async (req, res) => {
   try {
-    const { tags } = req.body;
-    const tagsArray = tags && tags.map((tag) => tag.toLowerCase());
-    const filteredData = await Product.find({
-      $or: [
+    const { categories, tags } = req.body;
+    const query = {};
+
+    if (categories && categories.length > 0) {
+      query.categories = {
+        $in: categories.map((category) => category.toLowerCase()),
+      };
+    }
+
+    if (tags && tags.length > 0) {
+      const tagsArray = tags.map((tag) => tag.toLowerCase());
+      query.$or = [
         { tags: { $in: tagsArray } },
         { categories: { $elemMatch: { $in: tagsArray } } },
-      ],
-    });
+      ];
+    }
+
+    const filteredData = await Product.find(query);
     res.json(filteredData);
   } catch (err) {
-    console.log(err);
-    return res.status(403).send("FORBIDDEN");
+    console.error(err);
+    return res.status(500).send("Internal Server Error");
   }
 });
 

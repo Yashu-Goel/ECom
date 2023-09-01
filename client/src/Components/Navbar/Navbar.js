@@ -5,44 +5,88 @@ import ConfirmationModal from "./ConfirmationModal";
 import { UserState } from "../Context/UserProvider";
 import CartModal from "../Modal/CartModal";
 import Logo from "../Assets/Logo.png";
+import { toast } from "react-toastify";
+
+const categories = [
+  {
+    title: "Fasion",
+    items: ["Men", "Women", "Child", "Footwear", "Trousers"],
+  },
+  {
+    title: "Electronics",
+    items: [
+      "Smart Phones",
+      "Smart TVs",
+      "Mobile Accessories",
+      "Refrigerators",
+      "Washing Machines",
+      "Other Accessories",
+    ],
+  },
+  {
+    title: "Health",
+    items: ["Diet And Fitness", "Health Machines", "Ayurvedic Medicines"],
+  },
+  {
+    title: "Home Decor",
+    items: ["Curtains", "Bedsheets", "Home Decors", "More Items"],
+  },
+  {
+    title: "Pet Supplies",
+    items: ["Dog Foods", "Cat Foods", "Animal Grooming Kits", "Fish Supplies"],
+  },
+  {
+    title: "Gifts",
+    items: [
+      "Readymade Gifts",
+      "Natural Gifts",
+      "Handmade Cards",
+      "Affordable Presents",
+    ],
+  },
+];
+
 const Navbar = () => {
-  const [isConfirmationOpen, setConfirmationOpen] = useState(false);
+  const [logoutModal, setLogoutModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [heart, setHeart] = useState(false);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const { user, cart } = UserState();
 
-  const openModal = () => {
-    setShowModal(true);
-  };
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
-  const dropdownMenu = document.getElementById("dropdown-menu");
-
-  function loadAccount() {
-    dropdownMenu.classList.add("show");
-  }
-
-  /* logout logic */
-
   const handleLogout = () => {
-    setConfirmationOpen(true);
-  };
+    try {
+      const profileData = localStorage.getItem("profile");
+      if (profileData) {
+        localStorage.removeItem("profile");
+      }
 
-  const handleConfirmLogout = () => {
-    // Implement your logout logic here
-    console.log("Logout confirmed");
-    setConfirmationOpen(false);
-  };
+      const addressData = localStorage.getItem("address");
+      if (addressData) {
+        localStorage.removeItem("address");
+      }
 
-  const handleCancelLogout = () => {
-    setConfirmationOpen(false);
+      toast.info("Logging out...");
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+
+      setLogoutModal(false);
+    } catch (error) {
+      console.error("An error occurred during logout:", error);
+      toast.error("Logout failed. Please try again later.");
+    }
   };
 
   return (
     <>
-      {showModal && <CartModal closeModal={closeModal} />}
+      {showModal && <CartModal closeModal={() => setShowModal(false)} />}
+      {logoutModal && (
+        <ConfirmationModal
+          onConfirm={handleLogout}
+          onCancel={() => setLogoutModal(false)}
+        />
+      )}
       <div className="navbar-header">
         <div className="logo nav-elements">
           <Link to="/">
@@ -51,219 +95,31 @@ const Navbar = () => {
         </div>
 
         <div className="categories">
-          <div className="dropdown">
-            <button
-              className="btn btn-primary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-mdb-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Fasion
-            </button>
-            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li>
-                <a className="dropdown-item" href="#">
-                  Men
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Women
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Child
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Footwear
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Trousers
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="dropdown">
-            <button
-              className="btn btn-primary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-mdb-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Electronics
-            </button>
-            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li>
-                <a className="dropdown-item" href="#">
-                  Smart Phones
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Smart TVs
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Mobile Accessories
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Refridgerators
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Washing Machines
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Other Accessories
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="dropdown">
-            <button
-              className="btn btn-primary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-mdb-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Health
-            </button>
-            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li>
-                <a className="dropdown-item" href="#">
-                  Diet And Fitness
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Health Machines
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Ayurvedic Medicines
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="dropdown">
-            <button
-              className="btn btn-primary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-mdb-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Home Decor
-            </button>
-            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li>
-                <a className="dropdown-item" href="#">
-                  Curtains
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Bedsheets
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Home Decors
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  More Items
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="dropdown">
-            <button
-              className="btn btn-primary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-mdb-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Pet Supplies
-            </button>
-            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li>
-                <a className="dropdown-item" href="#">
-                  Dog Foods
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Cat Foods
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Animal Grooming Kits
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Fish Supplies
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="dropdown">
-            <button
-              className="btn btn-primary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-mdb-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Gifts
-            </button>
-            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li>
-                <a className="dropdown-item" href="#">
-                  Readymade Gifts
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Natural Gifts
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Handmade Cards
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Affordable Presents
-                </a>
-              </li>
-            </ul>
-          </div>
+          {categories.map((category, index) => (
+            <div className="dropdown" key={index}>
+              <button
+                className="btn btn-primary dropdown-toggle"
+                type="button"
+                id={`dropdownMenuButton${index}`}
+                data-mdb-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {category.title}
+              </button>
+              <ul
+                className="dropdown-menu"
+                aria-labelledby={`dropdownMenuButton${index}`}
+              >
+                {category.items.map((item, itemIndex) => (
+                  <li key={itemIndex}>
+                    <Link className="dropdown-item" to={`/category/${item}`}>
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
         <div className="nav-search">
           <input type="text" placeholder="I'm looking for..." />
@@ -278,26 +134,32 @@ const Navbar = () => {
               <button
                 className="nav-heart"
                 id="dropdown-btn"
-                onClick={loadAccount}
+                onClick={() => setIsDropdownVisible(!isDropdownVisible)}
               >
                 <i className="fa-solid fa-user"></i>
               </button>
-              <div className="dropdown-menu" id="dropdown-menu">
+              <div
+                className={`dropdown-menu ${isDropdownVisible ? "show" : ""}`}
+                id="dropdown-menu"
+              >
                 <Link to={"/order-history"}>My Orders</Link>
                 <Link to={"/user-profile"}>Account</Link>
-                <button onClick={handleLogout}>Logout</button>
-                <ConfirmationModal
-                  isOpen={isConfirmationOpen}
-                  onConfirm={handleConfirmLogout}
-                  onCancel={handleCancelLogout}
-                />
+
+                <button
+                  onClick={() => {
+                    setLogoutModal(true);
+                    setIsDropdownVisible(false);
+                  }}
+                >
+                  Logout
+                </button>
               </div>
-              <button className="nav-shop" onClick={openModal}>
-                {cart.length === 0 ? (
+              <button className="nav-shop" onClick={() => setShowModal(true)}>
+                {cart && cart.length === 0 ? (
                   <i className="fa-solid fa-cart-shopping"></i>
                 ) : (
                   <i className="fa badge" value={cart.length}>
-                    &#xf07a; {cart.length}
+                    &#xf07a;
                   </i>
                 )}
               </button>

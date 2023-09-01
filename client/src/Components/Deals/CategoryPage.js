@@ -39,7 +39,8 @@ const CategoryPage = () => {
         const response = await axios.post(
           API_BASE + "/get/getCategoryDetails",
           {
-            tags: tags.split(","),
+            categoryName: categoryName,
+            tags: tags && tags.split(","),
           }
         );
         setProduct(response.data);
@@ -161,8 +162,8 @@ const CategoryPage = () => {
           ) : (
             <h1
               style={{
-                textAlign: "center !important",
-                margin: "20px !important",
+                textAlign: "center",
+                margin: " 20px auto",
               }}
             >
               Oops! We couldn't find any products matching your search criteria.

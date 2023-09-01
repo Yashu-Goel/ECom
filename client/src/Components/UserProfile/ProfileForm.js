@@ -3,12 +3,12 @@ import { UserState } from "../Context/UserProvider";
 import { toast } from "react-toastify";
 
 const ProfileForm = () => {
+  const { user } = UserState();
   const [profileData, setProfileData] = useState({
     name: "",
     email: "",
     Phone: "",
   });
-  const { user } = UserState();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,10 +19,9 @@ const ProfileForm = () => {
     e.preventDefault();
     // TODO: Implement form submission to update the profile on the server
 
-
     //api call for updating the profile details
 
-    toast.success('Profile Updated', {autoClose:3000});
+    toast.success("Profile Updated", { autoClose: 3000 });
 
     console.log("Profile data submitted:", profileData);
   };

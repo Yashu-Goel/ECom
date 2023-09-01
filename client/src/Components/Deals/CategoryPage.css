@@ -12,12 +12,9 @@
 }
 .categorypage-outer-h1 {
   display: block;
-  font-size: 2em;
-  margin-block-start: 0.67em;
-  margin-block-end: 0.67em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
+  font-size: 2rem;
   font-weight: bold;
+  margin: 10px 45px;
 }
 .categorypage-main {
   display: grid;
@@ -119,12 +116,11 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 250px;
-  margin: 2px;
+  margin: auto;
 }
 .categorypage-card_image img {
-  height: 100%;
-  max-width: 350px;
+  width: 350px;
+  height: 250px;
   object-fit: contain;
 }
 .categorypage-price_title_sec h2 {
@@ -180,6 +176,7 @@
   font-size: 0.875rem;
   line-height: 1.5;
   height: 100px;
+  width: 300px;
   margin: 10px 0px;
   overflow: hidden;
 }
@@ -226,9 +223,17 @@
     padding: 1px 15px;
     margin: 10px 0px;
   }
+  .categorypage-card_image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: auto;
+  }
   .categorypage-card_image img {
-    max-height: 300px;
-    max-width: 300px;
+    width: 300px;
+    height: 225px;
+    object-fit: contain;
   }
   .categorypage-wrapper-sort {
     margin: 5px;
@@ -258,5 +263,14 @@
   #categorypage-clearBtn {
     margin-left: 5px;
     font-size: 13px;
+  }
+  .categorypage-card_text {
+    color: rgba(0, 0, 0, 0.703);
+    font-size: 13.5px;
+    line-height: 1.5;
+    height: 100px;
+    width: 280px;
+    margin: 10px 2px;
+    overflow: hidden;
   }
 }

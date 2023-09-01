@@ -1,7 +1,6 @@
 import React from "react";
 import ProfileForm from "./ProfileForm";
 import ChangePasswordForm from "./ChangePasswordForm";
-import { toast, ToastContainer } from "react-toastify";
 import "./UserProfile.css"; // Import your CSS file here
 
 const UserProfile = () => {
@@ -18,7 +17,6 @@ const UserProfile = () => {
         <ChangePasswordForm />
       </div>
       <div className="section-deelimitters"></div>
-      <ToastContainer />
     </div>
   );
 };

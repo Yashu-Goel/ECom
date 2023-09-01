@@ -99,7 +99,7 @@ function App() {
           </SellerProvider>
         }
       />
-      <Route path="/category/:categoryName/:tags" element={<CategoryPage />} />
+      <Route path="/category/:categoryName/:tags?" element={<CategoryPage />} />
     </Routes>
   );
 }
