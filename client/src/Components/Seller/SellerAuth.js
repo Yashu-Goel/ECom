@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { SellerContext } from "./SellerProvider";
+
 const SellerAuth = () => {
   const { isLoggedIn, toggleLoginStatus, logout } = useContext(SellerContext); 
    const [signupData, setSignupData] = useState({
@@ -109,8 +110,10 @@ const SellerAuth = () => {
         { email, password },
         config
       );
+      console.log(data);
       const { _id, token } = data;
       localStorage.setItem("_id", _id);
+      console.log(_id);
       toast.success("Login successful");
       toggleLoginStatus();
       setTimeout(() => {

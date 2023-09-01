@@ -126,7 +126,7 @@ function ShippingDetails() {
   };
   return (
     <>
-      {!addresses.length ? (
+      {false ? ( //!addresses.length(replace.. need to edit)
         <Loading />
       ) : (
         <>

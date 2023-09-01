@@ -1,6 +1,6 @@
 .ProductDetailOuterContainer {
-    position: fixed;
-    height: 100vh;
+    position: absolute;
+    min-height: 100vh;
     width: 100%;
     background-color: #eff6f7;
 }

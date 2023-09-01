@@ -35,7 +35,7 @@ const SellerOrders = () => {
       try {
         setLoading(true);
         const sellerId = localStorage.getItem("_id");
-
+        console.log(sellerId);
         if (!sellerId) {
           window.alert("Seller Id not found!!");
           return;
