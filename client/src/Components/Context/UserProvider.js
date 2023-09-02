@@ -7,7 +7,6 @@ const UserProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
-  const [selectedAddress, setSelectedAddress] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,8 +30,6 @@ const UserProvider = ({ children }) => {
         setUser,
         cart,
         setCart,
-        selectedAddress,
-        setSelectedAddress,
       }}
     >
       {children}

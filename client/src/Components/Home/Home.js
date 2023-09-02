@@ -10,7 +10,22 @@ import { Link } from "react-router-dom";
 import "./Home.css";
 import TrendingPage from "../Deals/TrendingPage";
 import Categories from "../Deals/Categories";
+import { useSelector, useDispatch } from "react-redux";
 const Home = () => {
+  const { user } = useSelector((state) => state.custom);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem("profile"));
+    if (token) {
+      dispatch({
+        type: "SET_USER",
+        payload: token,
+      });
+    }
+  }, [dispatch]);
+
   return (
     <div>
       <Navbar />
