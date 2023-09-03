@@ -130,113 +130,125 @@ const SellerAuth = () => {
   };
 
   return (
-    <div className="seller-container">
-      {isLogin ? (
-        <>
-          <h1>Login</h1>
-          <form onSubmit={handleLoginSubmit}>
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              name="email"
-              className="seller-input-field"
-              value={loginData.email}
-              onChange={handleLoginChange}
-            />
+    <div className="seller-auth-outer-container">
+      <div className="seller-container">
+        {isLogin ? (
+          <>
+            <h1>Login</h1>
+            <form onSubmit={handleLoginSubmit}>
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                name="email"
+                className="seller-input-field"
+                value={loginData.email}
+                onChange={handleLoginChange}
+              />
 
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              name="password"
-              className="seller-input-field"
-              value={loginData.password}
-              onChange={handleLoginChange}
-            />
+              <label htmlFor="password">Password:</label>
+              <input
+                type="password"
+                name="password"
+                className="seller-input-field"
+                value={loginData.password}
+                onChange={handleLoginChange}
+              />
 
-            <button type="submit" className="seller-submit-button">
-              Login
-            </button>
-          </form>
-          <p>
-            Don't have an account?{" "}
-            <button className="seller-switch-button" onClick={handleSwitchForm}>
-              Signup
-            </button>
-          </p>
-        </>
-      ) : (
-        <>
-          <h1>Signup</h1>
-          <form onSubmit={handleSignupSubmit}>
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              name="name"
-              className="seller-input-field"
-              value={signupData.name}
-              onChange={handleSignupChange}
-            />
+              <button type="submit" className="seller-submit-button">
+                Login
+              </button>
+            </form>
+            <p>
+              Don't have an account?{" "}
+              <button
+                className="seller-switch-button"
+                onClick={handleSwitchForm}
+              >
+                Signup
+              </button>
+            </p>
+          </>
+        ) : (
+          <>
+            <h1>Signup</h1>
+            <form onSubmit={handleSignupSubmit}>
+              <label htmlFor="name">Name:</label>
+              <input
+                type="text"
+                name="name"
+                className="seller-input-field"
+                value={signupData.name}
+                onChange={handleSignupChange}
+              />
 
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              name="email"
-              className="seller-input-field"
-              value={signupData.email}
-              onChange={handleSignupChange}
-            />
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                name="email"
+                className="seller-input-field"
+                value={signupData.email}
+                onChange={handleSignupChange}
+              />
 
-            <label htmlFor="mobile">Mobile:</label>
-            <input
-              type="text"
-              name="mobile"
-              className="seller-input-field"
-              value={signupData.mobile}
-              onChange={handleSignupChange}
-            />
+              <label htmlFor="mobile">Mobile:</label>
+              <input
+                type="text"
+                name="mobile"
+                className="seller-input-field"
+                value={signupData.mobile}
+                onChange={handleSignupChange}
+              />
 
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              name="password"
-              className="seller-input-field"
-              value={signupData.password}
-              onChange={handleSignupChange}
-            />
+              <label htmlFor="password">Password:</label>
+              <input
+                type="password"
+                name="password"
+                className="seller-input-field"
+                value={signupData.password}
+                onChange={handleSignupChange}
+              />
 
-            <label htmlFor="cpassword">Confirm Password:</label>
-            <input
-              type="password"
-              name="cpassword"
-              className="seller-input-field"
-              value={signupData.cpassword}
-              onChange={handleSignupChange}
-            />
+              <label htmlFor="cpassword">Confirm Password:</label>
+              <input
+                type="password"
+                name="cpassword"
+                className="seller-input-field"
+                value={signupData.cpassword}
+                onChange={handleSignupChange}
+              />
 
-            <label htmlFor="gst">GST:</label>
-            <input
-              type="text"
-              name="gst"
-              className="seller-input-field"
-              minLength="15"
-              max="15"
-              value={signupData.gst}
-              onChange={handleSignupChange}
-            />
+              <label htmlFor="gst">GST:</label>
+              <input
+                type="text"
+                name="gst"
+                className="seller-input-field"
+                minLength="15"
+                max="15"
+                value={signupData.gst}
+                onChange={handleSignupChange}
+              />
 
-            <button type="submit" className="seller-submit-button">
-              Signup
-            </button>
-          </form>
-          <p>
-            Already have an account?{" "}
-            <button className="seller-switch-button" onClick={handleSwitchForm}>
-              Login
-            </button>
-          </p>
-        </>
-      )}
-      <ToastContainer position="top-center" autoClose={3000} theme="colored" />
+              <button type="submit" className="seller-submit-button">
+                Signup
+              </button>
+            </form>
+            <p>
+              Already have an account?{" "}
+              <button
+                className="seller-switch-button"
+                onClick={handleSwitchForm}
+              >
+                Login
+              </button>
+            </p>
+          </>
+        )}
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          theme="colored"
+        />
+      </div>
     </div>
   );
 };

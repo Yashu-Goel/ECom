@@ -52,7 +52,9 @@
   justify-content: space-between;
   margin-bottom: 10px;
 }
-
+.ProfileDataItems p{
+  margin-right: 1rem;
+}
 /* Media query for responsiveness */
 @media (max-width: 600px) {
   .ProfileMainContent {
