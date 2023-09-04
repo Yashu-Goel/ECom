@@ -93,7 +93,8 @@ const AddProduct = () => {
           "Content-type": "application/json",
         },
       };
-
+      console.log('OKOK');
+      console.log(ProductData.category);
       const { product_data } = await axios.post(
         API_BASE + "/seller/product",
         formData,

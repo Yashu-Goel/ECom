@@ -46,10 +46,12 @@
   background-color: white;
   color: black;
   border: 1px solid black;
-  border-radius: 0.3rem;
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
 }
 .SellerDataItem{
-    padding: 0.2rem 0.5rem;
+    padding: 0.4rem 1rem;
+    font-size: 1.1rem;
     font-weight: bold;
 }
 .SellerDataItem:hover{
@@ -57,6 +59,9 @@
     cursor: pointer;
 }
 @media (max-width: 768px) {
+  .SellerDropdownMenu{
+    right: 0.5rem;
+  }
   .SellerLogo{
     left: 15%;
     width: 30%;

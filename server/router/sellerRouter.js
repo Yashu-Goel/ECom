@@ -165,25 +165,11 @@ router.post("/product", async (req, res) => {
 console.log(req.body);
 res.status(200);
   try {
-    // const productImages = req.files.map((file) => file.path);
-
-    // const uniqueImageNames = [];
-    // for (const imagePath of productImages) {
-    //   const uniqueImageName = `${Date.now()}-${file.originalname}`;
-    //   uniqueImageNames.push(uniqueImageName);
-
-    //   const signedUrl = await putObject(uniqueImageName, "image/jpg/png");
-    //   console.log('OKOK');
-    //   // Save the uniqueImageName and signedUrl in your database if needed
-    // }
-    //     const imageName = JSON.parse(req.body.imageName);
-    // console.log(imageName);
     const imageNamesArray = JSON.parse(req.body.imageName);
     const imageName = imageNamesArray.map(
       (imageObject) => imageObject.type
     );
 
-    console.log(imageName); // This will log an array of image names
 
     const product = await Product.create({
       name,

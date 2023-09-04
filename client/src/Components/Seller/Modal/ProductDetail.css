@@ -25,6 +25,7 @@
   border: 20px solid rgb(217, 235, 251);
   padding: 20px;
   border-radius: 8px;
+  min-width: 40%;
   max-height: 35rem;
   max-width: 50%;
   z-index: 3;
@@ -33,17 +34,13 @@
   justify-content: space-around;
 }
 .ProductImage {
-  width: 30%;
+  width: 40%;
+  min-height: 40%;
   max-height: 100%;
-}
-.ProductImage div {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
-}
-.ProductImage img {
-  height: 100%;
-  width: 100%;
+  margin-right: 2rem;
 }
 .ProductDataItems {
   position: relative;
@@ -62,7 +59,6 @@
   margin-left: 2rem;
 }
 .ProductDataItems button {
-  position: absolute;
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -71,13 +67,12 @@
   border-radius: 4px;
   transition: background-color 0.3s;
   margin-top: 1rem;
-  bottom: 1rem;
+  bottom: 0;
   width: 100%;
 }
 .ProductDataItems button:hover {
   background-color: #0056b3;
 }
-/* Define the fadeInModal animation */
 @keyframes fadeInModal {
   0% {
     opacity: 0;
@@ -89,7 +84,6 @@
   }
 }
 
-/* Apply the fadeInModal animation to the open modal */
 .ProductDetailModalOpen {
   animation: fadeInModal 0.5s ease-in forwards;
 }

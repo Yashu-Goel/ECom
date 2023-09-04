@@ -21,12 +21,10 @@ const productDetailsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  categories: [
-    {
-      type: String,
-      required: true,
-    },
-  ],
+  category:  {
+    type: String,
+    required: true,
+  },  
   brand: {
     type: String,
     required: true,
