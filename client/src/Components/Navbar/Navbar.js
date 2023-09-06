@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 import ConfirmationModal from "./ConfirmationModal";
+import { UserState } from "../Context/UserProvider";
 import CartModal from "../Modal/CartModal";
 import Logo from "../Assets/Logo.png";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
 
 const categories = [
   {
@@ -51,9 +51,7 @@ const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
   const [heart, setHeart] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-
-  const { user } = useSelector((state) => state.custom);
-  const cart = user ? user.cart : null;
+  const { user, cart } = UserState();
 
   const handleLogout = () => {
     try {
@@ -79,7 +77,7 @@ const Navbar = () => {
       toast.error("Logout failed. Please try again later.");
     }
   };
-  console.log(user);
+
   return (
     <>
       {showModal && <CartModal closeModal={() => setShowModal(false)} />}
@@ -157,12 +155,12 @@ const Navbar = () => {
                 </button>
               </div>
               <button className="nav-shop" onClick={() => setShowModal(true)}>
-                {cart && cart.length !== 0 ? (
+                {cart && cart.length === 0 ? (
+                  <i className="fa-solid fa-cart-shopping"></i>
+                ) : (
                   <i className="fa badge" value={cart.length}>
                     &#xf07a;
                   </i>
-                ) : (
-                  <i className="fa-solid fa-cart-shopping"></i>
                 )}
               </button>
               <button className="nav-heart" onClick={() => setHeart(!heart)}>

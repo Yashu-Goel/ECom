@@ -13,6 +13,7 @@ import { API_BASE } from "../functions/functions";
 import { calculateDiscount } from "./function";
 import { formatDistanceToNow } from "date-fns";
 import { AWS_LINK } from "./function";
+import { toast } from "react-toastify";
 
 export const Product = () => {
   const { id } = useParams();
@@ -261,7 +262,19 @@ export const Product = () => {
                       >
                         Add to Cart
                       </button>
-                      <button onClick={() => setShowModal(true)}>
+                      <button
+                        onClick={() => {
+                          if (!user) {
+                            toast.error("Please login !", {
+                              position: toast.POSITION.BOTTOM_CENTER,
+                              autoClose: 2500,
+                              className: "toast-message",
+                            });
+                            return;
+                          }
+                          setShowModal(true);
+                        }}
+                      >
                         Buy now
                       </button>
                     </>
