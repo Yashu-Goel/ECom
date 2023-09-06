@@ -76,7 +76,7 @@ export const Product = () => {
       setCount(count - 1);
     }
   };
-  console.log(productDetails);
+
   return (
     <>
       {showModal && <CartModal closeModal={() => setShowModal(false)} />}
@@ -283,7 +283,7 @@ export const Product = () => {
               </div>
             </div>
             <div id="reviews" className="product-reviews">
-              {reviews.length === 0 ? (
+              {!reviews.length ? (
                 <h1>No reviews yet</h1>
               ) : (
                 <div>

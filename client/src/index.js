@@ -1,3 +1,4 @@
+import { SkeletonTheme } from "react-loading-skeleton";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
@@ -5,14 +6,12 @@ import { BrowserRouter as Router } from "react-router-dom";
 import UserProvider from "./Components/Context/UserProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Provider } from "react-redux";
 import App from "./App";
-import store from "./Components/A-redux/store";
-
+import "react-loading-skeleton/dist/skeleton.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Router>
-    <Provider store={store}>
+    <SkeletonTheme baseColor="#ebebeb" highlightColor="#f5f5f5">
       <UserProvider>
         <App />
         <ToastContainer
@@ -21,6 +20,6 @@ root.render(
           theme="colored"
         />
       </UserProvider>
-    </Provider>
+    </SkeletonTheme>
   </Router>
 );

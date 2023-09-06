@@ -12,3 +12,10 @@ export const calculateTotal = (products) => {
   });
   return Number(total);
 };
+export const toIndianCurrency = (num) => {
+  const curr = parseFloat(num).toLocaleString("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
+  return curr;
+};

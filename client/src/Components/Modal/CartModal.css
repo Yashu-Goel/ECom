@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:wght@100&family=Work+Sans&display=swap");
 .modal {
   display: flex;
   justify-content: center;
@@ -49,17 +50,25 @@
 
 .item-info {
   display: flex;
-  align-items: center;
+  width: 450px;
 }
 
 .item-name {
   font-weight: bold;
-  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  width: 150px;
 }
-
+.item-count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .item-price,
 .item-total {
   font-weight: bold;
+  font-family: "Lato", sans-serif;
+  line-height: 16px;
 }
 
 .empty-cart-message {
@@ -71,16 +80,18 @@
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid #ddd;
-  padding-top: 10px;
+  padding: 0px 10px;
   margin-top: 10px;
 }
 
 .summary-label {
   font-weight: bold;
+  font-family: "Lato", sans-serif;
 }
 
 .summary-total {
   font-weight: bold;
+  font-family: "Lato", sans-serif;
 }
 
 .cart-footer {
@@ -102,7 +113,10 @@
   color: #fff;
   border: none;
 }
-
+.checkout-button:hover {
+  background: #38a94e;
+  color: white;
+}
 .continue-shopping-button {
   background-color: #ddd;
   color: #333;
@@ -121,7 +135,8 @@
   width: 60px;
   height: 60px;
 }
-.item-image > img {
+.item-image > img,
+image-skeleton {
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -131,17 +146,22 @@
   margin: auto 10px;
 }
 .item-actions .items {
-  margin: auto 5px;
-  border: 1px solid black;
-  padding: 5px;
+  margin: 0px 2px;
+  padding: 5px 7px;
   border-radius: 5px;
-  font-weight: bold;
 }
-.update-button {
+.cart-update-button {
   background-color: #4caf50;
   color: white;
 }
-.delete-button {
+.cart-update-button:hover {
+  background-color: #6ad06e;
+  color: white;
+}
+.cart-delete-button {
   background-color: red;
   color: white;
+}
+.cart-delete-button:hover {
+  background: #ff8c9e;
 }

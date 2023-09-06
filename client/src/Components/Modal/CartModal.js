@@ -6,19 +6,25 @@ import { UserState } from "../Context/UserProvider";
 import { removeItem } from "../functions/functions";
 import { API_BASE } from "../functions/functions";
 import { AWS_LINK } from "../IndividualProduct/function";
+import Skeleton from "react-loading-skeleton";
 import {
   calculateTotal,
   truncateName,
+  toIndianCurrency,
 } from "../OrderConfirmationPage/function";
 import { toast } from "react-toastify";
 
 const CartModal = ({ closeModal }) => {
   const { cart, setCart, user } = UserState();
   const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState([]);
 
+  const handleImageLoad = (index) => {
+    const updatedImageLoaded = [...imageLoaded];
+    updatedImageLoaded[index] = true;
+    setImageLoaded(updatedImageLoaded);
+  };
   useEffect(() => {
-    setIsLoading(true);
     const getProductDetails = async () => {
       const config = {
         headers: {
@@ -47,17 +53,9 @@ const CartModal = ({ closeModal }) => {
     };
 
     getProductDetails();
-    setIsLoading(false);
   }, [cart, user.token]);
   return (
     <>
-      {isLoading && (
-        <div className="loading-modal">
-          <p className="loading-spinner"></p>
-          <p>Loading Cart</p>
-          <br />
-        </div>
-      )}
       <div className="modal">
         <div className="modal-content">
           <span className="close" onClick={closeModal}>
@@ -65,60 +63,107 @@ const CartModal = ({ closeModal }) => {
           </span>
           <h2 className="cart-heading">Your Shopping Cart</h2>
           <div className="cart-items">
-            {isLoading ? (
-              <div>Loading items...</div>
-            ) : products.length > 0 ? (
+            {products && products.length ? (
               <ul className="cart-list">
                 {products.map((item, index) => (
                   <li key={index} className="cart-item">
                     <div className="item-info">
                       <div className="item-image">
                         <img
+                          style={
+                            imageLoaded[index]
+                              ? { display: "block" }
+                              : { display: "none" }
+                          }
                           src={`${AWS_LINK}/${item.product.imageName[0]}`}
                           alt={`${item.product.name}`}
+                          onLoad={() => {
+                            handleImageLoad(index);
+                          }}
                         />
+                        {!imageLoaded[index] && (
+                          <Skeleton width={60} height={60} className="image-skeleton" />
+                        )}
                       </div>
+
                       <div className="item-details">
                         <div className="item-name">
-                          {truncateName(item.product.name)}
+                          {item.product.name ? (
+                            truncateName(item.product.name)
+                          ) : (
+                            <Skeleton width={150} height={20} />
+                          )}
                         </div>
+
+                        <span className="item-count">
+                          {item.count ? (
+                            `x ${item.count}`
+                          ) : (
+                            <Skeleton width={30} height={20} />
+                          )}
+                        </span>
                         <div className="item-actions">
-                          <span className="item-count">x {item.count}</span>
-                          <div className="item-actions">
-                            <Link
-                              className="update-button items"
-                              to={`/product/${item.product._id}`}
-                              onClick={closeModal}
-                            >
-                              Update
-                            </Link>
-                            <button
-                              className="delete-button items"
-                              onClick={() => {
-                                removeItem(
-                                  item.product._id,
-                                  user,
-                                  cart,
-                                  setCart
-                                );
-                              }}
-                            >
-                              Delete
-                            </button>
-                          </div>
+                          {item ? (
+                            <>
+                              <Link
+                                className="cart-update-button items"
+                                to={`/product/${item.product._id}`}
+                                onClick={closeModal}
+                              >
+                                Update
+                              </Link>
+                              <button
+                                className="cart-delete-button items"
+                                onClick={() => {
+                                  removeItem(
+                                    item.product._id,
+                                    user,
+                                    cart,
+                                    setCart
+                                  );
+                                }}
+                              >
+                                Delete
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <Skeleton
+                                width={80}
+                                height={30}
+                                style={{ marginRight: "10px" }}
+                              />{" "}
+                              <Skeleton width={80} height={30} />{" "}
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
-                    <div className="item-price">₹ {item.product.price}</div>
+                    <div className="item-price">
+                      {item.product.price ? (
+                        toIndianCurrency(item.product.price)
+                      ) : (
+                        <Skeleton width={80} height={20} />
+                      )}
+                    </div>
+
                     <div className="item-total">
-                      ₹{(item.product.price * item.count).toFixed(2)}
+                      {item.product.price ? (
+                        toIndianCurrency(item.product.price * item.count)
+                      ) : (
+                        <Skeleton width={100} height={20} />
+                      )}
                     </div>
                   </li>
                 ))}
                 <li className="cart-summary">
-                  <div className="summary-label">Total:</div>
+                  <div className="summary-label">Total :</div>
                   <div className="summary-total">
-                    ₹{calculateTotal(products)}
+                    {products ? (
+                      toIndianCurrency(calculateTotal(products))
+                    ) : (
+                      <Skeleton width={100} height={20} />
+                    )}
                   </div>
                 </li>
               </ul>
@@ -127,16 +172,12 @@ const CartModal = ({ closeModal }) => {
             )}
           </div>
           <div className="cart-footer">
-            {isLoading ? (
-              // Render loading indicator while data is being fetched
-              <div>Loading...</div>
-            ) : (
-              cart.length > 0 && (
-                <Link className="checkout-button" to={"/shipping-address"}>
-                  Proceed to Checkout
-                </Link>
-              )
+            {cart && cart.length > 0 && (
+              <Link className="checkout-button" to={"/shipping-address"}>
+                Proceed to Checkout
+              </Link>
             )}
+
             <button className="continue-shopping-button" onClick={closeModal}>
               Continue Shopping
             </button>
