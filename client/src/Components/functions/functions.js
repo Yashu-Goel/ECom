@@ -4,14 +4,8 @@ import axios from "axios";
 
 export const API_BASE = "http://localhost:5000";
 
-export const addedToCart = async (
-  itemId,
-  count,
-  user,
-  cart,
-  setCart
-) => {
-  if (user === null) {
+export const addedToCart = async (itemId, count, user, cart, setCart) => {
+  if (!user) {
     toast.error("Please login !", {
       position: toast.POSITION.BOTTOM_CENTER,
       autoClose: 2500,
