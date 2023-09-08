@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { API_BASE } from "../functions/functions";
 import { AWS_LINK } from "../IndividualProduct/function";
+import { truncateName } from "../OrderConfirmationPage/function";
 
 const RateModal = ({ products, onClose }) => {
   const { user } = UserState();
@@ -75,7 +76,9 @@ const RateModal = ({ products, onClose }) => {
               src={`${AWS_LINK}/${products.imageName[0]}`}
               alt={`${products.name}`}
             />
-            <p className="selected-product-name">{products.name}</p>
+            <p className="selected-product-name">
+              {truncateName(products.name)}
+            </p>
           </div>
           <div className="rating-stars">
             <StarRating value={rating} onChange={setRating} />

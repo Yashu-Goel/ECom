@@ -1,20 +1,17 @@
 .star-rating {
-    display: inline-block;
-    font-size: 24px;
-    color: #f8ce0b;
-    cursor: pointer;
-  }
-  
-  .star-rating span {
-    display: inline-block;
-    margin-right: 5px;
-  }
-  
-  .star-rating svg {
-    transition: color 0.2s;
-  }
-  
-  .star-rating svg:hover {
-    color: #ffdd76;
-  }
-  
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  cursor: pointer;
+}
+.star-rating p {
+  margin-left: 15px;
+}
+.star-rating span {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.star-rating svg {
+  transition: color 0.2s;
+}

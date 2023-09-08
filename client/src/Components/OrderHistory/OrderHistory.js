@@ -9,31 +9,30 @@ import RateModal from "./RateModal";
 import { AWS_LINK } from "../IndividualProduct/function";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import {
+  toIndianCurrency,
+  truncateName,
+} from "../OrderConfirmationPage/function";
+import { formatDate } from "./function";
+import { toast } from "react-toastify";
+import Loader2 from "../Loaders/Loader2";
 
 const OrderHistory = () => {
+  const { user } = UserState();
   const navigate = useNavigate();
   const [orderData, setOrders] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedBill, setSelectedBill] = useState(null);
   const [isRateModalOpen, setIsRateModalOpen] = useState(false);
   const [showTrackingModal, setShowTrackingModal] = useState(null);
+  const [isloading, setisLoading] = useState(true);
 
-  const formatDate = (date) => {
-    const orderDate = new Date(date);
-
-    const formattedDate = orderDate.toLocaleString("en-IN", {
-      timeZone: "Asia/Kolkata",
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-    return formattedDate;
-  };
-
-  const { user } = UserState();
+  const [selectedFilter, setSelectedFilter] = useState("all");
+  const [dateFilter, setDateFilter] = useState(7);
 
   useEffect(() => {
     if (user) {
+      setisLoading(true);
       const getProductDetails = async () => {
         try {
           const config = {
@@ -42,7 +41,7 @@ const OrderHistory = () => {
             },
           };
           const response = await axios.get(
-            API_BASE + "/updateAddress/order-history",
+            `${API_BASE}/updateAddress/order-history?tillDate=${dateFilter}&status=${selectedFilter}`,
             config
           );
           const sortedOrders = response.data.sort(
@@ -50,21 +49,22 @@ const OrderHistory = () => {
           );
           setOrders(sortedOrders);
         } catch (error) {
+          toast.error("Failed to fetch orders");
           console.log(error);
+        } finally {
+          setisLoading(false);
         }
       };
-
       getProductDetails();
     }
-  }, [user, orderData]);
-  const [selectedFilter, setSelectedFilter] = useState("all");
+  }, [user, dateFilter, selectedFilter]);
 
-  const handleFilterClick = (filter) => {
-    setSelectedFilter(filter);
-  };
-  const handleSortClick = () => {
-    // Implement the sorting logic here
-  };
+  const options = [
+    { label: "Last week", dayCount: 7 },
+    { label: "Past 3 months", dayCount: 90 },
+    { label: "Last 6 months", dayCount: 180 },
+    { label: "Current year", dayCount: 365 },
+  ];
   return (
     <>
       <div className="order-history-container">
@@ -74,44 +74,47 @@ const OrderHistory = () => {
           <div className="left-buttons">
             <button
               className={selectedFilter === "all" ? "active-btn" : ""}
-              onClick={() => handleFilterClick("all")}
+              onClick={() => setSelectedFilter("all")}
             >
               Orders
             </button>
             <button
-              className={selectedFilter === "not-shipped" ? "active-btn" : ""}
-              onClick={() => handleFilterClick("not-shipped")}
+              className={selectedFilter === "pending" ? "active-btn" : ""}
+              onClick={() => setSelectedFilter("pending")}
             >
               Not Yet Shipped
             </button>
             <button
               className={selectedFilter === "cancelled" ? "active-btn" : ""}
-              onClick={() => handleFilterClick("cancelled")}
+              onClick={() => setSelectedFilter("cancelled")}
             >
               Cancelled Orders
             </button>
           </div>
           <div className="right-buttons">
-            <button
-              className={selectedFilter === "past-3-months" ? "active-btn" : ""}
-              onClick={() => handleFilterClick("past-3-months")}
+            <select
+              id="filterSelect"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
             >
-              Past 3 Months
-            </button>
+              {options.map((option) => (
+                <option key={option.dayCount} value={option.dayCount}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
         <div className="order-list">
-          {orderData &&
-            orderData.map((order) => {
-              const orderDate = new Date(order.date);
-
-              const formattedDate = orderDate.toLocaleString("en-IN", {
-                timeZone: "Asia/Kolkata",
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              });
+          {isloading && <Loader2 content="Fetching orders.." />}
+          {!isloading && orderData?.length === 0 && (
+            <div className="no-order-found">
+              <h1>No orders found!</h1>
+            </div>
+          )}
+          {!isloading &&
+            orderData?.map((order) => {
               const { name, street, city, state, zip, phone } =
                 order.customer_address;
               return (
@@ -120,12 +123,14 @@ const OrderHistory = () => {
                     <div className="order-history-details">
                       <div className="order-placed">
                         <p>Order Placed:</p>
-                        <strong>{formattedDate}</strong>
+                        <strong>{formatDate(order.date)}</strong>
                       </div>
 
                       <div className="order-total">
                         <p>Total:</p>
-                        <strong>₹{order.amount}</strong>
+                        <div className="item-price">
+                          {toIndianCurrency(order.amount)}
+                        </div>
                       </div>
 
                       <button
@@ -213,7 +218,9 @@ const OrderHistory = () => {
                             to={`/product/${order.productId._id}`}
                             className="product-link"
                           >
-                            <strong>{order.productId.name}</strong>{" "}
+                            <strong>
+                              {truncateName(order.productId.name)}
+                            </strong>{" "}
                             <strong>{order.productId.brand}</strong>{" "}
                             <strong>{order.productId.model}</strong>
                           </Link>

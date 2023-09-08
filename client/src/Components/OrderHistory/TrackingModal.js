@@ -1,20 +1,13 @@
 import React from "react";
 import "./TrackingModal.css";
 import { AWS_LINK } from "../IndividualProduct/function";
+import {
+  truncateName,
+  toIndianCurrency,
+} from "../OrderConfirmationPage/function";
+import { formatDate } from "./function";
 
 const TrackingModal = ({ order, onClose }) => {
-  const formatDate = (date) => {
-    const orderDate = new Date(date);
-
-    const formattedDate = orderDate.toLocaleString("en-IN", {
-      timeZone: "Asia/Kolkata",
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-    return formattedDate;
-  };
-
   return (
     <div className="rate-modal-container">
       <div className="rate-modal">
@@ -24,16 +17,20 @@ const TrackingModal = ({ order, onClose }) => {
             alt={`${order.productId.name}`}
           />
           <figcaption>
-            <strong>{order.productId.name}</strong>
+            <strong>{truncateName(order.productId.name)}</strong>
             <strong>{order.orderNumber}</strong>
-            <strong>₹ {order.amount}</strong>
+            <div className="item-price">{toIndianCurrency(order.amount)}</div>
           </figcaption>
         </figure>
 
-        <div class="order-track">
-          <div class="order-track-step">
-            <div class="order-track-status">
-              <span class="order-track-status-dot active-dot"></span>
+        <div
+          className={`order-track ${
+            order.currentStatus === "cancelled" && "cancelled-order"
+          }`}
+        >
+          <div className="order-track-step">
+            <div className="order-track-status">
+              <span className="order-track-status-dot active-dot"></span>
               <span
                 className={
                   order.shipped
@@ -42,9 +39,11 @@ const TrackingModal = ({ order, onClose }) => {
                 }
               ></span>
             </div>
-            <div class="order-track-text">
-              <p class="order-track-text-stat">Order placed</p>
-              <span class="order-track-text-sub">{formatDate(order.date)}</span>
+            <div className="order-track-text">
+              <p className="order-track-text-stat">Order placed</p>
+              <span className="order-track-text-sub">
+                {formatDate(order.date)}
+              </span>
             </div>
           </div>
 
@@ -58,7 +57,7 @@ const TrackingModal = ({ order, onClose }) => {
                 }
               ></span>
 
-              {order.shipped && (
+              {order?.shipped && (
                 <span
                   className={
                     order.outForDelivery
@@ -70,7 +69,7 @@ const TrackingModal = ({ order, onClose }) => {
             </div>
             <div className="order-track-text">
               <p className="order-track-text-stat">Order Shipped</p>
-              {order.shipped ? (
+              {order?.shipped ? (
                 <span class="order-track-text-sub">
                   {formatDate(order.date)}
                 </span>
@@ -84,15 +83,15 @@ const TrackingModal = ({ order, onClose }) => {
             <div className="order-track-status">
               <span
                 className={
-                  order.outForDelivery
+                  order.outForDelivery && order.shipped
                     ? "order-track-status-dot active-dot"
                     : "order-track-status-dot"
                 }
               ></span>
-              {order.outForDelivery && (
+              {order.outForDelivery && order.shipped && (
                 <span
                   className={
-                    order.delivered
+                    order.delivered && order.outForDelivery && order.shipped
                       ? "order-track-status-line"
                       : "order-track-status-line partial-line"
                   }
@@ -101,7 +100,7 @@ const TrackingModal = ({ order, onClose }) => {
             </div>
             <div className="order-track-text">
               <p className="order-track-text-stat">Order out for delivery</p>
-              {order.outForDelivery ? (
+              {order.outForDelivery && order.shipped ? (
                 <span className="order-track-text-sub">
                   {formatDate(order.outForDeliveryDate)}
                 </span>
@@ -115,7 +114,7 @@ const TrackingModal = ({ order, onClose }) => {
             <div className="order-track-status">
               <span
                 className={
-                  order.delivered
+                  order.delivered && order.shipped && order.outForDelivery
                     ? "order-track-status-dot active-dot"
                     : "order-track-status-dot"
                 }

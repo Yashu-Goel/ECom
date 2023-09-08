@@ -2,13 +2,13 @@
   display: flex;
   justify-content: center;
   margin: auto;
-  min-height: auto;
-  min-width: 350px;
   max-width: 500px;
+  min-width: 350;
   padding: 2px;
 }
 
 .shipping-page {
+  width: 100%;
   padding: 10px 5px;
   background-color: #fff;
   border-radius: 8px;
@@ -130,13 +130,13 @@
 .add-address-button {
   display: flex;
   align-items: center;
-  justify-content: center;
   padding: 10px 20px;
   background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 4px;
   font-size: 16px;
+  margin: auto;
   cursor: pointer;
 }
 

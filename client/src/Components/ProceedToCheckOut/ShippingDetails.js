@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import "./ShippingDetails.css";
 import { API_BASE } from "../functions/functions";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import ProgressBar from "./ProgressBar";
-import Loading from "../Loaders/Loading";
+import Loader2 from "../Loaders/Loader2";
 
 function ShippingDetails() {
   const [addresses, setAddresses] = useState([]);
@@ -17,6 +17,7 @@ function ShippingDetails() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     try {
       const data = JSON.parse(localStorage.getItem("profile"));
       const address = JSON.parse(localStorage.getItem("address"));
@@ -27,11 +28,14 @@ function ShippingDetails() {
       setAddresses(data.addresses);
     } catch (error) {
       console.log(error);
-      toast.error(error);
+      toast.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
   const handleAddressSelect = (address) => {
+    setIsLoading(true);
     try {
       localStorage.setItem("address", JSON.stringify(address));
       setSelected(address);
@@ -39,10 +43,13 @@ function ShippingDetails() {
     } catch (error) {
       console.log({ error });
       toast.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleAddAddress = async (event) => {
+    setIsLoading(true);
     event.preventDefault();
     const updatedAddresses = [
       ...addresses,
@@ -69,6 +76,8 @@ function ShippingDetails() {
     } catch (error) {
       console.log({ error });
       toast.error(error);
+    } finally {
+      setIsLoading(false);
     }
     setNewAddress({
       name: "",
@@ -94,6 +103,7 @@ function ShippingDetails() {
   // };
 
   const handleDeleteAddress = async (_id) => {
+    setIsLoading(true);
     const updatedAddresses = addresses.filter((address) => address._id !== _id);
 
     const localAddress = addresses.filter((address) => address._id === _id);
@@ -122,12 +132,14 @@ function ShippingDetails() {
     } catch (error) {
       console.log({ error });
       toast.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
     <>
-      {false ? ( //!addresses.length(replace.. need to edit)
-        <Loading />
+      {isLoading ? (
+        <Loader2 content="Setting up address.." />
       ) : (
         <>
           <ProgressBar />
@@ -179,7 +191,14 @@ function ShippingDetails() {
                   </div>
                 </>
               ) : (
-                <h1>No address Found</h1>
+                <h1
+                  style={{
+                    textAlign: "center",
+                    padding: "10px 0px",
+                  }}
+                >
+                  No address Found
+                </h1>
               )}
               <div className="shop-procceed">
                 <button
@@ -268,7 +287,6 @@ function ShippingDetails() {
                 </div>
               )}
             </div>
-            <ToastContainer />
           </div>
         </>
       )}

@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const OrderSchema = require("../models/orderSchema");
+const moment = require("moment");
 require("../db/conn.js");
 
 dotenv.config();
@@ -33,35 +34,26 @@ router.post("/add", async (req, res) => {
     return res.status(403).send("FORBIDDEN");
   }
 });
-router.post("/order-history", async (req, res) => {
-  try {
-    const userId = req.user._id;
-    const { products, shippingDetails, paymentDetails } = req.body;
-
-    const newOrderHistory = new OrderHistory({
-      userId: userId,
-      products,
-      shippingDetails,
-      paymentDetails,
-      status: "Pending",
-    });
-
-    newOrderHistory.userId = userId;
-    const savedOrderHistory = await newOrderHistory.save();
-
-    res.status(201).json(savedOrderHistory);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
 
 router.get("/order-history", async (req, res) => {
   try {
     const userId = req.user._id;
-    const data = await OrderSchema.find({ customerId: userId }).populate(
-      "productId"
-    );
+    const filter = req.query.tillDate;
+    const status = req.query.status;
+
+    const sevenDaysAgo = moment().subtract(`${filter}`, "days").toDate();
+
+    const query = {
+      customerId: userId,
+      date: { $gte: sevenDaysAgo },
+    };
+
+    if (status && status !== "all") {
+      query.currentStatus = status;
+    }
+
+    const data = await OrderSchema.find(query).populate("productId");
+
     res.status(200).json(data);
   } catch (error) {
     console.error(error);

@@ -8,6 +8,29 @@ const StarRating = ({ value, onChange }) => {
   const handleStarClick = (newValue) => {
     onChange(newValue);
   };
+  let ratingText = "";
+  let textColor = "";
+
+  if (value === 5) {
+    ratingText = "Excellent";
+    textColor = "#f8ce0b";
+  } else if (value === 4) {
+    ratingText = "Good";
+    textColor = "green";
+  } else if (value === 3) {
+    ratingText = "Average";
+    textColor = "orange";
+  } else if (value === 2) {
+    ratingText = "Unsatisfied";
+    textColor = "red";
+  } else if (value === 1) {
+    ratingText = "Poor";
+    textColor = "#9C4545";
+  }
+
+  const textStyle = {
+    color: textColor,
+  };
 
   return (
     <div className="star-rating">
@@ -25,8 +48,13 @@ const StarRating = ({ value, onChange }) => {
           starIcon = <FaRegStar onClick={() => handleStarClick(starValue)} />;
         }
 
-        return <span key={index}>{starIcon}</span>;
+        return (
+          <span key={index} style={textStyle}>
+            {starIcon}
+          </span>
+        );
       })}
+      <p style={textStyle}>{ratingText}</p>
     </div>
   );
 };

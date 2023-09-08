@@ -13,11 +13,13 @@ import {
   toIndianCurrency,
 } from "../OrderConfirmationPage/function";
 import { toast } from "react-toastify";
+import Loader2 from "../Loaders/Loader2";
 
 const CartModal = ({ closeModal }) => {
   const { cart, setCart, user } = UserState();
   const [products, setProducts] = useState([]);
   const [imageLoaded, setImageLoaded] = useState([]);
+  const [isloading, setisLoading] = useState(true);
 
   const handleImageLoad = (index) => {
     const updatedImageLoaded = [...imageLoaded];
@@ -25,6 +27,7 @@ const CartModal = ({ closeModal }) => {
     setImageLoaded(updatedImageLoaded);
   };
   useEffect(() => {
+    setisLoading(true);
     const getProductDetails = async () => {
       const config = {
         headers: {
@@ -49,6 +52,8 @@ const CartModal = ({ closeModal }) => {
       } catch (error) {
         console.log(error);
         toast.error("Oops! Something went wrong.");
+      } finally {
+        setisLoading(false);
       }
     };
 
@@ -63,7 +68,8 @@ const CartModal = ({ closeModal }) => {
           </span>
           <h2 className="cart-heading">Your Shopping Cart</h2>
           <div className="cart-items">
-            {products && products.length ? (
+            {isloading && <Loader2 content="Loading cart.." />}
+            {!isloading && products?.length ? (
               <ul className="cart-list">
                 {products.map((item, index) => (
                   <li key={index} className="cart-item">
@@ -82,7 +88,11 @@ const CartModal = ({ closeModal }) => {
                           }}
                         />
                         {!imageLoaded[index] && (
-                          <Skeleton width={60} height={60} className="image-skeleton" />
+                          <Skeleton
+                            width={60}
+                            height={60}
+                            className="image-skeleton"
+                          />
                         )}
                       </div>
 
@@ -168,7 +178,9 @@ const CartModal = ({ closeModal }) => {
                 </li>
               </ul>
             ) : (
-              <p className="empty-cart-message">Your cart is empty.</p>
+              !isloading && (
+                <p className="empty-cart-message">Your cart is empty.</p>
+              )
             )}
           </div>
           <div className="cart-footer">

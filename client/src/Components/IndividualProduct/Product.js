@@ -14,6 +14,7 @@ import { calculateDiscount } from "./function";
 import { formatDistanceToNow } from "date-fns";
 import { AWS_LINK } from "./function";
 import { toast } from "react-toastify";
+import Footer from "../Footer/Footer";
 
 export const Product = () => {
   const { id } = useParams();
@@ -334,6 +335,7 @@ export const Product = () => {
               text={true}
               className="image-slider"
             />
+            <Footer />
           </div>
         )
       )}
