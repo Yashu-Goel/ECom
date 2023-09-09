@@ -100,8 +100,12 @@ const SellerOrders = () => {
       } else {
         toast.error("Error in updating order status");
       }
-      console.log("OKOK");
     } catch (error) {
+      if (error.request.status==400)
+      {
+        toast.info("Insufficient quantity");
+        return;
+      }
       console.error("Error updating order status:", error);
     }
   };
