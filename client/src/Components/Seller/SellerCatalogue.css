@@ -7,6 +7,7 @@
     margin: 1rem 0 1rem 2.5rem;
     padding-top: 8vh;
     margin-bottom: 2rem;
+    text-align: center;
 }
 .SellerCatalogueMainContainer{
     background-color: aliceblue;
@@ -30,7 +31,10 @@
         grid-template-columns: 1fr;
         row-gap: 0;
     }
-.CatalogueHeading{
+    .CatalogueHeading{
+        text-align: center;
+        margin: 0;
         margin-bottom: 1rem;
+        margin-top: 2rem;
 }
 }

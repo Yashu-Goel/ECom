@@ -92,47 +92,30 @@
   animation: fadeInModal 0.5s ease-in forwards;
 }
 
+
 @media (max-width: 768px) {
-  .ProductDetailModalMainContainer {
-    max-width: 80%;
-  }
-
-  .ProductImage {
-    width: 40%;
-  }
-
-  .ProductDataItems {
-    padding: 20px;
-  }
-
-  .ProductDetails {
-    font-size: 1.2rem;
-  }
-
-  .ProductDataItems button {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
+ 
   .ProductDetailModalMainContainer {
     max-width: 90%;
     min-height: 75%;
+    display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    position: relative;
   }
 
   .ProductImage {
-    width: 50%;
+    width: 100%;
   }
- 
+ .ProductImage img{
+  width: 100%;
+  height: 12rem;
+  margin-top: 0;
+ }
 
   .ProductDetails {
-    font-size: 1rem;
+    font-size: 1.1rem;
     margin-bottom: 1rem;
-    margin-top: auto;
+    margin-top: 1rem;
     width: 100%;
   }
    .ProductDataItems {
@@ -143,6 +126,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  font-size: 1.2rem;
 }
   .ProductDataItems button {
     bottom: 0;

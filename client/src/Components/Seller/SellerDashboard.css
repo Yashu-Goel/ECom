@@ -28,13 +28,19 @@
     font-family: 'Poppins', sans-serif;
     padding-right: 10px;
     box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+    transition: all ease 0.5s;
 }
-
+.DashboardDataItem:hover
+{
+    scale: 1.1;
+    cursor: pointer;
+}
 .OrdersMainContainer {
     border: 1px solid black;
     margin-top: 2rem;
     padding: 2rem;
     overflow: hidden; 
+    user-select: none;
 }
 
 .OrderHeading {
@@ -50,19 +56,43 @@
 }
 
 .OrderDataItems {
-    margin-top: 2rem;
-    font-size: 1.6rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+    margin-top: 1rem;
+    font-size: 1.4rem; 
+
 }
 
 .OrderDataItem {
     text-align: center;
-    margin: 1rem 0;
+    margin: 0.5rem 0;
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: space-between;
 }
 
+.OrderDataItem p{
+    font-weight: bold;
+}
+.OrderDataItem::after{
+    content: "";
+    position: absolute;
+    width: 0;
+    bottom: 0;
+    height: 2.5px;
+    background-color: #33333389;
+    transition: all 1s ease;
+}
+.OrderDataItem:hover{
+    cursor: pointer;
+}
+.OrderDataItem:hover::after{
+    width: 100%;
+}
+#value
+{
+    margin-left: 1rem;
+    font-weight: 400;
+}
 .PieChart {
     display: flex;
     align-items: center;

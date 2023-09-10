@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 const AddProduct = () => {
-  const API_BASE = "http://localhost:5000";
+  const API_BASE = "http://192.168.0.103:5000";
   const [selectedImages, setSelectedImages] = useState([]);
   const [ProductData, setProductData] = useState({
     name: "",

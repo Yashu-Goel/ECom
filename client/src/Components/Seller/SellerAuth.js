@@ -17,7 +17,7 @@ const SellerAuth = () => {
     gst: "",
   });
 
-  const API_BASE = "http://localhost:5000";
+  const API_BASE = "http://192.168.0.103:5000";
   const navigate = useNavigate();
 
   const [loginData, setLoginData] = useState({

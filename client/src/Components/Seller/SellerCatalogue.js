@@ -5,7 +5,7 @@ import "./SellerCatalogue.css";
 import SellerNav from "./SellerNav";
 import Loading from "./Loading";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = "http://192.168.0.103:5000";
 
 const SellerCatalogue = () => {
   const [products, setProducts] = useState([]);

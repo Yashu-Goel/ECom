@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-export const API_BASE = "http://localhost:5000";
+export const API_BASE = "http://192.168.0.103:5000";
 
 export const addedToCart = async (itemId, count, user, cart, setCart) => {
   if (!user) {
