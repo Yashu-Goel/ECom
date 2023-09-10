@@ -42,6 +42,10 @@
   justify-content: center;
   margin-right: 2rem;
 }
+.ProductImage div img{
+  max-width: 15rem;
+  max-height: 15rem;
+}
 .ProductDataItems {
   position: relative;
 }
@@ -110,7 +114,6 @@
   }
 }
 
-/* Mobile phones */
 @media (max-width: 480px) {
   .ProductDetailModalMainContainer {
     max-width: 90%;

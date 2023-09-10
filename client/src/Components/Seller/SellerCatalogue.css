@@ -6,18 +6,31 @@
     letter-spacing: 2px;
     margin: 1rem 0 1rem 2.5rem;
     padding-top: 8vh;
+    margin-bottom: 2rem;
 }
 .SellerCatalogueMainContainer{
     background-color: aliceblue;
     width: 100%;
     min-height: 100vh;
-}
-@media (max-width: 768px) {
-    .SellerCatalogueMainContainer
-    {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-
+}
+.SellerCatalogueInnerContainer{
+    width: 80%;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    row-gap: 3rem;
+}
+@media (max-width: 768px) {
+    
+    .SellerCatalogueInnerContainer{
+        width: 100%;
+        grid-template-columns: 1fr;
+        row-gap: 0;
     }
+.CatalogueHeading{
+        margin-bottom: 1rem;
+}
 }

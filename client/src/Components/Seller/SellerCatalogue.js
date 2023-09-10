@@ -42,22 +42,23 @@ console.log(products);
         <div className="SellerCatalogueMainContainer">
           <SellerNav />
           <h1 className="CatalogueHeading">Catalogue</h1>
-
-          {flag &&
-            products.map((product) => (
-              <CatalogueItems
-                key={product._id}
-                name={product.name}
-                category={product.category}
-                price={product.price}
-                MRP={product.MRP}
-                model={product.model}
-                description={product.description}
-                brand={product.brand}
-                quantity={product.quantity}
-                pics={product.imageName}
-              />
-            ))}
+          <div className="SellerCatalogueInnerContainer">
+            {flag &&
+              products.map((product) => (
+                <CatalogueItems
+                  key={product._id}
+                  name={product.name}
+                  category={product.category}
+                  price={product.price}
+                  MRP={product.MRP}
+                  model={product.model}
+                  description={product.description}
+                  brand={product.brand}
+                  quantity={product.quantity}
+                  pics={product.imageName}
+                />
+              ))}
+          </div>
         </div>
       )}
     </div>

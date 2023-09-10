@@ -149,7 +149,6 @@ router.get("/seller_details/:id", async (req, res) => {
 //Product Details
 
 router.post("/product", async (req, res) => {
-  console.log('OKOK');
   const {
     name,
     category,
@@ -260,14 +259,7 @@ router.post("/get-upload-url", async (req, res) => {
   }
 });
 
-// router.get("/products", async (req, res) => {
-//   try {
-//     const products = await Product.find(); // Fetch all products from the database
-//     res.status(200).json(products); // Return the array of products as the response
-//   } catch (error) {
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
+
 
 // post order_details
 router.post("/order_details", async (req, res) => {
@@ -390,8 +382,51 @@ router.get("/order_details/:id", async (req, res) => {
   }
 });
 
-//post address
+// Update product count
+router.put("/update_count", async (req, res) => {
+  const count = req.body.count;
+  const id = req.body.id;
+  console.log(req.body);
+  try {
+    const updatedProduct = await Product.findOne({ _id: id });
 
+    if (updatedProduct) {
+      const updatedQuantity = updatedProduct.quantity - count;
+
+      if (updatedQuantity >= 0) {
+        updatedProduct.quantity = updatedQuantity;
+        const response = await updatedProduct.save();
+
+        if (response) {
+          res.status(200).json({
+            message: "Quantity Updated Successfully",
+          });
+        } else {
+          res.status(500).json({
+            message: "Quantity not updated",
+          });
+        }
+      } else {
+        console.log("OKOK");
+        res.status(400).json({
+          message: "Insufficient quantity",
+        });
+      }
+    } else {
+      res.status(404).json({
+        message: "Product not found",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+});
+
+
+
+//post address
 router.post("/address", async (req, res) => {
   console.log(req.body);
   const { address_line, city, state, postal_code } = req.body;
@@ -408,63 +443,63 @@ router.post("/address", async (req, res) => {
 
     if (address) {
       res.status(200).json({
-        message: "Product registered successfully",
+        message: "Address registered successfully",
       });
-    } else res.status(400).json("Product unregistered");
+    } else res.status(400).json("Address unregistered");
   } catch (error) {
     res.status(422).json(`${error}`);
   }
 });
 //get address
-router.get("/address", async (req, res) => {
-  try {
-    const address = await Address.find();
-    res.send(address);
-  } catch (error) {
-    res.status(422).json(`${error}`);
-  }
-});
+// router.get("/address", async (req, res) => {
+//   try {
+//     const address = await Address.find();
+//     res.send(address);
+//   } catch (error) {
+//     res.status(422).json(`${error}`);
+//   }
+// });
 
-//get single address
-router.get("/address/:id", async (req, res) => {
-  try {
-    const _id = req.params.id;
-    console.log(_id);
-    const address = await Address.findById(_id);
-    res.send(address);
-  } catch (error) {
-    res.send(error);
-  }
-});
+// //get single address
+// router.get("/address/:id", async (req, res) => {
+//   try {
+//     const _id = req.params.id;
+//     console.log(_id);
+//     const address = await Address.findById(_id);
+//     res.send(address);
+//   } catch (error) {
+//     res.send(error);
+//   }
+// });
 
-//delete address
-router.delete("/address/:id", async (req, res) => {
-  try {
-    const _id = req.params.id;
-    if (!_id) {
-      res.send("Invalid ID");
-    }
-    const deleteAddress = await Address.findByIdAndDelete(_id);
+// //delete address
+// router.delete("/address/:id", async (req, res) => {
+//   try {
+//     const _id = req.params.id;
+//     if (!_id) {
+//       res.send("Invalid ID");
+//     }
+//     const deleteAddress = await Address.findByIdAndDelete(_id);
 
-    res.send(deleteAddress);
-    console.log(_id);
-  } catch (error) {
-    res.status(422).json(`${error}`);
-  }
-});
+//     res.send(deleteAddress);
+//     console.log(_id);
+//   } catch (error) {
+//     res.status(422).json(`${error}`);
+//   }
+// });
 
-//update address
-router.patch("/address/:id", async (req, res) => {
-  try {
-    const _id = req.params.id;
-    const updateAddress = await Address.findByIdAndUpdate(_id, req.body, {
-      new: true,
-    });
-    res.send(updateAddress);
-  } catch (error) {
-    res.status(404).send(error);
-  }
-});
+// //update address
+// router.patch("/address/:id", async (req, res) => {
+//   try {
+//     const _id = req.params.id;
+//     const updateAddress = await Address.findByIdAndUpdate(_id, req.body, {
+//       new: true,
+//     });
+//     res.send(updateAddress);
+//   } catch (error) {
+//     res.status(404).send(error);
+//   }
+// });
 
 //post order_history
 router.post("/order_history", async (req, res) => {
@@ -508,14 +543,14 @@ router.post("/order_history", async (req, res) => {
     res.status(422).json(`error: ${error}`);
   }
 });
-// get order_address
-router.get("/order_history", async (req, res) => {
-  try {
-    const order_history = await OrderHistory.find();
-    res.send(order_history);
-  } catch (error) {
-    res.status(422).json(`${error}`);
-  }
-});
+// // get order_address
+// router.get("/order_history", async (req, res) => {
+//   try {
+//     const order_history = await OrderHistory.find();
+//     res.send(order_history);
+//   } catch (error) {
+//     res.status(422).json(`${error}`);
+//   }
+// });
 
 module.exports = router;

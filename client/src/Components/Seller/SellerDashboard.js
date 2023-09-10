@@ -47,21 +47,24 @@ const SellerDashboard = () => {
         const order_response = await axios.get(
           API_BASE + `/seller/order_details/${sellerId}`
         );
-
+          console.log(order_response.data);
         let completedOrders = 0;
         let shippedOrders = 0;
         let pendingOrders = 0;
+        let cancelledOrders = 0;
 
         order_response.data.forEach((order) => {
-          if (order.status === "Delivered") {
+          if (order.currentStatus === "delivered") {
             completedOrders++;
-          } else if (order.status === "Shipped") {
+          } else if (order.currentStatus === "shipped") {
             shippedOrders++;
-          } else if (order.status === "Pending") {
+          } else if (order.currentStatus === "pending") {
             pendingOrders++;
+          } else if (order.currentStatus === "cancelled") {
+            cancelledOrders++;
           }
         });
-
+        console.log(completedOrders);
         let totalOrders = 0;
         let totalSales = 0;
 
@@ -70,16 +73,13 @@ const SellerDashboard = () => {
           totalSales += parseInt(order.amount);
         });
 
-        // Calculate credit amount (98% of total sales)
         const creditAmount = Math.floor(totalSales * 0.98);
 
-        // Update the state variables
         setOrderDetails(order_response.data);
         setTotalOrders(totalOrders);
         setTotalSales(totalSales);
         setCreditAmount(creditAmount);
 
-        // Update the order_data array
         const updatedOrderData = [
           {
             text: "Total",
@@ -97,6 +97,10 @@ const SellerDashboard = () => {
             text: "Pending",
             value: pendingOrders,
           },
+          {
+            text: "Cancelled",
+            value: cancelledOrders,
+          }
         ];
         setOrderData(updatedOrderData);
                 setTimeout(() => {
@@ -136,7 +140,7 @@ const SellerDashboard = () => {
     series: orderData.map((item) => Number(item.value)),
     options: {
       labels: orderData.map((item) => item.text),
-      colors: ["#e7505a", "#3598dc", "#32c5d2", "#8e44ad"],
+      colors: ["#e7505a", "#3598dc", "#32c5d2", "#8e44ad", "#55DD33"],
     },
   };
 

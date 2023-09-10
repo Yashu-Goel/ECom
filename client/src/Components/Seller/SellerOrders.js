@@ -35,7 +35,6 @@ const SellerOrders = () => {
       try {
         setLoading(true);
         const sellerId = localStorage.getItem("_id");
-        console.log(sellerId);
         if (!sellerId) {
           window.alert("Seller Id not found!!");
           return;
@@ -54,12 +53,41 @@ const SellerOrders = () => {
     fetchData();
   }, []);
 
-  const handleProductStatusChange = async (orderId, newStatus) => {
+  const handleProductStatusChange = async (
+    orderId,
+    newStatus,
+    orderCount,
+    productId
+  ) => {
     try {
+      if (newStatus === "shipped") {
+        const productCountResponse = await axios.put(
+          API_BASE + "/seller/update_count",
+          {
+            id: productId,
+            count: orderCount,
+          }
+        );
+
+        console.log(productCountResponse);
+        if (productCountResponse) {
+          if (productCountResponse.status === 200) {
+            console.log("Updated product quantity");
+          } else if (productCountResponse.status === 400) {
+            toast.info("Insufficient quantity");
+            return;
+          } else {
+            toast.error("Error in updating product quantity");
+            return;
+          }
+        }
+      }
+
       const response = await axios.patch(API_BASE + `/seller/order_details`, {
         id: orderId,
         status: newStatus,
       });
+
       if (response.status === 200) {
         setOrderDetails((prevOrderDetails) =>
           prevOrderDetails.map((order) =>
@@ -70,9 +98,14 @@ const SellerOrders = () => {
         );
         toast.success("Status updated");
       } else {
-        toast.error("Updating Status Error");
+        toast.error("Error in updating order status");
       }
     } catch (error) {
+      if (error.request.status==400)
+      {
+        toast.info("Insufficient quantity");
+        return;
+      }
       console.error("Error updating order status:", error);
     }
   };
@@ -92,7 +125,7 @@ const SellerOrders = () => {
               onClose={closeCustomerModal}
             />
           )}
-          <div className="SellerNavContainer" >
+          <div className="SellerNavContainer">
             <SellerNav />
           </div>
           <div className="OuterTableContainer">
@@ -151,20 +184,43 @@ const SellerOrders = () => {
                       <td className="TableHead">
                         {currentStatus === "cancelled" ? (
                           <span>Cancelled</span>
+                        ) : currentStatus === "delivered" ? (
+                          <span>Delivered</span>
                         ) : (
                           <select
                             value={currentStatus}
                             onChange={(e) =>
-                              handleProductStatusChange(_id, e.target.value)
+                              handleProductStatusChange(
+                                _id,
+                                e.target.value,
+                                count,
+                                order.productId._id
+                              )
                             }
                           >
-                            <option value="pending">Pending</option>
-                            <option value="cancelled">Cancelled</option>
-                            <option value="shipped">Shipped</option>
-                            <option value="out_for_delivery">
-                              Out for Delivery
-                            </option>
-                            <option value="delivered">Delivered</option>
+                            {currentStatus === "pending" && (
+                              <>
+                                <option value="pending">Pending</option>
+                                <option value="cancelled">Cancelled</option>
+                                <option value="shipped">Shipped</option>
+                              </>
+                            )}
+                            {currentStatus === "shipped" && (
+                              <>
+                                <option value="shipped">Shipped</option>
+                                <option value="out_for_delivery">
+                                  Out for Delivery
+                                </option>
+                              </>
+                            )}
+                            {currentStatus === "out_for_delivery" && (
+                              <>
+                                <option value="out_for_delivery">
+                                  Out for Delivery
+                                </option>
+                                <option value="delivered">Delivered</option>
+                              </>
+                            )}
                           </select>
                         )}
                       </td>
