@@ -45,6 +45,64 @@ const categories = [
     ],
   },
 ];
+// const categories = [
+//   {
+//     title: "Fashion",
+//     items: [
+//       '<i class="fas fa-male"></i> Men',
+//       '<i class="fas fa-female"></i> Women',
+//       '<i class="fas fa-child"></i> Child',
+//       '<i class="fas fa-shoe-prints"></i> Footwear',
+//       '<i class="fas fa-pants"></i> Trousers',
+//     ],
+//   },
+//   {
+//     title: "Electronics",
+//     items: [
+//       '<i class="fas fa-mobile-alt"></i> Smart Phones',
+//       '<i class="fas fa-tv"></i> Smart TVs',
+//       '<i class="fas fa-mobile"></i> Mobile Accessories',
+//       '<i class="fas fa-snowflake"></i> Refrigerators',
+//       '<i class="fas fa-tint"></i> Washing Machines',
+//       '<i class="fas fa-laptop"></i> Other Accessories',
+//     ],
+//   },
+//   {
+//     title: "Health",
+//     items: [
+//       '<i class="fas fa-utensils"></i> Diet And Fitness',
+//       '<i class="fas fa-heartbeat"></i> Health Machines',
+//       '<i class="fas fa-leaf"></i> Ayurvedic Medicines',
+//     ],
+//   },
+//   {
+//     title: "Home Decor",
+//     items: [
+//       '<i class="fas fa-curtain"></i> Curtains',
+//       '<i class="fas fa-bed"></i> Bedsheets',
+//       '<i class="fas fa-home"></i> Home Decors',
+//       '<i class="fas fa-ellipsis-h"></i> More Items',
+//     ],
+//   },
+//   {
+//     title: "Pet Supplies",
+//     items: [
+//       '<i class="fas fa-bone"></i> Dog Foods',
+//       '<i class="fas fa-fish"></i> Cat Foods',
+//       '<i class="fas fa-bath"></i> Animal Grooming Kits',
+//       '<i class="fas fa-fish"></i> Fish Supplies',
+//     ],
+//   },
+//   {
+//     title: "Gifts",
+//     items: [
+//       '<i class="fas fa-gift"></i> Readymade Gifts',
+//       '<i class="fas fa-leaf"></i> Natural Gifts',
+//       '<i class="fas fa-hands"></i> Handmade Cards',
+//       '<i class="fas fa-gifts"></i> Affordable Presents',
+//     ],
+//   },
+// ];
 
 const Navbar = () => {
   const [logoutModal, setLogoutModal] = useState(false);
@@ -142,8 +200,12 @@ const Navbar = () => {
                 className={`dropdown-menu ${isDropdownVisible ? "show" : ""}`}
                 id="dropdown-menu"
               >
-                <Link to={"/order-history"}>My Orders</Link>
-                <Link to={"/user-profile"}>Account</Link>
+                <Link to={"/order-history"}>
+                  <i class="fa-solid fa-clipboard-list"></i>My Orders
+                </Link>
+                <Link to={"/user-profile"}>
+                  <i class="fa-solid fa-user"></i>Account
+                </Link>
 
                 <button
                   onClick={() => {
@@ -151,6 +213,7 @@ const Navbar = () => {
                     setIsDropdownVisible(false);
                   }}
                 >
+                  <i class="fa-solid fa-right-from-bracket"></i>
                   Logout
                 </button>
               </div>

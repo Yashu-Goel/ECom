@@ -70,7 +70,7 @@ router.post("/usersignup", async (req, res) => {
 router.post("/userlogin", async (req, res) => {
   try {
     const details = req.body;
-
+    console.log(details);
     const { email, password } = details;
     const userLogin = await User.findOne({ email });
     if (userLogin) {
@@ -81,7 +81,7 @@ router.post("/userlogin", async (req, res) => {
         return;
       }
       res.cookie("token", token, { httpOnly: true, maxAge: 3600000 });
-
+      
       res.json({
         name: userLogin.name,
         email,
