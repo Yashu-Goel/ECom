@@ -23,7 +23,7 @@ const SellerCatalogue = () => {
         );
         setProducts(response.data); 
         if (response.data.length > 0) {
-          setFlag(1); // Set the flag to 1 if there are products
+          setFlag(1); 
         }
         setTimeout(() => {
           setLoading(false);
@@ -33,7 +33,7 @@ const SellerCatalogue = () => {
       }
     })();
   }, []);
-console.log(products);
+// console.log(products);
   return (
     <div>
       {loading ? (
@@ -46,7 +46,7 @@ console.log(products);
             {flag &&
               products.map((product) => (
                 <CatalogueItems
-                  key={product._id}
+                  id={product._id}
                   name={product.name}
                   category={product.category}
                   price={product.price}

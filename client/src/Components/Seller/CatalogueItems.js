@@ -4,8 +4,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ProductDetail from "./Modal/ProductDetail";
+import QuantityModal from "./Modal/QuantityModal";
 
 const CatalogueItems = ({
+  id,
   name,
   category,
   price,
@@ -17,12 +19,22 @@ const CatalogueItems = ({
   quantity,
 }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
-
-  const openProductDetailModal = (product) => {
+  const [isQuantityModalOpen, setQuantityModalOpen] = useState(false);
+console.log('');  const openProductDetailModal = (product) => {
     setSelectedProduct(product);
   };
+console.log(id);
   const closeProductDetailModal = () => {
     setSelectedProduct(null);
+  };
+
+
+  const openQuantityModal = () => {
+    setQuantityModalOpen(true);
+  };
+
+  const closeQuantityModal = () => {
+    setQuantityModalOpen(false);
   };
 
   const settings = {
@@ -34,8 +46,8 @@ const CatalogueItems = ({
     swipeToSlide: true,
     accessibility: true,
     arrow: true,
-    autoplay: true, 
-    autoplaySpeed: 2000, 
+    autoplay: true,
+    autoplaySpeed: 2000,
   };
 
   return (
@@ -66,29 +78,41 @@ const CatalogueItems = ({
           </div>
           <div className="CatalogueItemProductDetails">
             <p>
-              <button
-                onClick={() =>
-                  openProductDetailModal({
-                    name,
-                    category,
-                    price,
-                    MRP,
-                    model,
-                    description,
-                    brand,
-                    pics,
-                    quantity,
-                  })
-                }
-              >
-                <span>view full details</span>
-              </button>
+              <div>
+                <button onClick={openQuantityModal}>
+                  <span>Add More Products</span>
+                </button>
+                <button
+                  onClick={() =>
+                    openProductDetailModal({
+                      name,
+                      category,
+                      price,
+                      MRP,
+                      model,
+                      description,
+                      brand,
+                      pics,
+                      quantity,
+                    })
+                  }
+                >
+                  <span>view full details</span>
+                </button>
+              </div>
             </p>
           </div>
         </div>
       </div>
       {selectedProduct && (
         <ProductDetail {...selectedProduct} onClose={closeProductDetailModal} />
+      )}
+      {isQuantityModalOpen && (
+        <QuantityModal
+          quantity={quantity}
+          id={id}
+          onClose={closeQuantityModal}
+        />
       )}
     </>
   );

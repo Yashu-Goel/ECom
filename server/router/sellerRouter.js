@@ -36,19 +36,6 @@ const client = new S3Client({
 
 
 const JWT_Secret = process.env.JWT_Secret;
-const path = require("path");
-//mutler configuration
-
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     const absolutePath = path.join(__dirname, "../../client/public/uploads");
-//     cb(null, absolutePath);
-//   },
-//   filename: function (req, file, cb) {
-//     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-//     cb(null, file.fieldname + "-" + uniqueSuffix + ".jpg");
-//   },
-// });
 
 //signup for seller
 router.post("/sellersignup", async (req, res) => {
@@ -424,6 +411,39 @@ router.put("/update_count", async (req, res) => {
   }
 });
 
+//update product quantity
+router.put("/update_quantity", async (req, res) => {
+  try {
+    const { count, id } = req.body;
+
+    const updatedProduct = await Product.findOneAndUpdate(
+      { _id: id },
+      { $set: { quantity: count } },
+      { new: true } 
+    );
+
+    if (updatedProduct) {
+      if (count >= 0) {
+        return res.status(200).json({
+          message: "Quantity Updated Successfully",
+          updatedQuantity: updatedProduct.quantity,
+        });
+      } else {
+        return res.status(400).json({
+          message: "Quantity can not be less than or equal to 0",
+        });
+      }
+    } else {
+      return res.status(404).json({
+        message: "Product not found",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+});
 
 
 //post address
@@ -450,6 +470,7 @@ router.post("/address", async (req, res) => {
     res.status(422).json(`${error}`);
   }
 });
+
 //get address
 // router.get("/address", async (req, res) => {
 //   try {
@@ -501,48 +522,48 @@ router.post("/address", async (req, res) => {
 //   }
 // });
 
-//post order_history
-router.post("/order_history", async (req, res) => {
-  const {
-    date_of_order,
-    date_of_delivery,
-    total_amount,
-    receiver_name,
-    product_name,
-    product_image,
-    order_id,
-  } = req.body;
-  console.log(req.body);
-  if (
-    !date_of_order ||
-    !date_of_delivery ||
-    !total_amount ||
-    !receiver_name ||
-    !product_name ||
-    !product_image
-  ) {
-    return res.status(422).json({ error: "Pls fill all the fields" });
-  }
-  try {
-    const order_history = await OrderHistory.create({
-      date_of_order,
-      date_of_delivery,
-      total_amount,
-      receiver_name,
-      product_name,
-      product_image,
-      order_id,
-    });
+// //post order_history
+// router.post("/order_history", async (req, res) => {
+//   const {
+//     date_of_order,
+//     date_of_delivery,
+//     total_amount,
+//     receiver_name,
+//     product_name,
+//     product_image,
+//     order_id,
+//   } = req.body;
+//   console.log(req.body);
+//   if (
+//     !date_of_order ||
+//     !date_of_delivery ||
+//     !total_amount ||
+//     !receiver_name ||
+//     !product_name ||
+//     !product_image
+//   ) {
+//     return res.status(422).json({ error: "Pls fill all the fields" });
+//   }
+//   try {
+//     const order_history = await OrderHistory.create({
+//       date_of_order,
+//       date_of_delivery,
+//       total_amount,
+//       receiver_name,
+//       product_name,
+//       product_image,
+//       order_id,
+//     });
 
-    if (order_history) {
-      res.status(200).json({
-        message: "order_history registered successfully",
-      });
-    } else res.status(400).json("order_history unregistered");
-  } catch (error) {
-    res.status(422).json(`error: ${error}`);
-  }
-});
+//     if (order_history) {
+//       res.status(200).json({
+//         message: "order_history registered successfully",
+//       });
+//     } else res.status(400).json("order_history unregistered");
+//   } catch (error) {
+//     res.status(422).json(`error: ${error}`);
+//   }
+// });
 // // get order_address
 // router.get("/order_history", async (req, res) => {
 //   try {
