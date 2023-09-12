@@ -1,12 +1,9 @@
 const express = require("express");
-const app = require("express");
-// const cookieParser = require("cookie-parser");
 const Seller = require("../models/sellerSchema.js");
 const Address = require("../models/addressSchema.js");
 const Product = require("../models/productDetailsSchema.js");
 const uniqueFilename = require("unique-filename");
 const Order = require("../models/orderSchema.js");
-// const OrderHistory = require("../models/order_historySchema.js");
 const bcrypt = require("bcryptjs");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -471,107 +468,5 @@ router.post("/address", async (req, res) => {
   }
 });
 
-//get address
-// router.get("/address", async (req, res) => {
-//   try {
-//     const address = await Address.find();
-//     res.send(address);
-//   } catch (error) {
-//     res.status(422).json(`${error}`);
-//   }
-// });
-
-// //get single address
-// router.get("/address/:id", async (req, res) => {
-//   try {
-//     const _id = req.params.id;
-//     console.log(_id);
-//     const address = await Address.findById(_id);
-//     res.send(address);
-//   } catch (error) {
-//     res.send(error);
-//   }
-// });
-
-// //delete address
-// router.delete("/address/:id", async (req, res) => {
-//   try {
-//     const _id = req.params.id;
-//     if (!_id) {
-//       res.send("Invalid ID");
-//     }
-//     const deleteAddress = await Address.findByIdAndDelete(_id);
-
-//     res.send(deleteAddress);
-//     console.log(_id);
-//   } catch (error) {
-//     res.status(422).json(`${error}`);
-//   }
-// });
-
-// //update address
-// router.patch("/address/:id", async (req, res) => {
-//   try {
-//     const _id = req.params.id;
-//     const updateAddress = await Address.findByIdAndUpdate(_id, req.body, {
-//       new: true,
-//     });
-//     res.send(updateAddress);
-//   } catch (error) {
-//     res.status(404).send(error);
-//   }
-// });
-
-// //post order_history
-// router.post("/order_history", async (req, res) => {
-//   const {
-//     date_of_order,
-//     date_of_delivery,
-//     total_amount,
-//     receiver_name,
-//     product_name,
-//     product_image,
-//     order_id,
-//   } = req.body;
-//   console.log(req.body);
-//   if (
-//     !date_of_order ||
-//     !date_of_delivery ||
-//     !total_amount ||
-//     !receiver_name ||
-//     !product_name ||
-//     !product_image
-//   ) {
-//     return res.status(422).json({ error: "Pls fill all the fields" });
-//   }
-//   try {
-//     const order_history = await OrderHistory.create({
-//       date_of_order,
-//       date_of_delivery,
-//       total_amount,
-//       receiver_name,
-//       product_name,
-//       product_image,
-//       order_id,
-//     });
-
-//     if (order_history) {
-//       res.status(200).json({
-//         message: "order_history registered successfully",
-//       });
-//     } else res.status(400).json("order_history unregistered");
-//   } catch (error) {
-//     res.status(422).json(`error: ${error}`);
-//   }
-// });
-// // get order_address
-// router.get("/order_history", async (req, res) => {
-//   try {
-//     const order_history = await OrderHistory.find();
-//     res.send(order_history);
-//   } catch (error) {
-//     res.status(422).json(`${error}`);
-//   }
-// });
 
 module.exports = router;

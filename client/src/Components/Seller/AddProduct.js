@@ -43,7 +43,17 @@ const AddProduct = () => {
       toast.error("Fill All Details");
       return;
     }
+    if(MRP<0 || price<0)
+    {
+      toast.error("Price and MRP can not be negative");
+      return;
+    }
+    if(MRP<price)
+    {
+            toast.info("Price must be less than MRP");
+            return;
 
+    }
     try {
       const sellerId = localStorage.getItem("_id");
       const formData = new FormData();
@@ -138,6 +148,7 @@ const AddProduct = () => {
           >
             <option value="">Select a type</option>
             <option value="electronics">Electronics</option>
+            <option value="stationary">Stationary</option>
             <option value="apparel-and-fashion">Apparel and Fashion</option>
             <option value="home-and-kitchen">
               Home and Kitchen Appliances

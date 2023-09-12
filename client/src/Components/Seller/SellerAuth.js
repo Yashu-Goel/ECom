@@ -57,7 +57,7 @@ const SellerAuth = () => {
       toast.error("Password and Confirm Password must be the same");
       return;
     }
-
+    
     try {
       const config = {
         headers: {
@@ -110,10 +110,8 @@ const SellerAuth = () => {
         { email, password },
         config
       );
-      console.log(data);
       const { _id, token } = data;
       localStorage.setItem("_id", _id);
-      console.log(_id);
       toast.success("Login successful");
       toggleLoginStatus();
       setTimeout(() => {
@@ -206,6 +204,7 @@ const SellerAuth = () => {
                 className="seller-input-field"
                 value={signupData.password}
                 onChange={handleSignupChange}
+                minLength="6"
               />
 
               <label htmlFor="cpassword">Confirm Password:</label>
@@ -215,6 +214,7 @@ const SellerAuth = () => {
                 className="seller-input-field"
                 value={signupData.cpassword}
                 onChange={handleSignupChange}
+                minLength="6"
               />
 
               <label htmlFor="gst">GST:</label>
@@ -233,7 +233,7 @@ const SellerAuth = () => {
               </button>
             </form>
             <p>
-              Already have an account?{" "}
+              Already have an account?
               <button
                 className="seller-switch-button"
                 onClick={handleSwitchForm}

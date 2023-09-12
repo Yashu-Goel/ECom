@@ -1,9 +1,16 @@
-import React from 'react'
-import './SellerHome.css'
-import { Link } from 'react-router-dom'
+import React, { useContext } from "react";
+import "./SellerHome.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import SellerProvider from "./SellerProvider";
 import SellerNav from "./SellerNav";
+import { SellerContext } from "./SellerProvider";
+import { useNavigate } from "react-router-dom";
+
 const SellerHome = () => {
+    const { isLoggedIn, toggleLoginStatus, logout } = useContext(SellerContext); 
+    const navigate=useNavigate();
+console.log(isLoggedIn);
   const data = [
     {
       img: "https://m.media-amazon.com/images/G/01/sp-marketing-toolkit/guides/design/iconography/Brand_Registry._CB424651244_.svg",
@@ -21,6 +28,13 @@ const SellerHome = () => {
       msg: "Deliver to 100% of India's serviceable pincodes, through Easy Ship & Fulfillment by PrimeBuy.",
     },
   ];
+  const handleStartSelling =() =>{
+    if (isLoggedIn) {
+      navigate("/product_details");
+    } else {
+      toast.info("Please Login");
+    }
+  }
   return (
     <SellerProvider>
       <div className="SellerNavbar">
@@ -31,9 +45,7 @@ const SellerHome = () => {
           <div className="LeftMainContainer">
             <h1>Welcome to PrimeBuy Seller</h1>
             <h2>Start Selling to millions of customers</h2>
-            <Link to="/product_details">
-              <span>Start Selling</span>
-            </Link>
+            <span onClick={handleStartSelling}>Start Selling</span>
             <h3>You will need only 3 things to start selling on PrimeBuy</h3>
             <div className="RequiredThingsImages">
               <div className="DataItems">
@@ -67,6 +79,6 @@ const SellerHome = () => {
       </div>
     </SellerProvider>
   );
-}
+};
 
-export default SellerHome
+export default SellerHome;

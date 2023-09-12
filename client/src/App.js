@@ -57,7 +57,7 @@ function App() {
           path="/seller"
           element={
             <SellerProvider>
-              <SellerHome />{" "}
+              <SellerHome />
             </SellerProvider>
           }
         />

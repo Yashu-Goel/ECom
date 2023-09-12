@@ -1,9 +1,11 @@
 import React, { createContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 const SellerContext = createContext();
 const SellerProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+
 useEffect(() => {
-  // Check if _id is present in local storage
   const isSellerLoggedIn = localStorage.getItem("_id");
   if (isSellerLoggedIn) {
     setIsLoggedIn(true);
@@ -15,8 +17,8 @@ useEffect(() => {
   };
   const logout = () => {
     localStorage.removeItem("_id");
-
     setIsLoggedIn(false)
+    navigate("/seller");
   };
   return (
     <div>
