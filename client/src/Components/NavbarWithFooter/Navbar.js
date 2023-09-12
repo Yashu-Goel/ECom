@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import "./Navbar.css";
 import ConfirmationModal from "./ConfirmationModal";
 import { UserState } from "../Context/UserProvider";

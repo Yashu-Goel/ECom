@@ -1,11 +1,9 @@
 import React from "react";
-import Navbar from "../Navbar/Navbar";
 import Coursel from "../TopSecHome/Coursel";
 import ImageSlider from "../TopSecHome/ImageSlider";
 import firstSlider from "../dummyDatas/firstSlider.json";
 import kitchenSlider from "../dummyDatas/kitchen.json";
 import fragranceSlider from "../dummyDatas/fragranceSlider.json";
-import Footer from "../Footer/Footer";
 import { Link } from "react-router-dom";
 import "./Home.css";
 import TrendingPage from "../Deals/TrendingPage";
@@ -13,7 +11,6 @@ import Categories from "../Deals/Categories";
 const Home = () => {
   return (
     <div>
-      <Navbar />
       <Coursel />
       <div className="first-coursel">
         <div className="deal-header">
@@ -38,7 +35,6 @@ const Home = () => {
         <ImageSlider slider={fragranceSlider} loop={false} text={false} />
       </div>
       <Categories />
-      <Footer />
     </div>
   );
 };

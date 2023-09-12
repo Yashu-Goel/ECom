@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import Navbar from "../Navbar/Navbar";
 import ImageSlider from "../TopSecHome/ImageSlider";
 import firstSlider from "../dummyDatas/firstSlider.json";
 import "./Product.css";
@@ -14,7 +13,6 @@ import { calculateDiscount } from "./function";
 import { formatDistanceToNow } from "date-fns";
 import { AWS_LINK } from "./function";
 import { toast } from "react-toastify";
-import Footer from "../Footer/Footer";
 
 export const Product = () => {
   const { id } = useParams();
@@ -89,7 +87,6 @@ export const Product = () => {
       ) : (
         !loading && (
           <div className="product-container">
-            <Navbar />
             <div className="product-page">
               <div className="product-pics outer-divs">
                 <div className="image-thums">
@@ -335,7 +332,6 @@ export const Product = () => {
               text={true}
               className="image-slider"
             />
-            <Footer />
           </div>
         )
       )}

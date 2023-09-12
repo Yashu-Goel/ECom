@@ -185,7 +185,7 @@ const CartModal = ({ closeModal }) => {
           </div>
           <div className="cart-footer">
             {cart && cart.length > 0 && (
-              <Link className="checkout-button" to={"/shipping-address"}>
+              <Link className="checkout-button" to={"/checkout"}>
                 Proceed to Checkout
               </Link>
             )}

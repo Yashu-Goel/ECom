@@ -6,7 +6,6 @@ import { API_BASE } from "../functions/functions";
 import "./OrderConfirmationPage.css";
 import { truncateName, calculateTotal } from "./function";
 import Error from "./Error";
-import ProgressBar from "../ProceedToCheckOut/ProgressBar";
 import Loading from "../Loaders/Loading";
 import BillModal from "./BillModal";
 import { AWS_LINK } from "../IndividualProduct/function";
@@ -192,6 +191,7 @@ const OrderConfirmationPage = () => {
                     }
                   }
                 } catch (error) {
+                  console.log(error);
                   console.error("Error creating Razorpay order:", error);
                   setIsLoading(false);
                 }
@@ -219,6 +219,7 @@ const OrderConfirmationPage = () => {
         rzp.open();
         setIsLoading(false);
       } catch (error) {
+        console.log(error);
         console.error("Error creating Razorpay order:", error);
         setIsLoading(false);
       }
@@ -236,12 +237,11 @@ const OrderConfirmationPage = () => {
         <Loading />
       ) : (
         <>
-          <ProgressBar paymentModal={paymentModal} />
           {!proceed && !isLoading ? (
             <Error />
           ) : (
             <div className="order-confirmation-page">
-              <h1>Order Confirmation</h1>
+              <h2>Order Confirmation</h2>
               <div className="order-summary">
                 <h2>Order Summary</h2>
                 <div>
@@ -255,10 +255,10 @@ const OrderConfirmationPage = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {products.map((item) => (
+                      {products?.map((item) => (
                         <tr key={item.product._id}>
                           <td>
-                            <div className="product-info">
+                            <div className="confirm-order-product-info">
                               <img
                                 src={`${AWS_LINK}/${item.product.imageName[0]}`}
                                 alt={`${item.product.name}`}

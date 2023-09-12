@@ -18,19 +18,26 @@ import SellerDashboard from "./Components/Seller/SellerDashboard";
 import ShippingDetails from "./Components/ProceedToCheckOut/ShippingDetails";
 import CategoryPage from "./Components/Deals/CategoryPage";
 import BillModal from "./Components/OrderConfirmationPage/BillModal";
+import NavbarWithFooter from "./Components/NavbarWithFooter/NavbarWithFooter";
+import Breadcrumbs from "./Components/Breadcrumbs/Breadcrumbs";
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route exact path="/product/:id" element={<Product />} />
-        <Route exact path="/auth" element={<Auth />} />
-        <Route exact path="/shipping-address" element={<ShippingDetails />} />
-        <Route
-          exact
-          path="/order-confirmation"
-          element={<OrderConfirmationPage />}
-        />
+        <Route element={<NavbarWithFooter />}>
+          <Route path="/" element={<Home />} />
+          <Route exact path="/product/:id" element={<Product />} />
+          <Route exact path="/auth" element={<Auth />} />
+        </Route>
+
+        <Route exact path="/checkout" element={<Breadcrumbs />}>
+          <Route path="" element={<ShippingDetails />} />
+          <Route
+            exact
+            path="confirm-order"
+            element={<OrderConfirmationPage />}
+          />
+        </Route>
         <Route exact path="/order-history" element={<OrderHistory />} />
         <Route
           exact

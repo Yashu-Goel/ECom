@@ -23,8 +23,8 @@
   position: relative;
   text-align: center;
 }
-.li{
-  z-index: -1;
+#progress-bar li p {
+  font-size: 12px;
 }
 #progress-bar li:before {
   width: 50px;
@@ -116,39 +116,6 @@
     background-color: #fff;
   }
   #progress-bar li:after {
-    width: 100%;
-    height: 10px;
-    content: "";
-    position: absolute;
-    background-color: #fff;
     top: 22px;
-    left: -50%;
-    z-index: -1;
-  }
-  #progress-bar li:first-child:after {
-    content: none;
-  }
-  #progress-bar li:first-child {
-    content: none;
-  }
-  #progress-bar li.step-done {
-    color: var(--main-color);
-  }
-  #progress-bar li.step-done:before {
-    border-color: var(--main-color);
-    background-color: var(--main-color);
-    color: #fff;
-    font-family: "FontAwesome";
-  }
-  #progress-bar li.step-done + li:after {
-    background-color: var(--main-color);
-  }
-  #progress-bar li.step-active {
-    color: var(--main-color);
-  }
-  #progress-bar li.step-active:before {
-    border-color: var(--main-color);
-    color: var(--main-color);
-    font-weight: 700;
   }
 }

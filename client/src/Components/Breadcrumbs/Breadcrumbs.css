@@ -1,0 +1,41 @@
+.breadcrumb-nav {
+  width: 70%;
+  margin: auto;
+  padding: 5px 10px;
+}
+
+ul {
+  padding: 0;
+}
+
+.breadcrumb-nav ul li {
+  display: inline;
+  height: 30px;
+}
+.breadcrumb-nav ul li a {
+  margin: 0px 10px;
+  color: blue;
+}
+.breadcrumb-nav ul li a:hover {
+  text-decoration: underline;
+}
+.breadcrumb-nav ul li a:first-child {
+  margin-left: 0px;
+}
+.breadcrumb-nav ul li:last-child a {
+  text-decoration: none;
+  color: black;
+  font-style: italic;
+}
+.breadcrumb-nav ul li:last-child a:hover {
+  cursor: inherit;
+}
+@media (max-width: 600px) {
+  .breadcrumb-nav {
+    width: 100%;
+    font-size: 14px;
+  }
+  .breadcrumb-nav ul li a {
+    margin: 0px 5px;
+  }
+}

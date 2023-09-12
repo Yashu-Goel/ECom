@@ -5,7 +5,6 @@ import "./ShippingDetails.css";
 import { API_BASE } from "../functions/functions";
 import axios from "axios";
 import { toast } from "react-toastify";
-import ProgressBar from "./ProgressBar";
 import Loader2 from "../Loaders/Loader2";
 
 function ShippingDetails() {
@@ -142,10 +141,10 @@ function ShippingDetails() {
         <Loader2 content="Setting up address.." />
       ) : (
         <>
-          <ProgressBar />
+          {/* <ProgressBar /> */}
           <div className="container-shipping">
             <div className="shipping-page">
-              <h2>Shipping Address</h2>
+              <h2>Select address</h2>
               {addresses.length > 0 ? (
                 <>
                   <div className="address-list">
@@ -195,9 +194,10 @@ function ShippingDetails() {
                   style={{
                     textAlign: "center",
                     padding: "10px 0px",
+                    marginTop: "-18px",
                   }}
                 >
-                  No address Found
+                  No address found
                 </h1>
               )}
               <div className="shop-procceed">
@@ -209,10 +209,7 @@ function ShippingDetails() {
                   <span>Add New Address</span>
                 </button>
                 {proceed && (
-                  <Link
-                    className="add-address-button"
-                    to={"/order-confirmation"}
-                  >
+                  <Link className="add-address-button" to={"confirm-order"}>
                     <span>Proceed</span>&nbsp;
                     <i className="fa-solid fa-arrow-right"></i>
                   </Link>
