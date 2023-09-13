@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { toast } from "react-toastify";
 import { UserState } from "../Context/UserProvider";
 import axios from "axios";
 import { API_BASE } from "../functions/functions";
@@ -12,77 +11,40 @@ import { AWS_LINK } from "../IndividualProduct/function";
 
 const OrderConfirmationPage = () => {
   const [promoCode, setPromoCode] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [proceed, setProceed] = useState(false);
-  const [address, setAddress] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [address, setAddress] = useState(null);
   const [products, setProducts] = useState([]);
-  const [userId, setUserId] = useState();
+  const [userId, setUserId] = useState(null);
   const [paymentModal, setPaymentModal] = useState(false);
   const [bill, setBill] = useState({});
   const { user, cart } = UserState();
-  // const [userAddress, setUserAddress] = useState({});
-  // const [userName, setUserName] = useState({});
 
   useEffect(() => {
-    setIsLoading(true);
-    // const user_address = JSON.parse(localStorage.getItem("address"));
-    // if (user_address) {
-    //   const addressString = `${user_address.street}, ${user_address.city}, ${user_address.state}, ${user_address.zip}`;
-    //   setUserAddress(addressString);
-    //   setUserName(user_address.name);
-    // }
     const fetchUserId = async () => {
+      const profile = JSON.parse(localStorage.getItem("profile"));
+      const getAddress = JSON.parse(localStorage.getItem("address"));
       try {
-        const userEmail = JSON.parse(localStorage.getItem("profile"));
-        if (!userEmail.email) {
-          toast.error("Email id not found");
+        if (!profile || !getAddress || cart?.length <= 0) {
+          setIsLoading(false);
           return;
         }
-        const response = await axios.post(API_BASE + "/user/userid", {
-          email: userEmail.email,
+        const response = await axios.get(API_BASE + "/user/userid", {
+          headers: {
+            Authorization: `Bearer ${profile.token}`,
+          },
         });
-
+        setAddress(getAddress);
         setUserId(response.data);
-        // getting order Status from user id
-        // try {
-        //   const statusResponse = await axios.get(
-        //     API_BASE + "/seller/OrderStatus",
-        //     {
-        //       params: {
-        //         id: response.data,
-        //       },
-        //     }
-        //   );
-
-        //   // jo karna hai yaha karo
-        // } catch (error) {
-        //   console.error("Error fetching order statuses:", error);
-        // }
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
     fetchUserId();
-    const address = JSON.parse(localStorage.getItem("address"));
-    if (!address) {
-      toast.error("Address not found");
-      return;
-    } else if (!user) {
-      toast.error("Failed to authenticate");
-      return;
-    } else {
-      if (cart.length < 1) {
-        toast.error("Cart is empty");
-        return;
-      }
-      setAddress(address);
-      setProceed(true);
-    }
 
     const getProductDetails = async () => {
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${user?.token}`,
         },
       };
 
@@ -102,12 +64,12 @@ const OrderConfirmationPage = () => {
         setProducts(cartDetails);
       } catch (error) {
         console.log(error);
-        toast.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     getProductDetails();
-    setIsLoading(false);
-  }, [cart]);
+  }, [cart, user]);
 
   const handleApplyPromoCode = () => {};
 
@@ -130,7 +92,7 @@ const OrderConfirmationPage = () => {
         await loadRazorpay();
         const config = {
           headers: {
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${userId.token}`,
           },
         };
         const response = await axios.post(
@@ -141,7 +103,7 @@ const OrderConfirmationPage = () => {
           config
         );
 
-        const orderId = response.data.id;
+        const orderId = response?.data.id;
 
         const options = {
           key: "rzp_test_LSiKQ94s76cQTy",
@@ -151,62 +113,47 @@ const OrderConfirmationPage = () => {
           description: "Payment for Order",
           order_id: orderId,
           handler: async function (response) {
-            try {
-              setIsLoading(true);
-              const bill = await axios.post(
-                `${API_BASE}/verify-payment/capture/${response.razorpay_payment_id}`,
-                {
-                  amount: calculateTotal(products) * 100,
-                }
-              );
-              setPaymentModal(true);
-              setBill(bill);
-
-              if (bill && bill.data && bill.data.resp) {
-                try {
-                  for (const product of products) {
-                    const orderDetails = {
-                      sellerId: product.product.sellerId,
-                      productId: product.product._id,
-                      customerId: userId,
-                      amount: product.product.price,
-                      count: product.count,
-                      customer_address: address,
-                      paymentDetails: bill.data.resp,
-                    };
-                    const config = {
-                      headers: {
-                        "Content-type": "application/json",
-                        Authorization: `Bearer ${user.token}`,
-                      },
-                    };
-                    try {
-                      await axios.post(
-                        API_BASE + "/seller/order_details",
-                        orderDetails,
-                        config
-                      );
-                    } catch (error) {
-                      console.log("Error sending order details: " + error);
-                    }
-                  }
-                } catch (error) {
-                  console.log(error);
-                  console.error("Error creating Razorpay order:", error);
-                  setIsLoading(false);
-                }
+            setIsLoading(true);
+            const bill = await axios.post(
+              `${API_BASE}/verify-payment/capture/${response.razorpay_payment_id}`,
+              {
+                amount: calculateTotal(products) * 100,
               }
-
+            );
+            setBill(bill);
+            if (bill) {
+              setPaymentModal(true);
               setIsLoading(false);
-            } catch (error) {
-              console.log(error);
-              toast.error("Payment error");
+            }
+            if (bill?.data?.resp) {
+              for (const product of products) {
+                const orderDetails = {
+                  sellerId: product.product.sellerId,
+                  productId: product.product._id,
+                  customerId: userId._id,
+                  amount: product.product.price,
+                  count: product.count,
+                  customer_address: address,
+                  paymentDetails: bill.data.resp,
+                };
+                const config = {
+                  headers: {
+                    "Content-type": "application/json",
+                    Authorization: `Bearer ${user.token}`,
+                  },
+                };
+                await axios.post(
+                  API_BASE + "/seller/order_details",
+                  orderDetails,
+                  config
+                );
+              }
             }
           },
           prefill: {
-            name: `${user.name}`,
-            email: `${user.email}`,
-            contact: 9899253639,
+            name: `${userId.name}`,
+            email: `${userId.email}`,
+            contact: "",
           },
           notes: {
             address: address,
@@ -217,10 +164,9 @@ const OrderConfirmationPage = () => {
         };
         const rzp = new window.Razorpay(options);
         rzp.open();
-        setIsLoading(false);
       } catch (error) {
-        console.log(error);
         console.error("Error creating Razorpay order:", error);
+      } finally {
         setIsLoading(false);
       }
     }, 2000);
@@ -231,93 +177,90 @@ const OrderConfirmationPage = () => {
   return (
     <>
       {paymentModal && bill && (
-        <BillModal onClose={closeModal} bill={bill.data.resp} />
+        <BillModal onClose={closeModal} bill={bill?.data.resp} />
       )}
-      {!products.length ? (
+
+      {isLoading ? (
         <Loading />
+      ) : !address || !userId ? (
+        <Error />
       ) : (
-        <>
-          {!proceed && !isLoading ? (
-            <Error />
-          ) : (
-            <div className="order-confirmation-page">
-              <h2>Order Confirmation</h2>
-              <div className="order-summary">
-                <h2>Order Summary</h2>
-                <div>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {products?.map((item) => (
-                        <tr key={item.product._id}>
-                          <td>
-                            <div className="confirm-order-product-info">
-                              <img
-                                src={`${AWS_LINK}/${item.product.imageName[0]}`}
-                                alt={`${item.product.name}`}
-                              />
-                              <p>{truncateName(item.product.name)}</p>
-                            </div>
-                          </td>
-                          <td>{item.count}</td>
-                          <td>₹{item.product.price}</td>
-                          <td>₹{item.product.price * item.count}</td>
-                        </tr>
-                      ))}
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td>Total:</td>
-                        <td>₹{calculateTotal(products)}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div className="shipping-address">
-                <h2>Shipping Address</h2>
-                <div className="address-details">
-                  <p className="name">{address.name}</p>
-                  <p className="street">{address.street}</p>
-                  <p>
-                    {address.city}, {address.state} {address.zip}
-                  </p>
-                  <p>{address.phone}</p>
-                </div>
-              </div>
+        <div className="order-confirmation-page">
+          <h2>Order Confirmation</h2>
+          <div className="order-summary">
+            <h2>Order Summary</h2>
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {products?.map((item) => (
+                    <tr key={item.product._id}>
+                      <td>
+                        <div className="confirm-order-product-info">
+                          <img
+                            src={`${AWS_LINK}/${item.product.imageName[0]}`}
+                            alt={`${item.product.name}`}
+                          />
+                          <p>{truncateName(item.product.name)}</p>
+                        </div>
+                      </td>
+                      <td>{item.count}</td>
+                      <td>₹{item.product.price}</td>
+                      <td>₹{item.product.price * item.count}</td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td>Total:</td>
+                    <td>₹{calculateTotal(products)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="shipping-address">
+            <h2>Shipping Address</h2>
+            <div className="address-details">
+              <p className="name">{address?.name}</p>
+              <p className="street">{address?.street}</p>
+              <p>
+                {address?.city}, {address?.state} {address?.zip}
+              </p>
+              <p>{address?.phone}</p>
+            </div>
+          </div>
 
-              <div className="promo-code">
-                <h2>Apply Promo Code</h2>
-                <input
-                  type="text"
-                  value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value)}
-                  placeholder="Enter promo code"
-                />
-                <button onClick={handleApplyPromoCode}>Apply</button>
-              </div>
+          <div className="promo-code">
+            <h2>Apply Promo Code</h2>
+            <input
+              type="text"
+              value={promoCode}
+              onChange={(e) => setPromoCode(e.target.value)}
+              placeholder="Enter promo code"
+            />
+            <button onClick={handleApplyPromoCode}>Apply</button>
+          </div>
 
-              <div className="buttons">
-                <button onClick={handleContinueToPayment}>
-                  Proceed to Payment
-                </button>
-              </div>
-              {isLoading && (
-                <div className="loading-modal">
-                  <div className="loading-spinner"></div>
-                  <p>Processing payment...</p>
-                </div>
-              )}
+          <div className="buttons">
+            <button onClick={handleContinueToPayment}>
+              Proceed to Payment
+            </button>
+          </div>
+          {isLoading && (
+            <div className="loading-modal">
+              <div className="loading-spinner"></div>
+              <p>Processing payment...</p>
             </div>
           )}
-        </>
+        </div>
       )}
     </>
   );

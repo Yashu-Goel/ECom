@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const UserContext = createContext();
 
@@ -18,6 +19,7 @@ const UserProvider = ({ children }) => {
         }
       } catch (error) {
         console.error(error);
+        toast.error("Something went wrong");
       }
     };
     fetchData();

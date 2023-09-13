@@ -7,6 +7,8 @@ const bcrypt = require("bcryptjs");
 const dotenv = require("dotenv");
 const cors = require("cors");
 require("../db/conn.js");
+const tokenMiddleware = require("../MiddleWares/tokenMiddleWare");
+
 const jwt = require("jsonwebtoken");
 
 dotenv.config();
@@ -81,7 +83,7 @@ router.post("/userlogin", async (req, res) => {
         return;
       }
       res.cookie("token", token, { httpOnly: true, maxAge: 3600000 });
-      
+
       res.json({
         name: userLogin.name,
         email,
@@ -98,19 +100,23 @@ router.post("/userlogin", async (req, res) => {
   }
 });
 //get user id
-router.post("/userid", async (req, res) => {
+router.get("/userid", tokenMiddleware, async (req, res) => {
+  const user = req.user;
+  const token = req.token;
   try {
-    const { email } = req.body;
-    const user = await User.findOne({ email });
-
     if (user) {
-      res.status(200).json(user._id);
+      res.json({
+        token,
+        email: user.email,
+        _id: user._id,
+        name: user.name,
+      });
     } else {
-      res.status(404).json({ error: "User not found" });
+      res.status(400).json("User doesn't exist!");
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(400).json(error);
   }
 });
 
