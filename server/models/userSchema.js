@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const Product = require("./productDetailsSchema");
-const Address = require("./addressSchema");
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
+import Product from "./productDetailsSchema.js";
+import Address from "./addressSchema.js";
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   },
   cart: [
     {
-      _id: { type: "ObjectId", ref: "Product" },
+      _id: { type: mongoose.Types.ObjectId, ref: "Product" },
       count: {
         type: Number,
         default: 1,
@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-//password hashing
+// Password hashing
 userSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 12);
@@ -47,4 +47,4 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-module.exports = mongoose.model("User", userSchema);
+export default mongoose.model("User", userSchema);

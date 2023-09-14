@@ -1,8 +1,10 @@
-const express = require("express");
-const cors = require("cors");
+import express from "express";
+import cors from "cors";
+import crypto from "crypto";
+import Razorpay from "razorpay";
+
 const router = express.Router();
-const crypto = require("crypto");
-const Razorpay = require("razorpay");
+
 router.use(express.json());
 router.use(cors());
 
@@ -33,6 +35,7 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: "Error verifying Razorpay order" });
   }
 });
+
 router.post("/capture/:id", async (req, res) => {
   try {
     const resp = await razorpay.payments.capture(
@@ -47,4 +50,4 @@ router.post("/capture/:id", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

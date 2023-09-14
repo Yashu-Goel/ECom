@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const sellerSchema = new mongoose.Schema({
   name: {
@@ -11,10 +11,10 @@ const sellerSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  mobile:{
-    type:String,
+  mobile: {
+    type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   password: {
     type: String,
@@ -24,13 +24,13 @@ const sellerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  gst:{
+  gst: {
     type: String,
-    unique: true
-  }
+    unique: true,
+  },
 });
 
-//password hashing
+// Password hashing
 sellerSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 12);
@@ -39,4 +39,4 @@ sellerSchema.pre("save", async function (next) {
   next();
 });
 
-module.exports = mongoose.model("Seller", sellerSchema);
+export default mongoose.model("Seller", sellerSchema);

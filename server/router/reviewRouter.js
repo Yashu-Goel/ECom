@@ -1,10 +1,11 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const Review = require("../models/reviewSchema");
-const Product = require("../models/productDetailsSchema");
-const tokenMiddleware = require("../MiddleWares/tokenMiddleWare");
-require("../db/conn.js");
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import Review from "../models/reviewSchema.js";
+import Product from "../models/productDetailsSchema.js";
+import tokenMiddleware from "../MiddleWares/tokenMiddleWare.js";
+import "../db/conn.js";
+
 dotenv.config();
 const router = express.Router();
 
@@ -83,4 +84,4 @@ router.get("/:productId", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

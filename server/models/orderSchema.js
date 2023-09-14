@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
   orderNumber: {
@@ -70,6 +70,7 @@ const orderSchema = new mongoose.Schema({
     type: Date,
   },
 });
+
 orderSchema.pre("save", async function (next) {
   const storeInitials = "PB";
 
@@ -85,4 +86,5 @@ orderSchema.pre("save", async function (next) {
 
   next();
 });
-module.exports = mongoose.model("Order", orderSchema);
+
+export default mongoose.model("Order", orderSchema);

@@ -1,28 +1,26 @@
-const express = require("express");
-const Seller = require("../models/sellerSchema.js");
-const Address = require("../models/addressSchema.js");
-const Product = require("../models/productDetailsSchema.js");
-const uniqueFilename = require("unique-filename");
-const Order = require("../models/orderSchema.js");
-const bcrypt = require("bcryptjs");
-const dotenv = require("dotenv");
-const cors = require("cors");
-require("../db/conn.js");
-const jwt = require("jsonwebtoken");
-require("aws-sdk/lib/maintenance_mode_message").suppress = true;
-const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-
-dotenv.config();
-const router = express.Router();
-
-router.use(express.json());
-router.use(cors());
-// router.use(cookieParser());
-const {
+import express from "express";
+import Seller from "../models/sellerSchema.js";
+import Address from "../models/addressSchema.js";
+import Product from "../models/productDetailsSchema.js";
+import uniqueFilename from "unique-filename";
+import Order from "../models/orderSchema.js";
+import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+import cors from "cors";
+import {
   S3Client,
   GetObjectCommand,
   PutObjectCommand,
-} = require("@aws-sdk/client-s3");
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+dotenv.config();
+const router = express.Router();
+const JWT_Secret = process.env.JWT_Secret;
+
+router.use(express.json());
+router.use(cors());
+
 const client = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
@@ -31,10 +29,7 @@ const client = new S3Client({
   },
 });
 
-
-const JWT_Secret = process.env.JWT_Secret;
-
-//signup for seller
+// Signup for seller
 router.post("/sellersignup", async (req, res) => {
   console.log(req.body);
   const { name, email, mobile, password, cpassword, gst } = req.body;
@@ -49,7 +44,7 @@ router.post("/sellersignup", async (req, res) => {
       return res.status(422).json("Seller already Exists");
     } else if (password != cpassword) {
       return res.status(422).json({
-        error: "Password and Confirm Password must be same!",
+        error: "Password and Confirm Password must be the same!",
       });
     } else {
       const user = await Seller.create({
@@ -76,7 +71,7 @@ router.post("/sellersignup", async (req, res) => {
   }
 });
 
-//login for seller
+// Login for seller
 router.post("/sellerlogin", async (req, res) => {
   try {
     const details = req.body;
@@ -108,7 +103,7 @@ router.post("/sellerlogin", async (req, res) => {
   }
 });
 
-//get seller details
+// Get seller details
 router.get("/seller_details/:id", async (req, res) => {
   try {
     const sellerId = req.params.id;
@@ -130,8 +125,7 @@ router.get("/seller_details/:id", async (req, res) => {
   }
 });
 
-//Product Details
-
+// Product Details
 router.post("/product", async (req, res) => {
   const {
     name,
@@ -143,16 +137,13 @@ router.post("/product", async (req, res) => {
     brand,
     quantity,
     imageName,
-    sellerId    
+    sellerId,
   } = req.body;
-console.log(req.body);
-res.status(200);
+  console.log(req.body);
+  res.status(200);
   try {
     const imageNamesArray = JSON.parse(req.body.imageName);
-    const imageName = imageNamesArray.map(
-      (imageObject) => imageObject.type
-    );
-
+    const imageName = imageNamesArray.map((imageObject) => imageObject.type);
 
     const product = await Product.create({
       name,
@@ -199,10 +190,10 @@ async function putObject(key, contentType) {
   }
 }
 
-
-//get product details
+// Get product details
 router.get("/products/:id", async (req, res) => {
   const productId = req.params.id;
+  console.log(productId);
   try {
     const product = await Product.findById(productId);
     if (!product) {
@@ -213,6 +204,7 @@ router.get("/products/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 router.get("/products", async (req, res) => {
   try {
     const sellerId = req.query.sellerId; // Get seller ID from query parameter
@@ -228,8 +220,6 @@ router.get("/products", async (req, res) => {
   }
 });
 
-
-
 router.post("/get-upload-url", async (req, res) => {
   try {
     const uniqueImageName = uniqueFilename("", "image");
@@ -243,9 +233,7 @@ router.post("/get-upload-url", async (req, res) => {
   }
 });
 
-
-
-// post order_details
+// Post order_details
 router.post("/order_details", async (req, res) => {
   try {
     const order = await Order.create(req.body);
@@ -266,7 +254,7 @@ router.post("/order_details", async (req, res) => {
   }
 });
 
-//update status of order
+// Update status of order
 router.patch("/order_details", async (req, res) => {
   const newStatus = req.body.status;
   const id = req.body.id;
@@ -312,7 +300,7 @@ router.patch("/order_details", async (req, res) => {
   }
 });
 
-//get order status from orderId
+// Get order status from orderId
 router.get("/order_status", async (req, res) => {
   const orderId = req.body.id;
 
@@ -328,7 +316,8 @@ router.get("/order_status", async (req, res) => {
     res.status(500).json("Internal Server Error");
   }
 });
-// get order status from userId
+
+// Get order status from userId
 router.get("/OrderStatus", async (req, res) => {
   const userId = req.query.id;
   try {
@@ -349,7 +338,6 @@ router.get("/OrderStatus", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
 //get order_details
 router.get("/order_details/:id", async (req, res) => {
   const sellerId = req.params.id;
@@ -365,8 +353,7 @@ router.get("/order_details/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
-// Update product count
+//
 router.put("/update_count", async (req, res) => {
   const count = req.body.count;
   const id = req.body.id;
@@ -407,7 +394,6 @@ router.put("/update_count", async (req, res) => {
     });
   }
 });
-
 //update product quantity
 router.put("/update_quantity", async (req, res) => {
   try {
@@ -416,7 +402,7 @@ router.put("/update_quantity", async (req, res) => {
     const updatedProduct = await Product.findOneAndUpdate(
       { _id: id },
       { $set: { quantity: count } },
-      { new: true } 
+      { new: true }
     );
 
     if (updatedProduct) {
@@ -442,8 +428,7 @@ router.put("/update_quantity", async (req, res) => {
   }
 });
 
-
-//post address
+// Post address
 router.post("/address", async (req, res) => {
   console.log(req.body);
   const { address_line, city, state, postal_code } = req.body;
@@ -468,5 +453,4 @@ router.post("/address", async (req, res) => {
   }
 });
 
-
-module.exports = router;
+export default router;

@@ -1,9 +1,9 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const OrderSchema = require("../models/orderSchema");
-const moment = require("moment");
-require("../db/conn.js");
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import OrderSchema from "../models/orderSchema.js";
+import moment from "moment";
+import "../db/conn.js";
 
 dotenv.config();
 const router = express.Router();
@@ -61,4 +61,4 @@ router.get("/order-history", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

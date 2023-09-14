@@ -1,9 +1,8 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const Product = require("../models/productDetailsSchema.js");
-
-require("../db/conn.js");
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import Product from "../models/productDetailsSchema.js";
+import "../db/conn.js";
 
 dotenv.config();
 const router = express.Router();
@@ -13,9 +12,7 @@ router.use(cors());
 
 router.post("/removeItem", async (req, res) => {
   try {
-    const user = req.user;
-    const authToken = req.token;
-
+    const { user, token } = req;
     const { updatedItems } = req.body;
 
     user.cart = updatedItems;
@@ -26,7 +23,7 @@ router.post("/removeItem", async (req, res) => {
       cart: user.cart,
       email: user.email,
       name: user.name,
-      token: authToken,
+      token,
     };
 
     return res.status(200).json(resp);
@@ -37,8 +34,7 @@ router.post("/removeItem", async (req, res) => {
 
 router.post("/additem", async (req, res) => {
   try {
-    const user = req.user;
-    const authToken = req.token;
+    const { user, token } = req;
 
     await user.cart.push(req.body);
     await user.save();
@@ -48,7 +44,7 @@ router.post("/additem", async (req, res) => {
       cart: user.cart,
       email: user.email,
       name: user.name,
-      token: authToken,
+      token,
     };
     res.status(200).json(resp);
   } catch (err) {
@@ -59,9 +55,7 @@ router.post("/additem", async (req, res) => {
 
 router.post("/upitem", async (req, res) => {
   try {
-    const user = req.user;
-    const authToken = req.token;
-
+    const { user, token } = req;
     const { _id, count } = req.body;
     user.cart.find((e) => {
       if (e._id === _id) {
@@ -74,7 +68,7 @@ router.post("/upitem", async (req, res) => {
       cart: user.cart,
       email: user.email,
       name: user.name,
-      token: authToken,
+      token,
     };
     return res.status(200).json(resp);
   } catch (e) {
@@ -92,6 +86,4 @@ router.get("/getCartInfo/:_id", async (req, res) => {
   }
 });
 
-
-
-module.exports = router;
+export default router;

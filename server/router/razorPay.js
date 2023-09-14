@@ -1,9 +1,10 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const Razorpay = require("razorpay");
-require("../db/conn.js");
+import express from "express";
+import cors from "cors";
+import crypto from "crypto";
+import Razorpay from "razorpay";
+
 const router = express.Router();
+
 router.use(express.json());
 router.use(cors());
 
@@ -14,21 +15,39 @@ const razorpay = new Razorpay({
 
 router.post("/", async (req, res) => {
   try {
-    const { amount } = req.body;
+    const payload =
+      req.body.razorpay_order_id + "|" + req.body.razorpay_payment_id;
 
-    const options = {
-      amount: amount * 100, // Amount in paise (convert to smallest currency unit)
-      currency: "INR",
-      receipt: "order_receipt_" + Date.now(),
-    };
-    const order = await razorpay.orders.create(options);
-    res.json(order);
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZOR_PAY_PIN)
+      .update(payload)
+      .digest("hex");
+
+    const clientSignature = req.body.razorpay_signature;
+
+    if (clientSignature === expectedSignature) {
+      res.status(200).send("Payment signature is valid");
+    } else {
+      res.status(400).send("Invalid payment signature");
+    }
+  } catch (error) {
+    console.error("Error creating Razorpay order:", error);
+    res.status(500).json({ error: "Error verifying Razorpay order" });
+  }
+});
+
+router.post("/capture/:id", async (req, res) => {
+  try {
+    const resp = await razorpay.payments.capture(
+      req.params.id,
+      req.body.amount,
+      "INR"
+    );
+    res.status(200).send({ resp });
   } catch (error) {
     console.error("Error creating Razorpay order:", error);
     res.status(500).json({ error: "Error creating Razorpay order" });
   }
 });
 
-
-
-module.exports = router;
+export default router;

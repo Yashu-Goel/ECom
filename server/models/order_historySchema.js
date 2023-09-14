@@ -1,6 +1,5 @@
-const mongoose = require("mongoose");
-// const User = require("./userSchema");
-//this is no more needed
+import mongoose from "mongoose";
+
 const orderHistorySchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   orderDate: {
@@ -20,4 +19,4 @@ const orderHistorySchema = new mongoose.Schema({
 // Create the OrderHistory model
 const OrderHistory = mongoose.model("OrderHistory", orderHistorySchema);
 
-module.exports = OrderHistory;
+export default OrderHistory;

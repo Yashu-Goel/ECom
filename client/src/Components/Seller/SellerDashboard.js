@@ -83,10 +83,7 @@ const SellerDashboard = () => {
         setCreditAmount(creditAmount);
 
         const updatedOrderData = [
-          {
-            text: "Total: ",
-            value: totalOrders,
-          },
+          
           {
             text: "Completed: ",
             value: completedOrders,
@@ -149,10 +146,9 @@ const SellerDashboard = () => {
       colors: [
         "#e7505a",
         "#3598dc",
-        "#32c5d2",
+        "#F28C28",
         "#8e44ad",
         "#55DD33",
-        "#F28C28",
       ],
     },
   };

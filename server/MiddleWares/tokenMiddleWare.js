@@ -1,7 +1,9 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/userSchema");
-require("dotenv").config();
-require("../db/conn.js");
+import jwt from "jsonwebtoken";
+import User from "../models/userSchema.js";
+import dotenv from "dotenv";
+import "../db/conn.js";
+
+dotenv.config();
 
 const tokenMiddleware = async (req, res, next) => {
   const token = req.header("Authorization");
@@ -22,4 +24,5 @@ const tokenMiddleware = async (req, res, next) => {
     return res.status(401).json({ error: "Invalid token" });
   }
 };
-module.exports = tokenMiddleware;
+
+export default tokenMiddleware;

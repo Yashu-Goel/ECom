@@ -1,8 +1,8 @@
-const express = require("express");
-const Product = require("../models/productDetailsSchema.js");
-const dotenv = require("dotenv");
-const cors = require("cors");
-require("../db/conn.js");
+import express from "express";
+import Product from "../models/productDetailsSchema.js";
+import dotenv from "dotenv";
+import cors from "cors";
+import "../db/conn.js";
 
 dotenv.config();
 const router = express.Router();
@@ -20,6 +20,7 @@ router.get("/getProductDetails/:_id", async (req, res) => {
     return res.status(403).send("FORBIDDEN");
   }
 });
+
 router.post("/getCategoryDetails", async (req, res) => {
   try {
     const { categories, tags } = req.body;
@@ -47,4 +48,4 @@ router.post("/getCategoryDetails", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

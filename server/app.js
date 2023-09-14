@@ -1,18 +1,19 @@
-const express = require("express");
+import express from "express";
 const app = express();
-const cors = require("cors");
+import cors from "cors";
 
-//routes...
-const userRouter = require("./router/userRouter.js");
-const editCart = require("./router/editCart.js");
-const tokenMiddleware = require("./MiddleWares/tokenMiddleWare.js");
-const sellerRouter = require("./router/sellerRouter.js");
-const getDetails = require("./router/getDetailsRouter.js");
-const updateAddress = require("./router/updateAddress");
-const createOrderId = require("./router/razorPay.js");
-const verifySign = require("./router/verifySign");
-const reviewRouter = require("./router/reviewRouter.js");
-//middle wares
+// Routes
+import userRouter from "./router/userRouter.js";
+import editCart from "./router/editCart.js";
+import tokenMiddleware from "./MiddleWares/tokenMiddleWare.js";
+import sellerRouter from "./router/sellerRouter.js";
+import getDetails from "./router/getDetailsRouter.js";
+import updateAddress from "./router/updateAddress.js";
+import createOrderId from "./router/razorPay.js";
+import verifySign from "./router/verifySign.js";
+import reviewRouter from "./router/reviewRouter.js";
+
+// Middlewares
 app.use(cors());
 app.use("/user", userRouter);
 app.use("/cart", tokenMiddleware, editCart);

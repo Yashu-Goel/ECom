@@ -1,11 +1,11 @@
-const { connect } = require("mongoose");
+import { connect } from "mongoose";
+import { config } from "dotenv";
 
-const { config } = require("dotenv");
 config();
 connect(process.env.DATABASE)
   .then(() => {
     console.log("Connected");
   })
   .catch((error) => {
-    console.log("no connection : " + error);
+    console.log("no connection: " + error);
   });
