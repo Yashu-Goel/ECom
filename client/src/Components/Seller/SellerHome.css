@@ -35,6 +35,24 @@
   color: black;
   margin-top: 5%;
   text-align: center;
+  position: relative;
+
+}
+.LeftMainContainer>h1::after{
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background-color: #000;
+  transition: all ease 1s;
+}
+.LeftMainContainer>h1:hover{
+  cursor: pointer;
+}
+.LeftMainContainer>h1:hover::after{
+  width: 100%;
 }
 
 .LeftMainContainer h2 {
@@ -86,6 +104,7 @@
 .LeftMainContainer span:hover {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   color: black;
+  cursor: pointer;
 }
 
 .WhyUsOuterContainer {
@@ -114,8 +133,21 @@
 
 .WhyUsOuterContainer div h1 {
   font-size: 1.3rem;
+  position: relative;
 }
-
+.WhyUsOuterContainer div h1::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  background-color: #333;
+  width: 0;
+  transition: all 1s ease;
+}
+.WhyUsOuterContainer div h1:hover::after{
+  width: 100%;
+}
 .WhyUsOuterContainer div p {
   font-size: 1rem;
   margin-top: 1rem;
