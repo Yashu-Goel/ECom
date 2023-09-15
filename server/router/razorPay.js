@@ -18,6 +18,7 @@ router.post("/", async (req, res) => {
     const payload =
       req.body.razorpay_order_id + "|" + req.body.razorpay_payment_id;
 
+<<<<<<< HEAD
     const expectedSignature = crypto
       .createHmac("sha256", process.env.RAZOR_PAY_PIN)
       .update(payload)
@@ -44,10 +45,23 @@ router.post("/capture/:id", async (req, res) => {
       "INR"
     );
     res.status(200).send({ resp });
+=======
+    const options = {
+      amount: amount * 100,
+      currency: "INR",
+      receipt: "order_receipt_" + Date.now(),
+    };
+    const order = await razorpay.orders.create(options);
+    res.json(order);
+>>>>>>> 20b8eb6 (reset changes)
   } catch (error) {
     console.error("Error creating Razorpay order:", error);
     res.status(500).json({ error: "Error creating Razorpay order" });
   }
 });
 
+<<<<<<< HEAD
 export default router;
+=======
+module.exports = router;
+>>>>>>> 20b8eb6 (reset changes)

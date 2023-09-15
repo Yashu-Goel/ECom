@@ -78,13 +78,24 @@ export const addedToCart = async (itemId, count, user, cart, setCart) => {
   }
 };
 
-export const removeItem = async (itemId, user, cart, setCart) => {
+export const removeItem = async (
+  itemId,
+  user,
+  cart,
+  setCart,
+  clearAll = false
+) => {
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
     },
   };
-  const updatedItems = cart.filter((item) => item._id !== itemId);
+  let updatedItems;
+  if (!clearAll) {
+    updatedItems = cart.filter((item) => item._id !== itemId);
+  } else {
+    updatedItems = [];
+  }
   await axios
     .post(API_BASE + "/cart/removeItem", { updatedItems }, config)
     .then(function (response) {

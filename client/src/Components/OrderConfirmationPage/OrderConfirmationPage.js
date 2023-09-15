@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { UserState } from "../Context/UserProvider";
 import axios from "axios";
-import { API_BASE } from "../functions/functions";
+import { API_BASE, removeItem } from "../functions/functions";
 import "./OrderConfirmationPage.css";
 import { truncateName, calculateTotal } from "./function";
 import Error from "./Error";
 import Loading from "../Loaders/Loading";
 import BillModal from "./BillModal";
 import { AWS_LINK } from "../IndividualProduct/function";
+import PaymentLoader from "../Loaders/PaymentLoader";
 
 const OrderConfirmationPage = () => {
   const [promoCode, setPromoCode] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [paymentLoader, setpaymentLoader] = useState("");
   const [address, setAddress] = useState(null);
   const [products, setProducts] = useState([]);
   const [userId, setUserId] = useState(null);
   const [paymentModal, setPaymentModal] = useState(false);
   const [bill, setBill] = useState({});
-  const { user, cart } = UserState();
+  const { user, cart, setCart } = UserState();
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -86,7 +88,7 @@ const OrderConfirmationPage = () => {
     });
   };
   const handleContinueToPayment = async () => {
-    setIsLoading(true);
+    setpaymentLoader("Please wait while payment is loading");
     setTimeout(async () => {
       try {
         await loadRazorpay();
@@ -102,7 +104,6 @@ const OrderConfirmationPage = () => {
           },
           config
         );
-
         const orderId = response?.data.id;
 
         const options = {
@@ -113,17 +114,19 @@ const OrderConfirmationPage = () => {
           description: "Payment for Order",
           order_id: orderId,
           handler: async function (response) {
-            setIsLoading(true);
             const bill = await axios.post(
               `${API_BASE}/verify-payment/capture/${response.razorpay_payment_id}`,
               {
                 amount: calculateTotal(products) * 100,
               }
             );
-            setBill(bill);
-            if (bill) {
-              setPaymentModal(true);
-              setIsLoading(false);
+            setpaymentLoader("Verifying payment!");
+            if (bill?.data?.resp?.captured) {
+              setTimeout(() => {
+                setBill(bill);
+                setPaymentModal(true);
+                setpaymentLoader("");
+              }, 1500);
             }
             if (bill?.data?.resp) {
               for (const product of products) {
@@ -148,6 +151,7 @@ const OrderConfirmationPage = () => {
                   config
                 );
               }
+              removeItem(undefined, user, cart, setCart, true);
             }
           },
           prefill: {
@@ -167,7 +171,7 @@ const OrderConfirmationPage = () => {
       } catch (error) {
         console.error("Error creating Razorpay order:", error);
       } finally {
-        setIsLoading(false);
+        setpaymentLoader("");
       }
     }, 2000);
   };
@@ -179,6 +183,7 @@ const OrderConfirmationPage = () => {
       {paymentModal && bill && (
         <BillModal onClose={closeModal} bill={bill?.data.resp} />
       )}
+      {paymentLoader && <PaymentLoader text={paymentLoader} />}
 
       {isLoading ? (
         <Loading />
