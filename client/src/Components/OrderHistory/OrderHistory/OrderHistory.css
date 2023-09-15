@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap");
 .order-history-container {
   min-width: 600px;
   width: 50%;
@@ -8,12 +9,19 @@
   display: flex;
   flex-direction: column;
   padding: 0px 10px;
+  position: relative;
 }
 .order-history-header {
   text-align: center;
-  padding: 25px;
-  font-size: large;
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  padding: 10px 25px;
+  font-size: 1.7rem;
+  font-family: "Archivo Black", sans-serif;
+  color: #000000;
+  text-transform: uppercase;
+  text-shadow: 3px 5px 2px #4747473a;
+}
+.order-history-wrapper {
+  /* margin-top: 60px; */
 }
 .filter-buttons {
   display: flex;

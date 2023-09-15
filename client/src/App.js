@@ -8,7 +8,7 @@ import SellerHome from "./Components/Seller/SellerHome";
 import AddProduct from "./Components/Seller/AddProduct";
 import SellerAuth from "./Components/Seller/SellerAuth";
 import SellerOrders from "./Components/Seller/SellerOrders";
-import OrderHistory from "./Components/OrderHistory/OrderHistory";
+import OrderHistory from "./Components/OrderHistory/OrderHistory/OrderHistory";
 import SellerProvider from "./Components/Seller/SellerProvider";
 import UserProfile from "./Components/UserProfile/UserProfile";
 import SellerCatalogue from "./Components/Seller/SellerCatalogue";
@@ -20,6 +20,7 @@ import CategoryPage from "./Components/Deals/CategoryPage";
 import BillModal from "./Components/OrderConfirmationPage/BillModal";
 import NavbarWithFooter from "./Components/NavbarWithFooter/NavbarWithFooter";
 import Breadcrumbs from "./Components/Breadcrumbs/Breadcrumbs";
+import ProgressBar from "./Components/ProceedToCheckOut/ProgressBar";
 function App() {
   return (
     <>
@@ -30,7 +31,18 @@ function App() {
           <Route exact path="/auth" element={<Auth />} />
         </Route>
 
-        <Route exact path="/checkout" element={<Breadcrumbs />}>
+        <Route
+          exact
+          path="/checkout"
+          element={
+            <Breadcrumbs
+              LinkText={"checkout"}
+              RouteOne={"Checkout"}
+              RouteTwo={"Confirm Order"}
+              ComponentOne={<ProgressBar />}
+            />
+          }
+        >
           <Route path="" element={<ShippingDetails />} />
           <Route
             exact

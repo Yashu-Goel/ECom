@@ -1,9 +1,15 @@
 import React from "react";
-import ProgressBar from "../ProceedToCheckOut/ProgressBar";
 import { Link, Outlet, useMatch } from "react-router-dom";
 import "./Breadcrumbs.css";
-function Breadcrumbs() {
-  const match = useMatch("/checkout/*");
+
+function Breadcrumbs({
+  LinkText,
+  RouteOne,
+  RouteTwo = false,
+  ComponentOne = false,
+  customStyle = false,
+}) {
+  const match = useMatch(`/${LinkText}/*`);
   if (!match) {
     return null;
   }
@@ -11,8 +17,8 @@ function Breadcrumbs() {
   const routes = match.pathname.split("/").filter(Boolean);
   return (
     <>
-      <ProgressBar />
-      <nav className="breadcrumb-nav">
+      {ComponentOne && ComponentOne}
+      <nav className="breadcrumb-nav" style={customStyle && customStyle}>
         <ul>
           <li>
             <Link to="/">Home</Link>
@@ -21,7 +27,9 @@ function Breadcrumbs() {
             <li key={index}>
               <strong>{` > `}</strong>
               <Link to={`/${routes.slice(0, index + 1).join("/")}`}>
-                {route === "checkout" ? "Checkout" : "Confirm Order"}
+                {route === `${LinkText}`
+                  ? `${RouteOne && RouteOne}`
+                  : `${RouteTwo && RouteTwo}`}
               </Link>
             </li>
           ))}
