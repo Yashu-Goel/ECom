@@ -7,6 +7,8 @@ import Order from "../models/orderSchema.js";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import cors from "cors";
+import jwt from "jsonwebtoken";
+
 import {
   S3Client,
   GetObjectCommand,
