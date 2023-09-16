@@ -20,9 +20,6 @@
   text-transform: uppercase;
   text-shadow: 3px 5px 2px #4747473a;
 }
-.order-history-wrapper {
-  /* margin-top: 60px; */
-}
 .filter-buttons {
   display: flex;
   justify-content: space-between;

@@ -20,12 +20,6 @@ const CartModal = ({ closeModal }) => {
   const [products, setProducts] = useState([]);
   const [imageLoaded, setImageLoaded] = useState([]);
   const [isloading, setisLoading] = useState(true);
-
-  const handleImageLoad = (index) => {
-    const updatedImageLoaded = [...imageLoaded];
-    updatedImageLoaded[index] = true;
-    setImageLoaded(updatedImageLoaded);
-  };
   useEffect(() => {
     setisLoading(true);
     const getProductDetails = async () => {
@@ -59,6 +53,14 @@ const CartModal = ({ closeModal }) => {
 
     getProductDetails();
   }, [cart, user.token]);
+
+  const handleImageLoad = (index) => {
+    const updatedImageLoaded = [...imageLoaded];
+    updatedImageLoaded[index] = true;
+    setImageLoaded(updatedImageLoaded);
+  };
+  const styles = { marginRight: "10px" };
+
   return (
     <div className="modal">
       <div className="modal-content">
@@ -140,7 +142,7 @@ const CartModal = ({ closeModal }) => {
                             <Skeleton
                               width={80}
                               height={30}
-                              style={{ marginRight: "10px" }}
+                              style={{ marginRight: "10px", marginTop: "0px" }}
                             />{" "}
                             <Skeleton width={80} height={30} />{" "}
                           </>

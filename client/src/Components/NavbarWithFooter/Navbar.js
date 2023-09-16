@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 import ConfirmationModal from "./ConfirmationModal";
 import { UserState } from "../Context/UserProvider";
@@ -135,6 +135,11 @@ const Navbar = () => {
       toast.error("Logout failed. Please try again later.");
     }
   };
+  function toggleCategories() {
+    const categories = document.querySelector(".navbar-categories");
+    categories.style.display =
+      categories.style.display === "none" ? "flex" : "none";
+  }
 
   return (
     <>
@@ -146,27 +151,28 @@ const Navbar = () => {
         />
       )}
       <div className="navbar-header">
+        <button className="burger-menu" onClick={() => toggleCategories()}>
+          <i className="fa-solid fa-bars"></i>
+        </button>
         <div className="logo nav-elements">
           <Link to="/">
             <img src={Logo} />
           </Link>
         </div>
 
-        <div className="categories">
+        <div className="navbar-categories">
           {categories.map((category, index) => (
-            <div className="dropdown" key={index}>
+            <div className="custom-dropdown" key={index}>
               <button
-                className="btn btn-primary dropdown-toggle"
+                className="custom-btn"
                 type="button"
-                id={`dropdownMenuButton${index}`}
-                data-mdb-toggle="dropdown"
                 aria-expanded="false"
               >
                 {category.title}
               </button>
               <ul
-                className="dropdown-menu"
-                aria-labelledby={`dropdownMenuButton${index}`}
+                className="custom-dropdown-menu"
+                aria-labelledby={`custom-dropdownMenuButton${index}`}
               >
                 {category.items.map((item, itemIndex) => (
                   <li key={itemIndex}>
@@ -179,32 +185,35 @@ const Navbar = () => {
             </div>
           ))}
         </div>
-        <div className="nav-search">
+
+        <div className="custom-nav-search">
           <input type="text" placeholder="I'm looking for..." />
-          <div className="search-icon">
+          <div className="custom-search-icon">
             <i className="fa-solid fa-magnifying-glass"></i>
           </div>
         </div>
 
-        <div className="nav-icons">
+        <div className="custom-nav-icons">
           {user !== null ? (
-            <div className="nav-symbols">
+            <div className="custom-nav-symbols">
               <button
-                className="nav-heart"
-                id="dropdown-btn"
+                className="custom-nav-heart"
+                id="custom-dropdown-btn"
                 onClick={() => setIsDropdownVisible(!isDropdownVisible)}
               >
                 <i className="fa-solid fa-user"></i>
               </button>
               <div
-                className={`dropdown-menu ${isDropdownVisible ? "show" : ""}`}
-                id="dropdown-menu"
+                className={`custom-dropdown-menu ${
+                  isDropdownVisible ? "show" : ""
+                }`}
+                id="custom-dropdown-menu"
               >
                 <Link to={"/order-history"}>
-                  <i class="fa-solid fa-clipboard-list"></i>My Orders
+                  <i className="fa-solid fa-clipboard-list"></i>My Orders
                 </Link>
                 <Link to={"/user-profile"}>
-                  <i class="fa-solid fa-user"></i>Account
+                  <i className="fa-solid fa-user"></i>Account
                 </Link>
 
                 <button
@@ -213,11 +222,14 @@ const Navbar = () => {
                     setIsDropdownVisible(false);
                   }}
                 >
-                  <i class="fa-solid fa-right-from-bracket"></i>
+                  <i className="fa-solid fa-right-from-bracket"></i>
                   Logout
                 </button>
               </div>
-              <button className="nav-shop" onClick={() => setShowModal(true)}>
+              <button
+                className="custom-nav-shop"
+                onClick={() => setShowModal(true)}
+              >
                 {cart && cart.length === 0 ? (
                   <i className="fa-solid fa-cart-shopping"></i>
                 ) : (
@@ -226,7 +238,10 @@ const Navbar = () => {
                   </i>
                 )}
               </button>
-              <button className="nav-heart" onClick={() => setHeart(!heart)}>
+              <button
+                className="custom-nav-heart"
+                onClick={() => setHeart(!heart)}
+              >
                 <i
                   className="fa-solid fa-heart"
                   style={{ color: heart && "red" }}
@@ -234,7 +249,7 @@ const Navbar = () => {
               </button>
             </div>
           ) : (
-            <Link className="nav-login" to={"/auth"}>
+            <Link className="custom-nav-login" to={"/auth"}>
               LOGIN | SIGNUP
             </Link>
           )}

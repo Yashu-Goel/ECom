@@ -7,7 +7,7 @@ function Breadcrumbs({
   RouteOne,
   RouteTwo = false,
   ComponentOne = false,
-  customStyle = false,
+  customStyle = {},
 }) {
   const match = useMatch(`/${LinkText}/*`);
   if (!match) {
@@ -18,7 +18,7 @@ function Breadcrumbs({
   return (
     <>
       {ComponentOne && ComponentOne}
-      <nav className="breadcrumb-nav" style={customStyle && customStyle}>
+      <nav className="breadcrumb-nav" style={customStyle}>
         <ul>
           <li>
             <Link to="/">Home</Link>
