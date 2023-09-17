@@ -27,3 +27,12 @@
   display: flex;
   justify-content: space-between;
 }
+@media (max-width: 900px) {
+  .first-coursel {
+    /* background-color: #fff; */
+    margin: 5px;
+    padding: 5px;
+    /* border-radius: 2px; */
+  }
+}
+
