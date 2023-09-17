@@ -42,7 +42,10 @@ const SellerOrders = () => {
         const response = await axios.get(
           API_BASE + `/seller/order_details/${sellerId}`
         );
-        setOrderDetails(response.data);
+const sortedOrders = response.data.sort(
+  (a, b) => new Date(b.date) - new Date(a.date)
+);
+setOrderDetails(sortedOrders);
         setTimeout(() => {
           setLoading(false);
         }, 1000);
