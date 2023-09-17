@@ -90,6 +90,12 @@
   border: none;
   font-weight: 500;
 }
+.custom-nav-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0px;
+}
 .custom-nav-login:hover {
   background-color: white;
   color: #000;
@@ -157,7 +163,7 @@
   display: none;
 }
 @media (max-width: 1200px) {
-  .navbar-categories {
+  /* .navbar-categories {
     display: none;
   }
   .navbar-categories{
@@ -166,7 +172,6 @@
   .burger-menu {
     display: block;
   }
-  /* Style for burger menu icon */
   .burger-menu {
     background: none;
     border: none;
@@ -174,5 +179,5 @@
     font-size: 24px;
     color: white;
     margin-right: 10px;
-  }
+  } */
 }

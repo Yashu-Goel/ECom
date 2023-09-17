@@ -10,6 +10,7 @@ const Coursel = () => {
   ];
   const imageSlides = document.getElementsByClassName("slide-image");
   const bubbles = document.getElementsByClassName("bubble-outer");
+
   const nextImage = () => {
     let newIndex = current === images.length - 1 ? 0 : current + 1;
     imageSlides[current].className = "slide-image leftOut";
@@ -47,10 +48,12 @@ const Coursel = () => {
   return (
     <>
       <div className="outer-coursel">
-        <button className="button-prev" onClick={prevImage}>
+        <button className="button-prev-btn" onClick={prevImage}>
           {"<"}
         </button>
-
+        <button className="button-next-btn" onClick={nextImage}>
+          {">"}
+        </button>
         <div className="gallery-container">
           <div className="gallery-track">
             {images.map((image, index) => {
@@ -82,9 +85,6 @@ const Coursel = () => {
             );
           })}
         </div>
-        <button className="button-next" onClick={nextImage}>
-          {">"}
-        </button>
       </div>
     </>
   );

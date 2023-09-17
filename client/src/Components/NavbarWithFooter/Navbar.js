@@ -187,7 +187,7 @@ const Navbar = () => {
         </div>
 
         <div className="custom-nav-search">
-          <input type="text" placeholder="I'm looking for..." />
+          <input type="text" placeholder="" />
           <div className="custom-search-icon">
             <i className="fa-solid fa-magnifying-glass"></i>
           </div>
