@@ -8,13 +8,25 @@ import { API_BASE } from "../functions/functions";
 import Product from "./Modal/Product";
 import Loading from "./Loading";
 import Customer from "./Modal/Customer";
-
+import Pagination from "../OrderHistory/Pagination/Pagination";
 const SellerOrders = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); // Current page
+  const [ordersPerPage] = useState(10);
 
+
+   const handlePageChange = (page) => {
+     setCurrentPage(page-1);
+   };
+    const indexOfLastOrder = currentPage * ordersPerPage;
+    const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+    const currentOrders = orderDetails.slice(
+      indexOfFirstOrder,
+      indexOfLastOrder
+    );
   const openProductModal = (product) => {
     setSelectedProduct(product);
   };
@@ -42,7 +54,10 @@ const SellerOrders = () => {
         const response = await axios.get(
           API_BASE + `/seller/order_details/${sellerId}`
         );
-        setOrderDetails(response.data);
+const sortedOrders = response.data.sort(
+  (a, b) => new Date(b.date) - new Date(a.date)
+);
+setOrderDetails(sortedOrders);
         setTimeout(() => {
           setLoading(false);
         }, 1000);
@@ -230,6 +245,12 @@ const SellerOrders = () => {
               </tbody>
             </table>
           </div>
+          <Pagination
+            TotalOrder={orderDetails.length}
+            OrderPerPage={ordersPerPage}
+            handlePageChange={handlePageChange}
+            currentPage={currentPage}
+          />
         </div>
       )}
     </div>
