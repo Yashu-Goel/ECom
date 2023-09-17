@@ -10,7 +10,10 @@ const Pagination = ({
   for (let i = 1; i <= Math.ceil(TotalOrder / OrderPerPage); ++i) {
     pages.push(i);
   }
-
+console.log(TotalOrder);
+console.log(OrderPerPage);
+console.log(handlePageChange);
+console.log(currentPage);
   return (
     <div className="pagination-container">
       {pages?.map((page, index) => {
