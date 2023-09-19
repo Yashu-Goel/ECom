@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { SellerContext } from "./SellerProvider";
+import { API_BASE } from "../functions/functions";
 
 const SellerAuth = () => {
   const { isLoggedIn, toggleLoginStatus, logout } = useContext(SellerContext); 
@@ -17,7 +18,6 @@ const SellerAuth = () => {
     gst: "",
   });
 
-  const API_BASE = "http://192.168.0.103:5000";
   const navigate = useNavigate();
 
   const [loginData, setLoginData] = useState({

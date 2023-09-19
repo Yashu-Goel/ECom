@@ -5,8 +5,8 @@ import LeftSideBar from './LeftSideBar'
 import SellerNav from './SellerNav'
 import SellerProvider from "./SellerProvider";
 import { CgProfile } from "react-icons/cg";
+import { API_BASE } from "../functions/functions";
 
-const API_BASE = "http://localhost:5000";
 const Profile = () => {
 
 const [sellerData, setSellerData] = useState([]);

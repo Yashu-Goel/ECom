@@ -4,9 +4,8 @@ import SellerNav from "./SellerNav";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-
+import { API_BASE } from "../functions/functions";
 const AddProduct = () => {
-  const API_BASE = "http://192.168.0.103:5000";
   const [selectedImages, setSelectedImages] = useState([]);
   const [ProductData, setProductData] = useState({
     name: "",

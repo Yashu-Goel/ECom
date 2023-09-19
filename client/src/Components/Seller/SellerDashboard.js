@@ -4,7 +4,7 @@ import ReactApexChart from "react-apexcharts";
 import axios from "axios";
 import "./SellerDashboard.css";
 import Loading from "./Loading";
-const API_BASE = "http://192.168.0.103:5000";
+import { API_BASE } from "../functions/functions";
 
 const SellerDashboard = () => {
   const [length, setLength] = useState(0);
