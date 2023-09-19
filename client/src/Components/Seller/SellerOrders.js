@@ -15,18 +15,39 @@ const SellerOrders = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [currentPage, setCurrentPage] = useState(1); // Current page
-  const [ordersPerPage] = useState(10);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const sellerId = localStorage.getItem("_id");
+        if (!sellerId) {
+          window.alert("Seller Id not found!!");
+          return;
+        }
+        const response = await axios.get(
+          API_BASE + `/seller/order_details/${sellerId}`
+        );
+        const sortedOrders = response.data.sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+        setOrderDetails(sortedOrders);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      } catch (error) {
+        console.log("Error: " + error);
+      }
+    };
+    fetchData();
+  }, []);
 
-   const handlePageChange = (page) => {
-     setCurrentPage(page-1);
-   };
-    const indexOfLastOrder = currentPage * ordersPerPage;
-    const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-    const currentOrders = orderDetails.slice(
-      indexOfFirstOrder,
-      indexOfLastOrder
-    );
+  // const handlePageChange = (page) => {
+  //   setCurrentPage(page - 1);
+  // };
+  const indexOfLastOrder = currentPage * 10;
+  const indexOfFirstOrder = indexOfLastOrder - 10;
+  const currentOrders = orderDetails?.slice(indexOfFirstOrder, indexOfLastOrder);
   const openProductModal = (product) => {
     setSelectedProduct(product);
   };
@@ -41,32 +62,6 @@ const SellerOrders = () => {
   const closeCustomerModal = () => {
     setSelectedCustomer(null);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const sellerId = localStorage.getItem("_id");
-        if (!sellerId) {
-          window.alert("Seller Id not found!!");
-          return;
-        }
-        const response = await axios.get(
-          API_BASE + `/seller/order_details/${sellerId}`
-        );
-const sortedOrders = response.data.sort(
-  (a, b) => new Date(b.date) - new Date(a.date)
-);
-setOrderDetails(sortedOrders);
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
-      } catch (error) {
-        console.log("Error: " + error);
-      }
-    };
-    fetchData();
-  }, []);
 
   const handleProductStatusChange = async (
     orderId,
@@ -116,8 +111,7 @@ setOrderDetails(sortedOrders);
         toast.error("Error in updating order status");
       }
     } catch (error) {
-      if (error.request.status==400)
-      {
+      if (error.request.status == 400) {
         toast.info("Insufficient quantity");
         return;
       }
@@ -156,7 +150,7 @@ setOrderDetails(sortedOrders);
                 </tr>
               </thead>
               <tbody className="TableBody">
-                {orderDetails.map((order) => {
+                {currentOrders?.map((order) => {
                   const {
                     _id,
                     orderNumber,
@@ -246,9 +240,9 @@ setOrderDetails(sortedOrders);
             </table>
           </div>
           <Pagination
-            TotalOrder={orderDetails.length}
-            OrderPerPage={ordersPerPage}
-            handlePageChange={handlePageChange}
+            TotalOrder={orderDetails?.length}
+            OrderPerPage={10}
+            handlePageChange={setCurrentPage}
             currentPage={currentPage}
           />
         </div>
