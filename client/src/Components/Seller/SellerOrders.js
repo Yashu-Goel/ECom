@@ -42,9 +42,7 @@ const SellerOrders = () => {
     fetchData();
   }, []);
 
-  // const handlePageChange = (page) => {
-  //   setCurrentPage(page - 1);
-  // };
+
   const indexOfLastOrder = currentPage * 10;
   const indexOfFirstOrder = indexOfLastOrder - 10;
   const currentOrders = orderDetails?.slice(indexOfFirstOrder, indexOfLastOrder);
@@ -119,25 +117,28 @@ const SellerOrders = () => {
     }
   };
 
-  return (
-    <div>
-      {loading ? (
-        <Loading />
-      ) : (
-        <div className="SellerOrderOuterContainer">
-          {selectedProduct && (
-            <Product product={selectedProduct} onClose={closeProductModal} />
-          )}
-          {selectedCustomer && (
-            <Customer
-              customer_address={selectedCustomer}
-              onClose={closeCustomerModal}
-            />
-          )}
-          <div className="SellerNavContainer">
-            <SellerNav />
-          </div>
-          <div className="OuterTableContainer">
+return (
+  <div>
+    {loading ? (
+      <Loading />
+    ) : (
+      <div className="SellerOrderOuterContainer">
+        {selectedProduct && (
+          <Product product={selectedProduct} onClose={closeProductModal} />
+        )}
+        {selectedCustomer && (
+          <Customer
+            customer_address={selectedCustomer}
+            onClose={closeCustomerModal}
+          />
+        )}
+        <div className="SellerNavContainer">
+          <SellerNav />
+        </div>
+        <div className="OuterTableContainer">
+          {orderDetails.length === 0 ? (
+            <p>No orders yet.</p>
+          ) : (
             <table className="OrderTable">
               <thead className="TableHeading">
                 <tr>
@@ -238,17 +239,19 @@ const SellerOrders = () => {
                 })}
               </tbody>
             </table>
-          </div>
-          <Pagination
-            TotalOrder={orderDetails?.length}
-            OrderPerPage={10}
-            handlePageChange={setCurrentPage}
-            currentPage={currentPage}
-          />
+          )}
         </div>
-      )}
-    </div>
-  );
+        <Pagination
+          TotalOrder={orderDetails?.length}
+          OrderPerPage={10}
+          handlePageChange={setCurrentPage}
+          currentPage={currentPage}
+        />
+      </div>
+    )}
+  </div>
+);
+
 };
 
 export default SellerOrders;

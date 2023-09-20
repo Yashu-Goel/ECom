@@ -32,105 +32,107 @@ const SellerDashboard = () => {
     },
   ]);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true)
-        const sellerId = localStorage.getItem("_id");
-        const response = await axios.get(
-          API_BASE + `/seller/products?sellerId=${sellerId}`
-        );
-        if (response.data.length > 0) {
-          setLength(response.data.length);
-        }
-
-        const order_response = await axios.get(
-          API_BASE + `/seller/order_details/${sellerId}`
-        );
-          console.log(order_response.data);
-        let completedOrders = 0;
-        let shippedOrders = 0;
-        let pendingOrders = 0;
-        let cancelledOrders = 0;
-        let out_for_delivery=0;
-        order_response.data.forEach((order) => {
-          if (order.currentStatus === "delivered") {
-            completedOrders = completedOrders + parseInt(order.count);
-          } else if (order.currentStatus === "shipped") {
-            shippedOrders = shippedOrders + parseInt(order.count);
-          } else if (order.currentStatus === "out_for_delivery") {
-            out_for_delivery = out_for_delivery + parseInt(order.count);
-          } else if (order.currentStatus === "pending") {
-            pendingOrders = pendingOrders + parseInt(order.count);
-          } else if (order.currentStatus === "cancelled") {
-            cancelledOrders = cancelledOrders + parseInt(order.count);
-          }
-        });
-        console.log(completedOrders);
-        let totalOrders = 0;
-        let totalSales = 0;
-
-        order_response.data.forEach((order) => {
-          totalOrders += parseInt(order.count);
-          totalSales += parseInt(order.amount);
-        });
-
-        const creditAmount = Math.floor(totalSales * 0.98);
-
-        setOrderDetails(order_response.data);
-        setTotalOrders(totalOrders);
-        setTotalSales(totalSales);
-        setCreditAmount(creditAmount);
-
-        const updatedOrderData = [
-          
-          {
-            text: "Completed: ",
-            value: completedOrders,
-          },
-          {
-            text: "Shipped: ",
-            value: shippedOrders,
-          },
-          {
-            text: "Pending",
-            value: pendingOrders,
-          },
-          {
-            text: "Cancelled: ",
-            value: cancelledOrders,
-          },
-          {
-            text: "Out for Delivery: ",
-            value: out_for_delivery,
-          }
-        ];
-        setOrderData(updatedOrderData);
-                setTimeout(() => {
-                  setLoading(false);
-                }, 1000);
-
-      } catch (error) {
-        console.error("Error fetching products:", error);
+useEffect(() => {
+  (async () => {
+    try {
+      setLoading(true);
+      const sellerId = localStorage.getItem("_id");
+      const response = await axios.get(
+        API_BASE + `/seller/products?sellerId=${sellerId}`
+      );
+      if (response.data.length > 0) {
+        setLength(response.data.length);
       }
-    })();
-  }, []);
+
+      const order_response = await axios.get(
+        API_BASE + `/seller/order_details/${sellerId}`
+      );
+      console.log(order_response.data);
+      let completedOrders = 0;
+      let shippedOrders = 0;
+      let pendingOrders = 0;
+      let cancelledOrders = 0;
+      let out_for_delivery = 0;
+      let totalSales = 0; // Initialize totalSales here
+
+      order_response.data.forEach((order) => {
+        if (order.currentStatus === "delivered") {
+          completedOrders = completedOrders + parseInt(order.count);
+          totalSales += parseInt(order.amount); // Add to totalSales when delivered
+        } else if (order.currentStatus === "shipped") {
+          shippedOrders = shippedOrders + parseInt(order.count);
+        } else if (order.currentStatus === "out_for_delivery") {
+          out_for_delivery = out_for_delivery + parseInt(order.count);
+        } else if (order.currentStatus === "pending") {
+          pendingOrders = pendingOrders + parseInt(order.count);
+        } else if (order.currentStatus === "cancelled") {
+          cancelledOrders = cancelledOrders + parseInt(order.count);
+        }
+      });
+
+      // Calculate credit amount based on total sales
+      const creditAmount = Math.floor(totalSales * 0.98);
+
+      setOrderDetails(order_response.data);
+      setTotalOrders(
+        completedOrders +
+          shippedOrders +
+          out_for_delivery +
+          pendingOrders +
+          cancelledOrders
+      );
+      setTotalSales(totalSales);
+      setCreditAmount(creditAmount);
+
+      const updatedOrderData = [
+        {
+          text: "Completed: ",
+          value: completedOrders,
+        },
+        {
+          text: "Shipped: ",
+          value: shippedOrders,
+        },
+        {
+          text: "Pending",
+          value: pendingOrders,
+        },
+        {
+          text: "Cancelled: ",
+          value: cancelledOrders,
+        },
+        {
+          text: "Out for Delivery: ",
+          value: out_for_delivery,
+        },
+      ];
+      setOrderData(updatedOrderData);
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  })();
+}, []);
+
 
   const data = [
     {
       value: `₹ ${creditAmount}`,
       text: "Credit Amount",
-      color: "#e7505a",
+      color: "#f0284a",
     },
     {
       value: `₹ ${totalSales}`,
       text: "Total Sales",
-      color: "#3598dc",
+      color: "#1877f2",
     },
     {
       value: totalOrders,
       text: "Total Orders",
-      color: "#32c5d2",
+      color: "#2abba7",
     },
     {
       value: length,
@@ -143,13 +145,7 @@ const SellerDashboard = () => {
     series: orderData.map((item) => Number(item.value)),
     options: {
       labels: orderData.map((item) => item.text),
-      colors: [
-        "#e7505a",
-        "#3598dc",
-        "#F28C28",
-        "#8e44ad",
-        "#55DD33",
-      ],
+      colors: ["#f0284a", "#1877f2", "#F28C28", "#8e44ad", "#55DD33"],
     },
   };
 
@@ -174,8 +170,9 @@ const SellerDashboard = () => {
             ))}
           </div>
           <div className="OrdersMainContainer">
-            <div>
+            <div className="OrderHeadingOuter">
               <p className="OrderHeading">Orders</p>
+              <p>kerfgwvrtejrwntbk hneuvorhimdfg tgf;oirjerhvre</p>
             </div>
             <div className="OrderInnerContainer">
               <div className="OrderDataItems">

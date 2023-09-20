@@ -41,13 +41,19 @@
     padding: 2rem;
     overflow: hidden; 
     user-select: none;
+    text-align: center;
+}
+.OrderHeadingOuter{
+    display: flex;
+    justify-content: space-around;
+}
+.OrderHeadingOuter p:nth-child(2) {
+    color: transparent;
 }
 
 .OrderHeading {
-    border-bottom: 1px solid black;
     font-size: 2rem;
     font-weight: 600;
-    padding-left: 2rem;
 }
 
 .OrderInnerContainer {
@@ -93,6 +99,10 @@
     margin-left: 1rem;
     font-weight: 400;
 }
+.OrderInnerContainer{
+    border-top: 1px solid black;
+    justify-content: space-around;
+}
 .PieChart {
     display: flex;
     align-items: center;
@@ -130,5 +140,12 @@
         flex-direction: column;
         align-items: center;
     }
+      .OrderHeadingOuter p:nth-child(1) {
+        text-align: center;
+        width: 100%;
+}
+    .OrderHeadingOuter p:nth-child(2) {
+    display: none;
+}
 }
 
