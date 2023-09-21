@@ -1,5 +1,4 @@
 .outer-trending-grid {
-  /* background-color: gold; */
   margin: 2px 30px;
   display: flex;
   justify-content: space-between;
@@ -116,4 +115,20 @@
   margin: 20px 20px;
   padding: 5px 20px;
   border-radius: 2px;
+}
+
+@media (max-width: 900px) {
+  .trending-ele {
+    margin: 10px 1px;
+    padding: 5px 0px;
+  }
+  .outer-trending-grid {
+    margin: 2px 0px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .trending-card {
+    width: 192px;
+    height: 256px;
+  }
 }

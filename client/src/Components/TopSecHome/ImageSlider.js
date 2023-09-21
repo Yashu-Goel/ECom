@@ -14,45 +14,47 @@ const ImageSlider = ({ slider, loop, text }) => {
     spaceBetween: 10,
     width: 1200,
   });
+  const [screenWidth, setInnerWidth] = useState(window.innerWidth);
 
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     const screenWidth = window.innerWidth;
-  //     if (screenWidth <= 768) {
-  //       setSwiperConfig({
-  //         slidesPerView: 60,
-  //         spaceBetween: 10,
-  //         width: 700,
-  //       });
-  //     } else if (screenWidth <= 992) {
-  //       setSwiperConfig({
-  //         slidesPerView: 3,
-  //         spaceBetween: 10,
-  //         width: 700,
-  //       });
-  //     } else if (screenWidth <= 1200) {
-  //       setSwiperConfig({
-  //         slidesPerView: 4,
-  //         spaceBetween: 10,
-  //         width: 900,
-  //       });
-  //     } else {
-  //       setSwiperConfig({
-  //         slidesPerView: 50,
-  //         spaceBetween: 10,
-  //         width: 1200,
-  //       });
-  //     }
-  //   };
-  //   window.onload = () => {
-  //     handleResize();
-  //     window.addEventListener("resize", handleResize);
-  //   };
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
-  // console.log(swiperConfig);
+  useEffect(() => {
+    const handleResize = () => {
+      setInnerWidth(window?.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      if (screenWidth <= 768) {
+        setSwiperConfig({
+          slidesPerView: 6,
+          spaceBetween: 0,
+          width: 1200,
+        });
+      } else if (screenWidth <= 992) {
+        setSwiperConfig({
+          slidesPerView: 6,
+          spaceBetween: 10,
+          width: 1200,
+        });
+      } else if (screenWidth <= 1200) {
+        setSwiperConfig({
+          slidesPerView: 5,
+          spaceBetween: 10,
+          width: 1200,
+        });
+      } else {
+        setSwiperConfig({
+          slidesPerView: 5,
+          spaceBetween: 10,
+          width: 1200,
+        });
+      }
+    };
+    handleResize();
+  }, [screenWidth]);
   return (
     <Swiper
       {...swiperConfig}

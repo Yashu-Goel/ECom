@@ -109,6 +109,7 @@ const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
   const [heart, setHeart] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [togglemenu, setTogglemenu] = useState(false);
   const { user, cart } = UserState();
 
   const handleLogout = () => {
@@ -135,12 +136,9 @@ const Navbar = () => {
       toast.error("Logout failed. Please try again later.");
     }
   };
-  function toggleCategories() {
-    const categories = document.querySelector(".navbar-categories");
-    categories.style.display =
-      categories.style.display === "none" ? "flex" : "none";
-  }
-
+  const customStyle = {
+    color: "black",
+  };
   return (
     <>
       {showModal && <CartModal closeModal={() => setShowModal(false)} />}
@@ -151,27 +149,29 @@ const Navbar = () => {
         />
       )}
       <div className="navbar-header">
-        <button className="burger-menu" onClick={() => toggleCategories()}>
+        <button
+          className="burger-menu"
+          id="navbar-toggle"
+          onClick={() => setTogglemenu(!togglemenu)}
+          style={togglemenu ? customStyle : {}}
+        >
           <i className="fa-solid fa-bars"></i>
         </button>
+
         <div className="logo nav-elements">
           <Link to="/">
-            <img src={Logo} />
+            <img src={Logo} alt="logo" />
           </Link>
         </div>
 
-        <div className="navbar-categories">
+        <div className={`${togglemenu ? "nav-mobile" : "navbar-categories"}`}>
           {categories.map((category, index) => (
             <div className="custom-dropdown" key={index}>
-              <button
-                className="custom-btn"
-                type="button"
-                aria-expanded="false"
-              >
+              <button className="custom-btn" aria-expanded="false">
                 {category.title}
               </button>
               <ul
-                className="custom-dropdown-menu"
+                className="custom-dropdown-menu nav-mobile-inner"
                 aria-labelledby={`custom-dropdownMenuButton${index}`}
               >
                 {category.items.map((item, itemIndex) => (
@@ -187,7 +187,7 @@ const Navbar = () => {
         </div>
 
         <div className="custom-nav-search">
-          <input type="text" placeholder="" />
+          <input type="text" placeholder="Iphone 15 Pro .." />
           <div className="custom-search-icon">
             <i className="fa-solid fa-magnifying-glass"></i>
           </div>

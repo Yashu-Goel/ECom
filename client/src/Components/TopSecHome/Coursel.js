@@ -59,6 +59,7 @@ const Coursel = () => {
             {images.map((image, index) => {
               return (
                 <div
+                  key={index}
                   className="slide-image"
                   style={
                     index === 0

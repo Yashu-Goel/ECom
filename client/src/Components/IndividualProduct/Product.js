@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
-import "react-toastify/dist/ReactToastify.css";
 import ImageSlider from "../TopSecHome/ImageSlider";
 import firstSlider from "../dummyDatas/firstSlider.json";
 import "./Product.css";
@@ -90,8 +89,8 @@ export const Product = () => {
             <div className="product-page">
               <div className="product-pics outer-divs">
                 <div className="image-thums">
-                  {productDetails.imageName &&
-                    productDetails.imageName.map((pic, index) => {
+                  {productDetails?.imageName &&
+                    productDetails?.imageName.map((pic, index) => {
                       return (
                         <div className="inner-thumb-pics" key={index}>
                           {
@@ -106,6 +105,7 @@ export const Product = () => {
                       );
                     })}
                 </div>
+
                 <div className="main-image">
                   {productDetails.imageName &&
                     productDetails.imageName.length > 0 && (
@@ -113,6 +113,7 @@ export const Product = () => {
                     )}
                 </div>
               </div>
+
               <div className="product-desc outer-divs">
                 <div>
                   <div className="product-name">
@@ -175,6 +176,7 @@ export const Product = () => {
                       Inclusive of all taxes
                     </div>
                   </div>
+
                   <div className="product-decription">
                     <h3 className="about-this">About this item</h3>
                     <ul className="product-details">
@@ -208,20 +210,23 @@ export const Product = () => {
                   </div>
                 </div>
               </div>
+
               <div className="product-buy outer-divs">
                 <div className="product-buy-div">
                   {productDetails.quantityOptions !== 0 && (
-                    <>
+                    <div>
                       <h2 className="checking">
                         Check for product Availabilty:-
                       </h2>
-                      <input
-                        type="text"
-                        placeholder="Pincode"
-                        className="pincode"
-                      />
-                      <button className="pin-search">Search</button>
-                    </>
+                      <div className="inner-heading">
+                        <input
+                          type="text"
+                          placeholder="eg: 110099"
+                          className="pincode"
+                        />
+                        <button className="pin-search">Search</button>
+                      </div>
+                    </div>
                   )}
                 </div>
                 {productDetails.quantityOptions === 0 ? (
@@ -280,6 +285,7 @@ export const Product = () => {
                 </div>
               </div>
             </div>
+
             <div id="reviews" className="product-reviews">
               {!reviews.length ? (
                 <h1>No reviews yet</h1>
@@ -326,6 +332,7 @@ export const Product = () => {
                 </div>
               )}
             </div>
+
             <ImageSlider
               slider={firstSlider}
               loop={false}

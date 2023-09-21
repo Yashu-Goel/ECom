@@ -1,7 +1,9 @@
-
+.home-container {
+  /* background: aliceblue; */
+}
 .first-coursel {
-  background-color: #fff;
-  margin: 20px 20px;
+  background-color: white;
+  margin: 20px;
   padding: 5px 20px;
   border-radius: 2px;
 }
@@ -29,10 +31,14 @@
 }
 @media (max-width: 900px) {
   .first-coursel {
-    /* background-color: #fff; */
     margin: 5px;
     padding: 5px;
-    /* border-radius: 2px; */
+  }
+  .first-coursel a {
+    font-size: 12px;
+  }
+  .first-coursel h1 {
+    font-size: 14px;
+    margin-left: 2px;
   }
 }
-

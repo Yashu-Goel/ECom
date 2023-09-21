@@ -3,10 +3,11 @@
 }
 .slide-container {
   width: 100%;
+  border-radius: 5px;
+  outline: 1px solid black;
 }
 .slide-content {
   background-color: #fff;
-  border: 1px solid black;
 }
 .card-wrapper {
   width: 100%;
@@ -78,7 +79,6 @@
   .slide-container {
     margin: 0;
     padding: 0;
-    border: 1px solid black;
   }
   .slide-content {
     margin: 0px !important;
@@ -100,7 +100,6 @@
   }
 }
 @media (max-width: 700px) {
- 
   .card-img {
     height: 150px;
     width: 130px;

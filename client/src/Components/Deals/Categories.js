@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import "./Categories.css"; // Import your CSS file for styling
+import "./Categories.css";
 
 const categoryData = [
   {

@@ -1,4 +1,3 @@
-import React from "react";
 import Coursel from "../TopSecHome/Coursel";
 import ImageSlider from "../TopSecHome/ImageSlider";
 import firstSlider from "../dummyDatas/firstSlider.json";
@@ -10,7 +9,7 @@ import TrendingPage from "../Deals/TrendingPage";
 import Categories from "../Deals/Categories";
 const Home = () => {
   return (
-    <div>
+    <div className="home-container">
       <Coursel />
       <div className="first-coursel">
         <div className="deal-header">
@@ -26,7 +25,7 @@ const Home = () => {
         </div>
         <ImageSlider slider={kitchenSlider} loop={false} text={true} />
       </div>
-      <TrendingPage />
+      {/* <TrendingPage /> */}
       <div className="first-coursel">
         <div className="deal-header">
           <h1>Beauty Product and Fragrances</h1>
