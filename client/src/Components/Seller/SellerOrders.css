@@ -12,6 +12,10 @@
   text-align: center;
 
 }
+.Msg{
+  margin-top: 9vh;
+  font-size: 1.4rem;
+}
 .TableHeading{
   background-color: #b2dbfa;
   font-weight: bold;

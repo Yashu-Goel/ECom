@@ -137,7 +137,7 @@ return (
         </div>
         <div className="OuterTableContainer">
           {orderDetails.length === 0 ? (
-            <p>No orders yet.</p>
+            <p className="Msg">No orders yet.</p>
           ) : (
             <table className="OrderTable">
               <thead className="TableHeading">
