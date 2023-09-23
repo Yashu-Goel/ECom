@@ -9,7 +9,7 @@ import { API_BASE } from "../functions/functions";
 
 const SellerCatalogue = () => {
   const [products, setProducts] = useState([]);
-  const [flag, setFlag] = useState(0);
+  const [flag, setFlag] = useState(1);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

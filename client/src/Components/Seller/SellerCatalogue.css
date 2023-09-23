@@ -15,26 +15,27 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 .SellerCatalogueInnerContainer{
-    width: 80%;
+    width: auto;
     display: grid;
     grid-template-columns: repeat(3,1fr);
     row-gap: 3rem;
+    column-gap: 4rem;
 }
 @media (max-width: 768px) {
-    
+
     .SellerCatalogueInnerContainer{
         width: 100%;
         grid-template-columns: 1fr;
         row-gap: 0;
+        justify-items: center;
     }
     .CatalogueHeading{
         text-align: center;
         margin: 0;
         margin-bottom: 1rem;
         margin-top: 2rem;
-}
+    }
 }
