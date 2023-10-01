@@ -12,6 +12,7 @@ import { calculateDiscount } from "./function";
 import { formatDistanceToNow } from "date-fns";
 import { AWS_LINK } from "./function";
 import { toast } from "react-toastify";
+import { toIndianCurrency } from "../OrderConfirmationPage/function";
 
 export const Product = () => {
   const { id } = useParams();
@@ -157,11 +158,11 @@ export const Product = () => {
 
                   <div className="product-cost">
                     <div className="product-sellingPrice">
-                      &#8377;{productDetails.price}
+                      {toIndianCurrency(productDetails?.price)}
                     </div>
                     <div className="product-costPrice">
                       <p className="product-mrp">
-                        M.R.P.:&nbsp;{productDetails.MRP}
+                        M.R.P.:&nbsp;{toIndianCurrency(productDetails?.MRP)}
                       </p>
                       <div className="product-discount-percent">
                         -

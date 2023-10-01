@@ -67,7 +67,7 @@ const CartModal = ({ closeModal }) => {
         <span className="close" onClick={closeModal}>
           &times;
         </span>
-        <h2 className="cart-heading">Your Shopping Cart</h2>
+        <h2 className="cart-heading-user">Your Shopping Cart</h2>
         <div className="cart-items">
           {isloading && <Loader2 content="Loading cart.." />}
           {!isloading && products?.length ? (
