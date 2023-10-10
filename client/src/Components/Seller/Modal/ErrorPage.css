@@ -1,0 +1,73 @@
+.ErrorPageOuter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.ErrorPageMain {
+  text-align: center;
+  background-color: #f4f4f4;
+  padding: 1.25rem 2rem;
+  border-radius: 10px;
+  max-width: 27rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.ErrorPageHeading h1 {
+  color: red;
+  font-size: 2.5rem;
+}
+
+.ErrorPageSubHeading {
+  margin-top: 1.25rem;
+}
+
+.ErrorPageSubHeading h3 {
+  font-size: 1.2rem;
+}
+
+.ErrorPageSubHeading ul {
+    margin-top: 1rem;
+  text-align: start;
+  list-style: none;
+}
+
+.ErrorPageSubHeading li {
+  margin-bottom: 0.3125rem;
+}
+
+.ErrorPageButton {
+  margin-top: 1.25rem;
+}
+
+.ErrorPageButton button {
+  padding: 0.625rem 1.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+}
+
+.ErrorPageButton button:hover {
+  background-color: #0056b3;
+}
+
+@media screen and (max-width: 37.5rem) {
+  .ErrorPageMain {
+    width: 90%;
+    padding: 0.625rem; 
+  }
+
+  .ErrorPageSubHeading h3 {
+    font-size: 1rem; 
+  }
+
+  .ErrorPageButton button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}

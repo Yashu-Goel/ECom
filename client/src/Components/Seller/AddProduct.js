@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./AddProduct.css";
 import SellerNav from "./SellerNav";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { API_BASE } from "../functions/functions";
+import { SellerContext } from "./SellerProvider";
+import ErrorPage from "./Modal/ErrorPage";
 const AddProduct = () => {
+  const { isLoggedIn, toggleLoginStatus, logout } = useContext(SellerContext); 
+
   const [selectedImages, setSelectedImages] = useState([]);
   const [ProductData, setProductData] = useState({
     name: "",
@@ -121,134 +125,146 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="ProductDetailOuterContainer">
-      <SellerNav />
+    <>
+    {isLoggedIn? (
+      <div className="ProductDetailOuterContainer">
+        <SellerNav />
 
-      <p className="ProductDetailHeading">Product Details:</p>
-      <form className="ProductDetailMainContainer" onSubmit={handleFormSubmit}>
-        <div className="seller-form-group">
-          <label>Product Name:</label>
-          <input
-            type="text"
-            value={ProductData.name}
-            onChange={(e) =>
-              setProductData({ ...ProductData, name: e.target.value })
-            }
-          />
-        </div>
-        <div className="seller-form-group">
-          <label>Product Category:</label>
-          <select
-            value={ProductData.category}
-            onChange={(e) =>
-              setProductData({ ...ProductData, category: e.target.value })
-            }
-            id="cat-select"
-          >
-            <option value="">Select a type</option>
-            <option value="electronics">Electronics</option>
-            <option value="stationary">Stationary</option>
-            <option value="apparel-and-fashion">Apparel and Fashion</option>
-            <option value="home-and-kitchen">
-              Home and Kitchen Appliances
-            </option>
-            <option value="beauty-and-personal-care">
-              Beauty and Personal Care
-            </option>
-            <option value="books-music-and-media">
-              Books, Music, and Media
-            </option>
-            <option value="health-and-wellness">Health and Wellness</option>
-            <option value="grocery-and-household-essentials">
-              Grocery and Household Essentials
-            </option>
-            <option value="toys-and-games">Toys and Games</option>
-            <option value="sports-and-outdoor">Sports and Outdoor</option>
-          </select>
-        </div>
-        <div className="seller-form-group">
-          <label>Price(₹):</label>
-          <input
-            type="text"
-            value={ProductData.price}
-            onChange={(e) =>
-              setProductData({ ...ProductData, price: e.target.value })
-            }
-          />
-        </div>
-        <div className="seller-form-group">
-          <label>MRP(₹):</label>
-          <input
-            type="text"
-            value={ProductData.MRP}
-            onChange={(e) =>
-              setProductData({ ...ProductData, MRP: e.target.value })
-            }
-          />
-        </div>
-        <div className="seller-form-group">
-          <label>Model:</label>
-          <input
-            type="text"
-            value={ProductData.model}
-            onChange={(e) =>
-              setProductData({ ...ProductData, model: e.target.value })
-            }
-          />
-        </div>
+        <p className="ProductDetailHeading">Product Details:</p>
+        <form
+          className="ProductDetailMainContainer"
+          onSubmit={handleFormSubmit}
+        >
+          <div className="seller-form-group">
+            <label>Product Name:</label>
+            <input
+              type="text"
+              value={ProductData.name}
+              onChange={(e) =>
+                setProductData({ ...ProductData, name: e.target.value })
+              }
+            />
+          </div>
+          <div className="seller-form-group">
+            <label>Product Category:</label>
+            <select
+              value={ProductData.category}
+              onChange={(e) =>
+                setProductData({ ...ProductData, category: e.target.value })
+              }
+              id="cat-select"
+            >
+              <option value="">Select a type</option>
+              <option value="electronics">Electronics</option>
+              <option value="stationary">Stationary</option>
+              <option value="apparel-and-fashion">Apparel and Fashion</option>
+              <option value="home-and-kitchen">
+                Home and Kitchen Appliances
+              </option>
+              <option value="beauty-and-personal-care">
+                Beauty and Personal Care
+              </option>
+              <option value="books-music-and-media">
+                Books, Music, and Media
+              </option>
+              <option value="health-and-wellness">Health and Wellness</option>
+              <option value="grocery-and-household-essentials">
+                Grocery and Household Essentials
+              </option>
+              <option value="toys-and-games">Toys and Games</option>
+              <option value="sports-and-outdoor">Sports and Outdoor</option>
+            </select>
+          </div>
+          <div className="seller-form-group">
+            <label>Price(₹):</label>
+            <input
+              type="text"
+              value={ProductData.price}
+              onChange={(e) =>
+                setProductData({ ...ProductData, price: e.target.value })
+              }
+            />
+          </div>
+          <div className="seller-form-group">
+            <label>MRP(₹):</label>
+            <input
+              type="text"
+              value={ProductData.MRP}
+              onChange={(e) =>
+                setProductData({ ...ProductData, MRP: e.target.value })
+              }
+            />
+          </div>
+          <div className="seller-form-group">
+            <label>Model:</label>
+            <input
+              type="text"
+              value={ProductData.model}
+              onChange={(e) =>
+                setProductData({ ...ProductData, model: e.target.value })
+              }
+            />
+          </div>
 
-        <div className="seller-form-group">
-          <label> Description:</label>
-          <input
-            value={ProductData.description}
-            onChange={(e) =>
-              setProductData({
-                ...ProductData,
-                description: e.target.value,
-              })
-            }
-          />
-        </div>
+          <div className="seller-form-group">
+            <label> Description:</label>
+            <input
+              value={ProductData.description}
+              onChange={(e) =>
+                setProductData({
+                  ...ProductData,
+                  description: e.target.value,
+                })
+              }
+            />
+          </div>
 
-        <div className="seller-form-group">
-          <label> Brand:</label>
-          <input
-            value={ProductData.brand}
-            onChange={(e) =>
-              setProductData({
-                ...ProductData,
-                brand: e.target.value,
-              })
-            }
-          />
-        </div>
+          <div className="seller-form-group">
+            <label> Brand:</label>
+            <input
+              value={ProductData.brand}
+              onChange={(e) =>
+                setProductData({
+                  ...ProductData,
+                  brand: e.target.value,
+                })
+              }
+            />
+          </div>
 
-        <div className="seller-form-group">
-          <label> Quantity:</label>
-          <input
-            value={ProductData.quantity}
-            onChange={(e) =>
-              setProductData({
-                ...ProductData,
-                quantity: e.target.value,
-              })
-            }
-          />
-        </div>
+          <div className="seller-form-group">
+            <label> Quantity:</label>
+            <input
+              value={ProductData.quantity}
+              onChange={(e) =>
+                setProductData({
+                  ...ProductData,
+                  quantity: e.target.value,
+                })
+              }
+            />
+          </div>
 
-        <div className="seller-form-group">
-          <label>Product Image:</label>
-          <input
-            type="file"
-            onChange={handleImageChange}
-            accept=".jpg, .jpeg, .png"
-            multiple
-          />
-        </div>
-        <button type="submit">Add Product</button>
-      </form>
-      <ToastContainer position="top-center" autoClose={3000} theme="colored" />
-    </div>
+          <div className="seller-form-group">
+            <label>Product Image:</label>
+            <input
+              type="file"
+              onChange={handleImageChange}
+              accept=".jpg, .jpeg, .png"
+              multiple
+            />
+          </div>
+          <button type="submit">Add Product</button>
+        </form>
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          theme="colored"
+        />
+      </div>):(
+        <ErrorPage/>
+      )}
+    </>
   );
 };
 
