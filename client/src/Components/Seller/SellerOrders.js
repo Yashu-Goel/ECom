@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import "./SellerOrders.css";
 import { toast } from "react-toastify";
@@ -9,7 +9,11 @@ import Product from "./Modal/Product";
 import Loading from "./Loading";
 import Customer from "./Modal/Customer";
 import Pagination from "../OrderHistory/Pagination/Pagination";
+import ErrorPage from "./Modal/ErrorPage";
+import { SellerContext } from "./SellerProvider";
 const SellerOrders = () => {
+  const { isLoggedIn, toggleLoginStatus, logout } = useContext(SellerContext); 
+
   const [orderDetails, setOrderDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -118,138 +122,150 @@ const SellerOrders = () => {
   };
 
 return (
-  <div>
-    {loading ? (
-      <Loading />
-    ) : (
-      <div className="SellerOrderOuterContainer">
-        {selectedProduct && (
-          <Product product={selectedProduct} onClose={closeProductModal} />
-        )}
-        {selectedCustomer && (
-          <Customer
-            customer_address={selectedCustomer}
-            onClose={closeCustomerModal}
-          />
-        )}
-        <div className="SellerNavContainer">
-          <SellerNav />
-        </div>
-        <div className="OuterTableContainer">
-          {orderDetails.length === 0 ? (
-            <p className="Msg">No orders yet.</p>
-          ) : (
-            <table className="OrderTable">
-              <thead className="TableHeading">
-                <tr>
-                  <th className="TableHead">OrderID</th>
-                  <th className="TableHead">Customer Details</th>
-                  <th className="TableHead">Product Details</th>
-                  <th className="TableHead">Date of Order</th>
-                  <th className="TableHead">Quantity</th>
-                  <th className="TableHead">Product Status</th>
-                </tr>
-              </thead>
-              <tbody className="TableBody">
-                {currentOrders?.map((order) => {
-                  const {
-                    _id,
-                    orderNumber,
-                    customer_address: { name, street, city, state, zip, phone },
-                    productId: {
-                      brand,
-                      model,
-                      name: productName,
-                      category,
-                      imageName,
-                      price,
-                    },
-                    date,
-                    count,
-                    currentStatus,
-                  } = order;
-                  return (
-                    <tr key={orderNumber}>
-                      <td className="TableHead">{orderNumber}</td>
-                      <td className="TableHead">
-                        <button
-                          onClick={() =>
-                            openCustomerModal(order.customer_address)
-                          }
-                        >
-                          View
-                        </button>
-                      </td>
-                      <td className="TableHead">
-                        <button
-                          onClick={() => openProductModal(order.productId)}
-                        >
-                          View
-                        </button>
-                      </td>
-                      <td className="TableHead">
-                        {new Date(date).toLocaleDateString()}
-                      </td>
-                      <td className="TableHead">{count}</td>
-                      <td className="TableHead">
-                        {currentStatus === "cancelled" ? (
-                          <span>Cancelled</span>
-                        ) : currentStatus === "delivered" ? (
-                          <span>Delivered</span>
-                        ) : (
-                          <select
-                            value={currentStatus}
-                            onChange={(e) =>
-                              handleProductStatusChange(
-                                _id,
-                                e.target.value,
-                                count,
-                                order.productId._id
-                              )
+  <>
+  {isLoggedIn?(
+    <div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="SellerOrderOuterContainer">
+          {selectedProduct && (
+            <Product product={selectedProduct} onClose={closeProductModal} />
+          )}
+          {selectedCustomer && (
+            <Customer
+              customer_address={selectedCustomer}
+              onClose={closeCustomerModal}
+            />
+          )}
+          <div className="SellerNavContainer">
+            <SellerNav />
+          </div>
+          <div className="OuterTableContainer">
+            {orderDetails.length === 0 ? (
+              <p className="Msg">No orders yet.</p>
+            ) : (
+              <table className="OrderTable">
+                <thead className="TableHeading">
+                  <tr>
+                    <th className="TableHead">OrderID</th>
+                    <th className="TableHead">Customer Details</th>
+                    <th className="TableHead">Product Details</th>
+                    <th className="TableHead">Date of Order</th>
+                    <th className="TableHead">Quantity</th>
+                    <th className="TableHead">Product Status</th>
+                  </tr>
+                </thead>
+                <tbody className="TableBody">
+                  {currentOrders?.map((order) => {
+                    const {
+                      _id,
+                      orderNumber,
+                      customer_address: {
+                        name,
+                        street,
+                        city,
+                        state,
+                        zip,
+                        phone,
+                      },
+                      productId: {
+                        brand,
+                        model,
+                        name: productName,
+                        category,
+                        imageName,
+                        price,
+                      },
+                      date,
+                      count,
+                      currentStatus,
+                    } = order;
+                    return (
+                      <tr key={orderNumber}>
+                        <td className="TableHead">{orderNumber}</td>
+                        <td className="TableHead">
+                          <button
+                            onClick={() =>
+                              openCustomerModal(order.customer_address)
                             }
                           >
-                            {currentStatus === "pending" && (
-                              <>
-                                <option value="pending">Pending</option>
-                                <option value="cancelled">Cancelled</option>
-                                <option value="shipped">Shipped</option>
-                              </>
-                            )}
-                            {currentStatus === "shipped" && (
-                              <>
-                                <option value="shipped">Shipped</option>
-                                <option value="out_for_delivery">
-                                  Out for Delivery
-                                </option>
-                              </>
-                            )}
-                            {currentStatus === "out_for_delivery" && (
-                              <>
-                                <option value="out_for_delivery">
-                                  Out for Delivery
-                                </option>
-                                <option value="delivered">Delivered</option>
-                              </>
-                            )}
-                          </select>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          )}
+                            View
+                          </button>
+                        </td>
+                        <td className="TableHead">
+                          <button
+                            onClick={() => openProductModal(order.productId)}
+                          >
+                            View
+                          </button>
+                        </td>
+                        <td className="TableHead">
+                          {new Date(date).toLocaleDateString()}
+                        </td>
+                        <td className="TableHead">{count}</td>
+                        <td className="TableHead">
+                          {currentStatus === "cancelled" ? (
+                            <span>Cancelled</span>
+                          ) : currentStatus === "delivered" ? (
+                            <span>Delivered</span>
+                          ) : (
+                            <select
+                              value={currentStatus}
+                              onChange={(e) =>
+                                handleProductStatusChange(
+                                  _id,
+                                  e.target.value,
+                                  count,
+                                  order.productId._id
+                                )
+                              }
+                            >
+                              {currentStatus === "pending" && (
+                                <>
+                                  <option value="pending">Pending</option>
+                                  <option value="cancelled">Cancelled</option>
+                                  <option value="shipped">Shipped</option>
+                                </>
+                              )}
+                              {currentStatus === "shipped" && (
+                                <>
+                                  <option value="shipped">Shipped</option>
+                                  <option value="out_for_delivery">
+                                    Out for Delivery
+                                  </option>
+                                </>
+                              )}
+                              {currentStatus === "out_for_delivery" && (
+                                <>
+                                  <option value="out_for_delivery">
+                                    Out for Delivery
+                                  </option>
+                                  <option value="delivered">Delivered</option>
+                                </>
+                              )}
+                            </select>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
+          </div>
+          <Pagination
+            TotalOrder={orderDetails?.length}
+            OrderPerPage={10}
+            handlePageChange={setCurrentPage}
+            currentPage={currentPage}
+          />
         </div>
-        <Pagination
-          TotalOrder={orderDetails?.length}
-          OrderPerPage={10}
-          handlePageChange={setCurrentPage}
-          currentPage={currentPage}
-        />
-      </div>
+      )}
+    </div>):(
+      <ErrorPage/>
     )}
-  </div>
+  </>
 );
 
 };

@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SellerNav from "./SellerNav";
 import ReactApexChart from "react-apexcharts";
 import axios from "axios";
 import "./SellerDashboard.css";
 import Loading from "./Loading";
 import { API_BASE } from "../functions/functions";
-
+import ErrorPage from "./Modal/ErrorPage";
+import { SellerContext } from "./SellerProvider";
 const SellerDashboard = () => {
+    const { isLoggedIn, toggleLoginStatus, logout } = useContext(SellerContext); 
+
   const [length, setLength] = useState(0);
   const [orderDetails, setOrderDetails] = useState([]); // Combining order, product, and customer data
   const [totalOrders, setTotalOrders] = useState(0);
@@ -150,52 +153,57 @@ useEffect(() => {
   };
 
   return (
-    <div>
-      {loading ? (
-        <Loading />
-      ) : (
-        <div>
-          <SellerNav />
-          <h1 className="DashboardHeading">Dashboard</h1>
-          <div className="DashboardDataItems">
-            {data.map((item, index) => (
-              <div
-                key={index}
-                style={{ backgroundColor: item.color }}
-                className="DashboardDataItem"
-              >
-                <p>{item.value}</p>
-                <p>{item.text}</p>
-              </div>
-            ))}
-          </div>
-          <div className="OrdersMainContainer">
-            <div className="OrderHeadingOuter">
-              <p className="OrderHeading">Orders</p>
-              <p>kerfgwvrtejrwntbk hneuvorhimdfg tgf;oirjerhvre</p>
+    <>
+    {isLoggedIn ? (
+      <div>
+        {loading ? (
+          <Loading />
+        ) : (
+          <div>
+            <SellerNav />
+            <h1 className="DashboardHeading">Dashboard</h1>
+            <div className="DashboardDataItems">
+              {data.map((item, index) => (
+                <div
+                  key={index}
+                  style={{ backgroundColor: item.color }}
+                  className="DashboardDataItem"
+                >
+                  <p>{item.value}</p>
+                  <p>{item.text}</p>
+                </div>
+              ))}
             </div>
-            <div className="OrderInnerContainer">
-              <div className="OrderDataItems">
-                {orderData.map((item, index) => (
-                  <div key={index} className="OrderDataItem">
-                    <p>{item.text}</p>
-                    <p id="value">{item.value}</p>
-                  </div>
-                ))}
+            <div className="OrdersMainContainer">
+              <div className="OrderHeadingOuter">
+                <p className="OrderHeading">Orders</p>
+                <p>kerfgwvrtejrwntbk hneuvorhimdfg tgf;oirjerhvre</p>
               </div>
-              <div className="PieChart">
-                <ReactApexChart
-                  options={pieChartData.options}
-                  series={pieChartData.series}
-                  type="pie"
-                  width="380"
-                />
+              <div className="OrderInnerContainer">
+                <div className="OrderDataItems">
+                  {orderData.map((item, index) => (
+                    <div key={index} className="OrderDataItem">
+                      <p>{item.text}</p>
+                      <p id="value">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="PieChart">
+                  <ReactApexChart
+                    options={pieChartData.options}
+                    series={pieChartData.series}
+                    type="pie"
+                    width="380"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
+      </div>):(
+        <ErrorPage/>
       )}
-    </div>
+    </>
   );
 };
 

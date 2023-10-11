@@ -17,11 +17,8 @@ const ErrorPage = () => {
             <li>Invalid Credentials</li>
           </ul>
         </div>
-        <div className="ErrorPageSubHeading">
-          <h3>Try</h3>
-          <ul>
-            <li>Login Again</li>
-          </ul>
+        <div className="ErrorPageMsg">
+          <span>Try to Login again</span>
         </div>
         <div className="ErrorPageButton">
           <Link to="/seller">
