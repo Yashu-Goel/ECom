@@ -110,7 +110,6 @@ router.get("/seller_details/:id", async (req, res) => {
   try {
     const sellerId = req.params.id;
     const seller = await Seller.findById(sellerId);
-    console.log("okok");
     if (!seller) {
       return res.status(404).json({ error: "Seller not found" });
     }
@@ -350,12 +349,13 @@ router.get("/order_details/:id", async (req, res) => {
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
     }
+
     res.status(200).json(order);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-//
+// update count
 router.put("/update_count", async (req, res) => {
   const count = req.body.count;
   const id = req.body.id;
