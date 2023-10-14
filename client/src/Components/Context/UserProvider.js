@@ -19,7 +19,7 @@ const UserProvider = ({ children }) => {
         }
       } catch (error) {
         console.error(error);
-        toast.error("Something went wrong");
+        // toast.error("");
       }
     };
     fetchData();

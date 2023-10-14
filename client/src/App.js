@@ -21,10 +21,23 @@ import BillModal from "./Components/OrderConfirmationPage/BillModal";
 import NavbarWithFooter from "./Components/NavbarWithFooter/NavbarWithFooter";
 import Breadcrumbs from "./Components/Breadcrumbs/Breadcrumbs";
 import ProgressBar from "./Components/ProceedToCheckOut/ProgressBar";
+//just for testing purposes
+import Random from "./Components/ReduxToolkit/Random";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchInitialState } from "./Components/ReduxToolkit/asyncCalls";
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchInitialState());
+  }, [dispatch]);
+
   return (
     <>
       <Routes>
+        <Route exact path="/random" element={<Random />} />
+
         <Route element={<NavbarWithFooter />}>
           <Route path="/" element={<Home />} />
           <Route exact path="/product/:id" element={<Product />} />

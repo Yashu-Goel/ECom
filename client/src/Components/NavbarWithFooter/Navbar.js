@@ -7,6 +7,8 @@ import CartModal from "../Modal/CartModal";
 import Logo from "../Assets/Logo.png";
 import { toast } from "react-toastify";
 
+import { useSelector } from "react-redux";
+
 const categories = [
   {
     title: "Fasion",
@@ -110,7 +112,7 @@ const Navbar = () => {
   const [heart, setHeart] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [togglemenu, setTogglemenu] = useState(false);
-  const { user, cart } = UserState();
+  const state = useSelector((state) => state.carts);
 
   const handleLogout = () => {
     try {
@@ -194,7 +196,7 @@ const Navbar = () => {
         </div>
 
         <div className="custom-nav-icons">
-          {user !== null ? (
+          {state.user !== null ? (
             <div className="custom-nav-symbols">
               <button
                 className="custom-nav-heart"
@@ -230,10 +232,10 @@ const Navbar = () => {
                 className="custom-nav-shop"
                 onClick={() => setShowModal(true)}
               >
-                {cart && cart.length === 0 ? (
+                {state.user.cart && state.user.cart.length === 0 ? (
                   <i className="fa-solid fa-cart-shopping"></i>
                 ) : (
-                  <i className="fa badge" value={cart.length}>
+                  <i className="fa badge" value={state.user.cart.length}>
                     &#xf07a;
                   </i>
                 )}

@@ -13,13 +13,27 @@ import { formatDistanceToNow } from "date-fns";
 import { AWS_LINK } from "./function";
 import { toast } from "react-toastify";
 import { toIndianCurrency } from "../OrderConfirmationPage/function";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCartAsync } from "../ReduxToolkit/asyncCalls";
 
 export const Product = () => {
   const { id } = useParams();
-  const { user, cart, setCart } = UserState();
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.carts);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [count, setCount] = useState(1);
+
+  const [count, setCount] = useState(() => {
+    if (state.user && state.user.cart) {
+      const productInCart = state.user.cart.find(
+        (item) => item._id?.toString() === id
+      );
+      return productInCart ? productInCart.count : 1;
+    } else {
+      return 1;
+    }
+  });
+
   const [productDetails, setProductDetails] = useState(null);
   const [imageSrc, setImageSrc] = useState("");
   const [reviews, setReviews] = useState([]);
@@ -75,7 +89,6 @@ export const Product = () => {
       setCount(count - 1);
     }
   };
-
   return (
     <>
       {showModal && <CartModal closeModal={() => setShowModal(false)} />}
@@ -254,13 +267,12 @@ export const Product = () => {
                     <>
                       <button
                         className="add-to-cart"
-                        onClick={(e) => {
-                          addedToCart(
-                            productDetails._id,
-                            count,
-                            user,
-                            cart,
-                            setCart
+                        onClick={() => {
+                          dispatch(
+                            addToCartAsync(
+                              { itemId: productDetails._id, count: count },
+                              state
+                            )
                           );
                         }}
                       >
@@ -268,7 +280,7 @@ export const Product = () => {
                       </button>
                       <button
                         onClick={() => {
-                          if (!user) {
+                          if (!state.user.token) {
                             toast.error("Please login !", {
                               position: toast.POSITION.BOTTOM_CENTER,
                               autoClose: 2500,

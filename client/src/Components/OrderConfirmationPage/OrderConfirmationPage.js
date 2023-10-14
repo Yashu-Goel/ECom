@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { UserState } from "../Context/UserProvider";
 import axios from "axios";
 import { API_BASE, removeItem } from "../functions/functions";
+import { deleteItemAsync } from "../ReduxToolkit/asyncCalls";
 import "./OrderConfirmationPage.css";
 import { truncateName, calculateTotal } from "./function";
 import Error from "./Error";
@@ -9,8 +10,10 @@ import Loading from "../Loaders/Loading";
 import BillModal from "./BillModal";
 import { AWS_LINK } from "../IndividualProduct/function";
 import PaymentLoader from "../Loaders/PaymentLoader";
+import { useSelector, useDispatch } from "react-redux";
 
 const OrderConfirmationPage = () => {
+  const dispatch = useDispatch();
   const [promoCode, setPromoCode] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [paymentLoader, setpaymentLoader] = useState("");
@@ -20,6 +23,8 @@ const OrderConfirmationPage = () => {
   const [paymentModal, setPaymentModal] = useState(false);
   const [bill, setBill] = useState({});
   const { user, cart, setCart } = UserState();
+
+  const state = useSelector((state) => state.carts);
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -46,13 +51,13 @@ const OrderConfirmationPage = () => {
     const getProductDetails = async () => {
       const config = {
         headers: {
-          Authorization: `Bearer ${user?.token}`,
+          Authorization: `Bearer ${state.user?.token}`,
         },
       };
 
       try {
         const cartDetails = await Promise.all(
-          cart.map(async (item) => {
+          state.user?.cart.map(async (item) => {
             const response = await axios.get(
               API_BASE + `/cart/getCartInfo/${item._id}`,
               config
@@ -71,7 +76,7 @@ const OrderConfirmationPage = () => {
       }
     };
     getProductDetails();
-  }, [cart, user]);
+  }, [state.user?.cart, state.user]);
 
   const handleApplyPromoCode = () => {};
 
@@ -142,7 +147,7 @@ const OrderConfirmationPage = () => {
                 const config = {
                   headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${user.token}`,
+                    Authorization: `Bearer ${state.user.token}`,
                   },
                 };
                 await axios.post(
@@ -151,7 +156,12 @@ const OrderConfirmationPage = () => {
                   config
                 );
               }
-              removeItem(undefined, user, cart, setCart, true);
+              dispatch(
+                deleteItemAsync({
+                  deleteAll: true,
+                }),
+                state
+              );
             }
           },
           prefill: {

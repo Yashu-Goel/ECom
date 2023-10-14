@@ -2,10 +2,10 @@ import "./CartModal.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { UserState } from "../Context/UserProvider";
-import { removeItem } from "../functions/functions";
 import { API_BASE } from "../functions/functions";
 import { AWS_LINK } from "../IndividualProduct/function";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteItemAsync } from "../ReduxToolkit/asyncCalls";
 import Skeleton from "react-loading-skeleton";
 import {
   calculateTotal,
@@ -16,7 +16,9 @@ import { toast } from "react-toastify";
 import Loader2 from "../Loaders/Loader2";
 
 const CartModal = ({ closeModal }) => {
-  const { cart, setCart, user } = UserState();
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.carts);
+
   const [products, setProducts] = useState([]);
   const [imageLoaded, setImageLoaded] = useState([]);
   const [isloading, setisLoading] = useState(true);
@@ -25,13 +27,13 @@ const CartModal = ({ closeModal }) => {
     const getProductDetails = async () => {
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${state.user?.token}`,
         },
       };
 
       try {
         const cartDetails = await Promise.all(
-          cart.map(async (item) => {
+          state.user?.cart?.map(async (item) => {
             const response = await axios.get(
               API_BASE + `/cart/getCartInfo/${item._id}`,
               config
@@ -51,8 +53,8 @@ const CartModal = ({ closeModal }) => {
       }
     };
 
-    getProductDetails();
-  }, [cart, user.token]);
+    if (state.user?.token) getProductDetails();
+  }, [state.user.cart, state.user.token]);
 
   const handleImageLoad = (index) => {
     const updatedImageLoaded = [...imageLoaded];
@@ -126,11 +128,12 @@ const CartModal = ({ closeModal }) => {
                             <button
                               className="cart-delete-button items"
                               onClick={() => {
-                                removeItem(
-                                  item.product._id,
-                                  user,
-                                  cart,
-                                  setCart
+                                dispatch(
+                                  deleteItemAsync({
+                                    itemId: item.product._id,
+                                    deleteAll: false,
+                                  }),
+                                  state
                                 );
                               }}
                             >
@@ -185,7 +188,7 @@ const CartModal = ({ closeModal }) => {
           )}
         </div>
         <div className="cart-footer">
-          {cart && cart.length > 0 && (
+          {state.user?.cart && state.user?.cart.length > 0 && (
             <Link className="checkout-button" to={"/checkout"}>
               Proceed to Checkout
             </Link>

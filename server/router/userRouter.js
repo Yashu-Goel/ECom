@@ -108,6 +108,7 @@ router.get("/userid", tokenMiddleware, async (req, res) => {
         email: user.email,
         _id: user._id,
         name: user.name,
+        cart: user.cart,
       });
     } else {
       res.status(400).json("User doesn't exist!");
