@@ -13,9 +13,10 @@ export const fetchInitialState = createAsyncThunk(
         },
       };
       const { data } = await axios.get(API_BASE + "/user/userid", config);
-      return data;
+
+      return { user: data, error: null };
     } catch (error) {
-      return error.message;
+      return { user: null, error: error.message };
     }
   }
 );

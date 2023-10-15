@@ -113,7 +113,7 @@ const Navbar = () => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [togglemenu, setTogglemenu] = useState(false);
   const state = useSelector((state) => state.carts);
-
+// console.log(state)
   const handleLogout = () => {
     try {
       const profileData = localStorage.getItem("profile");
@@ -232,10 +232,10 @@ const Navbar = () => {
                 className="custom-nav-shop"
                 onClick={() => setShowModal(true)}
               >
-                {state.user.cart && state.user.cart.length === 0 ? (
+                {state.user.cart && state.user?.cart?.length === 0 ? (
                   <i className="fa-solid fa-cart-shopping"></i>
                 ) : (
-                  <i className="fa badge" value={state.user.cart.length}>
+                  <i className="fa badge" value={state.user?.cart?.length}>
                     &#xf07a;
                   </i>
                 )}

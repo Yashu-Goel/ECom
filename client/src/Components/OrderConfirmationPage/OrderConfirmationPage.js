@@ -269,12 +269,6 @@ const OrderConfirmationPage = () => {
               Proceed to Payment
             </button>
           </div>
-          {isLoading && (
-            <div className="loading-modal">
-              <div className="loading-spinner"></div>
-              <p>Processing payment...</p>
-            </div>
-          )}
         </div>
       )}
     </>

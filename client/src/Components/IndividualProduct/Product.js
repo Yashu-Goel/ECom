@@ -280,7 +280,7 @@ export const Product = () => {
                       </button>
                       <button
                         onClick={() => {
-                          if (!state.user.token) {
+                          if (!state.user) {
                             toast.error("Please login !", {
                               position: toast.POSITION.BOTTOM_CENTER,
                               autoClose: 2500,

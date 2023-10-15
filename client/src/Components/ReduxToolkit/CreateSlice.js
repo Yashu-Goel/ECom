@@ -24,10 +24,11 @@ export const CartSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchInitialState.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.user = action.payload.user;
+        state.error = action.payload.error;
       })
       .addCase(fetchInitialState.rejected, (state, action) => {
-        state.error = action.payload;
+        state.error = "Something went wrong";
       })
       .addCase(addToCartAsync.pending, (state, action) => {
         state.cartUpdating = true;

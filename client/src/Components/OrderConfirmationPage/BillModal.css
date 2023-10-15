@@ -66,8 +66,8 @@
   z-index: 2;
   margin: 0 10px;
   margin-top: -12px;
-  animation: print 1800ms cubic-bezier(0.68, -0.55, 0.265, 0.9);
   -moz-animation: print 1800ms cubic-bezier(0.68, -0.55, 0.265, 0.9) infinite;
+  animation: print 1800ms cubic-bezier(0.68, -0.55, 0.265, 0.9);
 }
 
 .main-contents {
